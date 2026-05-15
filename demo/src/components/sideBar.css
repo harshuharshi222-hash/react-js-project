@@ -1,0 +1,15 @@
+.toolbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+
+}
+
+
+.logostyling{
+    height: 30px;
+}
