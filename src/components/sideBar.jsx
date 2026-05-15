@@ -332,9 +332,9 @@ export default function MiniDrawer() {
                 <DrawerHeader />
                 {/* <CreateCL></CreateCL> */}
                 {/* <Promo></Promo> */}
-                {/* <Dashboard></Dashboard> */}
+                <Dashboard></Dashboard>
                 {/* <PromotionalActivity></PromotionalActivity> */}
-                <CustomizedTables></CustomizedTables>
+                {/* <CustomizedTables></CustomizedTables> */}
             </Box>
         </Box >
     );

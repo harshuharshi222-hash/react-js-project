@@ -91,6 +91,7 @@ const rows = [
   },
 ];
 
+
 export default function PromotionalActivity() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

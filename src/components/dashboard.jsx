@@ -113,6 +113,7 @@ const Dashboard = () => {
                 sx={{
                   color: "#6c4ce3",
                   fontSize: 36,
+                  padding:"5px",
                 }}
               />
             </IconButton>
@@ -264,7 +265,7 @@ const Dashboard = () => {
                         margin: "auto",
                         borderRadius: "50%",
                         border:
-                          date === "14"
+                          date === "15"
                             ? "1px solid #444"
                             : "1px solid transparent",
                         cursor: "pointer",
