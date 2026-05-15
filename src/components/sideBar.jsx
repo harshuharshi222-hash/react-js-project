@@ -19,7 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import '../components/sideBar.css';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Promo from '../components/promotional.jsx'
+
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
@@ -37,7 +37,7 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import CustomizedTables from './mohit.jsx'
+
 import PromotionalActivity from './table.jsx'
 import Dashboard from './dashboard.jsx'
 import CreateCL from './create.jsx';
@@ -331,10 +331,10 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor:'#f1f8f8' }}>
                 <DrawerHeader />
                 {/* <CreateCL></CreateCL> */}
-                {/* <Promo></Promo> */}
+               
                 {/* <Dashboard></Dashboard> */}
                 <PromotionalActivity></PromotionalActivity>
-                {/* <CustomizedTables></CustomizedTables> */}
+                
             </Box>
         </Box >
     );

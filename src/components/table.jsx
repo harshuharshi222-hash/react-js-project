@@ -106,132 +106,74 @@ export default function PromotionalActivity() {
   };
 
   return (
-    // <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
-    //   {/* Header */}
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "space-between",
-    //       alignItems: "center",
-    //       mb: 2,
-    //     }}
-    //   >
-    //     <Typography variant="h6" sx={{fontWeight:700}}>
-    //       Promotional Activity
-    //       <IconButton>
-    //                                <AddCircleIcon
-    //                                  sx={{
-    //                                    color: "#6c4ce3",
-    //                                    fontSize: 36,
-    //                                    padding:"5px",
-    //                                    margin:"5px",
+    <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6" sx={{fontWeight:700}}>
+          Promotional Activity
+          <IconButton>
+                                   <AddCircleIcon
+                                     sx={{
+                                       color: "#6c4ce3",
+                                       fontSize: 36,
+                                       padding:"5px",
+                                       margin:"5px",
                                       
-    //                                  }}
-    //                                />
-    //                              </IconButton>
-    //     </Typography>
+                                     }}
+                                   />
+                                 </IconButton>
+        </Typography>
         
                      
                                 
-    //                              {/* <Divider sx={{mb:3}}/> */}
-    //     <Box sx={{ display: "flex", gap: 2 }}>
-    //         <FormControl size="small" sx={{ minWidth: 20   }}>
+                                 {/* <Divider sx={{mb:3}}/> */}
+        <Box sx={{ display: "flex", gap: 2 }}>
+            <FormControl size="small" sx={{ minWidth: 20   }}>
            
-    //         <Select label="Project" >
-    //           <MenuItem value="">SL No</MenuItem>
-    //           <MenuItem value="1">PRO</MenuItem>
-    //           <MenuItem value="2">ANi</MenuItem>
-    //         </Select>
-    //       </FormControl>
+            <Select label="Project" >
+              <MenuItem value="">SL No</MenuItem>
+              <MenuItem value="1">PRO</MenuItem>
+              <MenuItem value="2">ANi</MenuItem>
+            </Select>
+          </FormControl>
 
 
 
-    //       <FormControl size="small" sx={{ minWidth: 220 }}>
-    //         <InputLabel>Project</InputLabel>
-    //         <Select label="Project">
-    //           <MenuItem value="">All</MenuItem>
-    //           <MenuItem value="1">ANIRVAN PHASE - 1</MenuItem>
-    //           <MenuItem value="2">ANIRVAN PHASE - 4</MenuItem>
-    //         </Select>
-    //       </FormControl>
+          <FormControl size="small" sx={{ minWidth: 220 }}>
+            <InputLabel>Project</InputLabel>
+            <Select label="Project">
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">ANIRVAN PHASE - 1</MenuItem>
+              <MenuItem value="2">ANIRVAN PHASE - 4</MenuItem>
+            </Select>
+          </FormControl>
 
-    //       <FormControl size="small" sx={{ minWidth: 160 }}>
-    //         <InputLabel>Status</InputLabel>
-    //         <Select label="Status">
-    //           <MenuItem value="">All</MenuItem>
-    //           <MenuItem value="Active">Active</MenuItem>
-    //           <MenuItem value="Inactive">Inactive</MenuItem>
-    //         </Select>
-    //       </FormControl>
+          <FormControl size="small" sx={{ minWidth: 160 }}>
+            <InputLabel>Status</InputLabel>
+            <Select label="Status">
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="Inactive">Inactive</MenuItem>
+            </Select>
+          </FormControl>
 
-    //       <TextField size="small" label="Search" />
+          <TextField size="small" label="Search" />
 
-    //       <Button variant="contained">Search</Button>
-    //     </Box>
-    //   </Box>
+          <Button variant="contained">Search</Button>
+        </Box>
+      </Box>
 
-    //   {/* Table */}
-    //   <Paper sx={{ width: "100%", overflow: "hidden" }}>
-    //     <TableContainer>
-    //       <Table>
-    //         <TableHead>
-    //           <TableRow sx={{ background: "#f1f1f1" }}>
-    //             <TableCell><b>S.No</b></TableCell>
-    //             <TableCell><b>Project Name</b></TableCell>
-    //             <TableCell><b>Activity Title</b></TableCell>
-    //             <TableCell><b>From Date</b></TableCell>
-    //             <TableCell><b>To Date</b></TableCell>
-    //             <TableCell><b>Description</b></TableCell>
-    //             <TableCell><b>Added By</b></TableCell>
-    //             <TableCell><b>Added On</b></TableCell>
-    //             <TableCell><b>Status</b></TableCell>
-    //           </TableRow>
-    //         </TableHead>
+      {/* Table */}
 
-    //         <TableBody>
-    //           {rows
-    //             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    //             .map((row) => (
-    //               <TableRow hover key={row.id}>
-    //                 <TableCell>{row.id}</TableCell>
-    //                 <TableCell>{row.project}</TableCell>
-    //                 <TableCell>{row.activity}</TableCell>
-    //                 <TableCell>{row.fromDate}</TableCell>
-    //                 <TableCell>{row.toDate}</TableCell>
-    //                 <TableCell>{row.description}</TableCell>
-    //                 <TableCell>{row.addedBy}</TableCell>
-    //                 <TableCell>{row.addedOn}</TableCell>
-    //                 <TableCell>
-    //                   <Chip
-    //                     label={row.status}
-    //                     color="info"
-    //                     sx={{
-    //                       borderRadius: "20px",
-    //                       color: "#fff",
-    //                       minWidth: "80px",
-    //                     }}
-    //                   />
-    //                 </TableCell>
-    //               </TableRow>
-    //             ))}
-    //         </TableBody>
-    //       </Table>
-    //     </TableContainer>
 
-    //     {/* Pagination */}
-    //     <TablePagination
-    //       rowsPerPageOptions={[5, 10, 25]}
-    //       component="div"
-    //       count={rows.length}
-    //       rowsPerPage={rowsPerPage}
-    //       page={page}
-    //       onPageChange={handleChangePage}
-    //       onRowsPerPageChange={handleChangeRowsPerPage}
-    //     />
-    //   </Paper>
-    // </Box>
-
-    <Paper
+       <Paper
   sx={{
     width: "100%",
     overflow: "hidden",
@@ -240,7 +182,12 @@ export default function PromotionalActivity() {
   }}
 >
   <TableContainer>
-    <Table>
+    <Table
+      // stickyHeader
+      // sx={{
+      //   minWidth: 1400, // Enables bottom horizontal scrollbar
+      // }}
+    >
       <TableHead>
         <TableRow sx={{ background: "#f1f1f1" }}>
           {[
@@ -260,8 +207,8 @@ export default function PromotionalActivity() {
                 borderRight: "1px solid #dcdcdc",
                 borderBottom: "1px solid #dcdcdc",
                 fontWeight: 700,
-                whiteSpace: "nowrap",
                 background: "#f5f5f5",
+                whiteSpace: "nowrap",
               }}
             >
               {head}
@@ -369,7 +316,7 @@ export default function PromotionalActivity() {
   </TableContainer>
 
   {/* Pagination */}
-  <TablePagination
+   <TablePagination
     rowsPerPageOptions={[5, 10, 25]}
     component="div"
     count={rows.length}
@@ -377,7 +324,14 @@ export default function PromotionalActivity() {
     page={page}
     onPageChange={handleChangePage}
     onRowsPerPageChange={handleChangeRowsPerPage}
+    sx={{
+      borderTop: "1px solid #dcdcdc",
+    }}
   />
-</Paper>
+</Paper> 
+
+
+
+    </Box>
   );
 }
