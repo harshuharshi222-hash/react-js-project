@@ -38,7 +38,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
-import PromotionalActivity from './table.jsx'
+import PromotionalActivity from './promotionalt.jsx'
 import Dashboard from './dashboard.jsx'
 import CreateCL from './create.jsx';
 import Get from './get.jsx';

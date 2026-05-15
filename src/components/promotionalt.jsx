@@ -136,7 +136,7 @@ export default function PromotionalActivity() {
                                  {/* <Divider sx={{mb:3}}/> */}
         <Box sx={{ display: "flex", gap: 2 }}>
             <FormControl size="small" sx={{ minWidth: 20   }}>
-           
+           <InputLabel><FilterListIcon></FilterListIcon></InputLabel>
             <Select label="Project" >
               <MenuItem value="">SL No</MenuItem>
               <MenuItem value="1">PRO</MenuItem>
@@ -182,12 +182,8 @@ export default function PromotionalActivity() {
   }}
 >
   <TableContainer>
-    <Table
-      // stickyHeader
-      // sx={{
-      //   minWidth: 1400, // Enables bottom horizontal scrollbar
-      // }}
-    >
+    <Table>
+      
       <TableHead>
         <TableRow sx={{ background: "#f1f1f1" }}>
           {[
@@ -226,6 +222,7 @@ export default function PromotionalActivity() {
                 sx={{
                   borderRight: "1px solid #e0e0e0",
                   borderBottom: "1px solid #e0e0e0",
+                 
                 }}
               >
                 {row.id}
@@ -313,6 +310,114 @@ export default function PromotionalActivity() {
           ))}
       </TableBody>
     </Table>
+
+
+{/* 
+    <Table
+  stickyHeader
+  sx={{
+    minWidth: 1000,
+    border: "1px solid #dcdcdc",
+  }}
+>
+  <TableHead>
+    <TableRow>
+      {[
+        "S1.No",
+        "Project",
+        "Category",
+        "Title",
+        "Description",
+        "Targeted Date",
+        "Task Status",
+      ].map((head) => (
+        <TableCell
+          key={head}
+          sx={{
+            borderRight: "1px solid #dcdcdc",
+            borderBottom: "1px solid #dcdcdc",
+            background: "#f5f5f5",
+            fontWeight: 700,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {head}
+        </TableCell>
+      ))}
+    </TableRow>
+  </TableHead>
+
+  <TableBody>
+    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((row) => (
+      <TableRow hover key={row}>
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          {row}
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          Project {row}
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          UI
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          Dashboard
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            minWidth: 250,
+          }}
+        >
+          Task Description
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          15-05-2026
+        </TableCell>
+
+        <TableCell
+          sx={{
+            borderBottom: "1px solid #e0e0e0",
+          }}
+        >
+          Pending
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table> */}
+{/* table chat */}
+
   </TableContainer>
 
   {/* Pagination */}
