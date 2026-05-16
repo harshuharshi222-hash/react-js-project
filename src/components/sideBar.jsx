@@ -44,6 +44,7 @@ import CreateCL from './create.jsx';
 import Get from './get.jsx';
 import Update from './update.jsx';
 
+import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import MinimizeIcon from '@mui/icons-material/Minimize';
 
@@ -231,12 +232,14 @@ export default function MiniDrawer() {
         <ListItemText primary="Master"  sx={{pl:1.4}}/>
         
         {open ? <ExpandLess /> : <ExpandMore />,<KeyboardArrowDownIcon/>}
+        
       </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={openNestedList} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
             <ListItemText primary="CRM"  /> 
             {open ? <ExpandLess /> : <ExpandMore /> , <AddIcon/>}
+            {closed ? <ExpandMore /> : <ExpandLess /> ,<RemoveIcon/>}
             {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
           </ListItemButton>
         </List>
@@ -244,6 +247,7 @@ export default function MiniDrawer() {
       <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
       <List component="div" disablePadding>
         <ListItemButton sx={{pl:4}}>
+            
         
             <ListItemIcon sx={{color:'white'}}>
                 -
