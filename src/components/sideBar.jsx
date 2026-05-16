@@ -239,7 +239,7 @@ export default function MiniDrawer() {
           <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
             <ListItemText primary="CRM"  /> 
             {open ? <ExpandLess /> : <ExpandMore /> , <AddIcon/>}
-            {closed ? <ExpandMore /> : <ExpandLess /> ,<RemoveIcon/>}
+            {/* {closed ? <ExpandMore /> : <ExpandLess /> ,<RemoveIcon/>} */}
             {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
           </ListItemButton>
         </List>

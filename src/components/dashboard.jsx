@@ -265,7 +265,7 @@ const Dashboard = () => {
                         margin: "auto",
                         borderRadius: "50%",
                         border:
-                          date === "15"
+                          date === "16"
                             ? "1px solid #444"
                             : "1px solid transparent",
                         cursor: "pointer",
