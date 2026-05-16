@@ -24,7 +24,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
-import AccountMenu from '../components/profile.jsx'
+import AccountMenu from '../components/profile.jsx';
 
 
 import Badge from '@mui/material/Badge';
@@ -231,15 +231,15 @@ export default function MiniDrawer() {
         </ListItemIcon>
         <ListItemText primary="Master"  sx={{pl:1.4}}/>
         
-        {open ? <ExpandLess /> : <ExpandMore />,<KeyboardArrowDownIcon/>}
+        {openNestedList ? <ExpandLess /> : <ExpandMore />}
         
       </ListItemButton>
       <Collapse in={openNestedList} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
             <ListItemText primary="CRM"  /> 
-            {open ? <ExpandLess /> : <ExpandMore /> , <AddIcon/>}
-            {/* {closed ? <ExpandMore /> : <ExpandLess /> ,<RemoveIcon/>} */}
+            {openNestedList1 ? <RemoveIcon /> : <AddIcon/> }
+            
             {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
           </ListItemButton>
         </List>
@@ -247,10 +247,11 @@ export default function MiniDrawer() {
       <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
       <List component="div" disablePadding>
         <ListItemButton sx={{pl:4}}>
+             
             
         
             <ListItemIcon sx={{color:'white'}}>
-                -
+                <RemoveIcon></RemoveIcon>
             </ListItemIcon>
             <ListItemText primary="Promotional Activity"  />
             
