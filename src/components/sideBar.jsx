@@ -44,6 +44,7 @@ import CreateCL from './create.jsx';
 import Get from './get.jsx';
 import Update from './update.jsx';
 
+import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import MinimizeIcon from '@mui/icons-material/Minimize';
@@ -251,8 +252,10 @@ export default function MiniDrawer() {
             
         
             <ListItemIcon sx={{color:'white'}}>
-                <RemoveIcon></RemoveIcon>
+                
+               {/* <CircleRoundedIcon></CircleRoundedIcon> */}
             </ListItemIcon>
+            
             <ListItemText primary="Promotional Activity"  />
             
         </ListItemButton>

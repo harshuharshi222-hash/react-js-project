@@ -119,7 +119,7 @@ export default function PromotionalActivity() {
         <Typography variant="h6" sx={{fontWeight:700}}>
           Promotional Activity
           <IconButton>
-                                   <AddCircleIcon
+                                   <AddCircleIcon 
                                      sx={{
                                        color: "#6c4ce3",
                                        fontSize: 36,
@@ -137,14 +137,14 @@ export default function PromotionalActivity() {
         <Box sx={{ display: "flex", gap: 2 }}>
             <FormControl size="small" sx={{ minWidth: 20   }}>
            <InputLabel><FilterListIcon></FilterListIcon></InputLabel>
-            <Select label="Project" >
+            <Select label="Project" >  
               <MenuItem value="">SL No</MenuItem>
               <MenuItem value="1">PRO</MenuItem>
               <MenuItem value="2">ANi</MenuItem>
             </Select>
           </FormControl>
 
-
+                                      
 
           <FormControl size="small" sx={{ minWidth: 220 }}>
             <InputLabel>Project</InputLabel>
