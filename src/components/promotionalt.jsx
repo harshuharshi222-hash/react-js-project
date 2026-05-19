@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Button,
@@ -105,6 +107,10 @@ export default function PromotionalActivity() {
     setPage(0);
   };
 
+  const adornmentId = React.useId();
+  const textFieldId = React.useId();
+  const sxId = React.useId();
+
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
@@ -164,9 +170,29 @@ export default function PromotionalActivity() {
             </Select>
           </FormControl>
 
-          <TextField size="small" label="Search" />
+          {/* <TextField size="small" label="Search" /> */}
+         
+          <TextField
+          
+        id={`${textFieldId}-input`}
+        label="Search"
+        size="small"
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+               
+              <SearchIcon/>
 
-          <Button variant="contained">Search</Button>
+              </InputAdornment>
+            ),
+          },
+        }}
+        variant="standard"
+      />
+   
+
+          <Button variant="contained" size="small">Search</Button>
         </Box>
       </Box>
 
@@ -183,7 +209,7 @@ export default function PromotionalActivity() {
 >
   <TableContainer>
     <Table>
-      
+        
       <TableHead>
         <TableRow sx={{ background: "#f1f1f1" }}>
           {[
