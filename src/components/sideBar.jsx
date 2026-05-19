@@ -199,7 +199,7 @@ export default function MiniDrawer() {
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open} sx={{
-                '& .MuiDrawer-paper': { backgroundColor: '#000027' }
+                '& .MuiDrawer-paper': { backgroundColor: '#101041' }
             }}>
                 <DrawerHeader>
 
@@ -209,7 +209,7 @@ export default function MiniDrawer() {
 
 
                 <List
-                    sx={{ width: '100%', maxWidth: 360, bgcolor: '#000027', color: 'white' }}
+                    sx={{ width: '100%', maxWidth: 360, bgcolor: '#101041', color: 'white' }}
                     component="nav"
                     aria-labelledby="nested-list-subheader"
 

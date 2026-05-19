@@ -45,7 +45,7 @@ const rows = [
     description: "",
     addedBy: "",
     addedOn: "",
-    status: "",
+    status: "Active",
   },
   {
     id: 3,
@@ -56,7 +56,7 @@ const rows = [
     description: "",
     addedBy: "",
     addedOn: "",
-    status: "",
+    status: "Active",
   },
   {
     id: 4,
@@ -142,13 +142,17 @@ export default function PromotionalActivity() {
                                  {/* <Divider sx={{mb:3}}/> */}
         <Box sx={{ display: "flex", gap: 2 }}>
             <FormControl size="small" sx={{ minWidth: 20   }}>
-           <InputLabel><FilterListIcon></FilterListIcon></InputLabel>
+           {/* <InputLabel><FilterListIcon></FilterListIcon></InputLabel> */}
+           
             <Select label="Project" >   
               <MenuItem value="">SL No</MenuItem>
               <MenuItem value="1">PRO</MenuItem>
               <MenuItem value="2">ANi</MenuItem>
             </Select>
           </FormControl>
+
+
+          
 
                                       
 
@@ -177,6 +181,8 @@ export default function PromotionalActivity() {
         id={`${textFieldId}-input`}
         label="Search"
         size="small"
+       
+       
         slotProps={{
           input: {
             startAdornment: (
