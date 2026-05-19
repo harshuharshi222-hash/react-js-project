@@ -141,14 +141,14 @@ export default function MiniDrawer() {
         setOpen(false);
     }; */
     const [openNestedList, setOpenNestedList] = React.useState(false);
-     const handleClick = () => {
+    const handleClick = () => {
         setOpenNestedList(!openNestedList);
     };
 
     const [openNestedList1, setOpenNestedList1] = React.useState(false);
-     const handleClick1 = () => {
+    const handleClick1 = () => {
         setOpenNestedList1(!openNestedList1);
-        
+
     };
 
 
@@ -183,7 +183,7 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <img src='.\src\assets\kns.png' alt='' width={40} className='logoStyling' />
+                    <img src='.\public\kns.png' alt='' width={40} className='logoStyling' />
                     <Typography variant="h6" noWrap component="div">
                         KNS
                     </Typography>
@@ -205,72 +205,72 @@ export default function MiniDrawer() {
 
                 </DrawerHeader>
                 <Divider />
-                 
-        
+
+
 
                 <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: '#000027',color:'white' }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      
-    >
-      <ListItemButton>
-        <ListItemIcon sx={{color: 'white'}}>
-         <GavelIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Legal" sx={{pl: 1.5}} />
-      </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon sx={{color:'white'}}>
-          <AdminPanelSettingsIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Admin" sx={{pl: 1.5}} />
-      </ListItemButton>
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon sx={{color:'white'}}>
-        <AlignHorizontalLeftIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Master"  sx={{pl:1.4}}/>
-        
-        {openNestedList ? <ExpandLess /> : <ExpandMore />}
-        
-      </ListItemButton>
-      <Collapse in={openNestedList} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
-            <ListItemText primary="CRM"  /> 
-            {openNestedList1 ? <RemoveIcon /> : <AddIcon/> }
-            
-            {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
-          </ListItemButton>
-        </List>
-      </Collapse>
-      <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
-      <List component="div" disablePadding>
-        <ListItemButton sx={{pl:4}}>
-             
-            
-        
-            <ListItemIcon sx={{color:'white'}}>
-                
-               {/* <CircleRoundedIcon></CircleRoundedIcon> */}
-            </ListItemIcon>
-            
-            <ListItemText primary="Promotional Activity"  />
-            
-        </ListItemButton>
-      </List>
-      </Collapse>
-    </List>
+                    sx={{ width: '100%', maxWidth: 360, bgcolor: '#000027', color: 'white' }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+
+                >
+                    <ListItemButton>
+                        <ListItemIcon sx={{ color: 'white' }}>
+                            <GavelIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Legal" sx={{ pl: 1.5 }} />
+                    </ListItemButton>
+                    <ListItemButton>
+                        <ListItemIcon sx={{ color: 'white' }}>
+                            <AdminPanelSettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Admin" sx={{ pl: 1.5 }} />
+                    </ListItemButton>
+                    <ListItemButton onClick={handleClick}>
+                        <ListItemIcon sx={{ color: 'white' }}>
+                            <AlignHorizontalLeftIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Master" sx={{ pl: 1.4 }} />
+
+                        {openNestedList ? <ExpandLess /> : <ExpandMore />}
+
+                    </ListItemButton>
+                    <Collapse in={openNestedList} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
+                                <ListItemText primary="CRM" />
+                                {openNestedList1 ? <RemoveIcon /> : <AddIcon />}
+
+                                {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+                    <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton sx={{ pl: 4 }}>
+
+
+
+                                <ListItemIcon sx={{ color: 'white' }}>
+
+                                    {/* <CircleRoundedIcon></CircleRoundedIcon> */}
+                                </ListItemIcon>
+
+                                <ListItemText primary="Promotional Activity" />
+
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+                </List>
 
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor:'#f1f8f8' }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor: '#f1f8f8' }}>
                 <DrawerHeader />
                 {/* <CreateCL></CreateCL> */}
-               
+
                 {/* <Dashboard></Dashboard> */}
                 <PromotionalActivity></PromotionalActivity>
-                
+
             </Box>
         </Box >
     );

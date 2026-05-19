@@ -137,7 +137,7 @@ export default function PromotionalActivity() {
         <Box sx={{ display: "flex", gap: 2 }}>
             <FormControl size="small" sx={{ minWidth: 20   }}>
            <InputLabel><FilterListIcon></FilterListIcon></InputLabel>
-            <Select label="Project" >  
+            <Select label="Project" >   
               <MenuItem value="">SL No</MenuItem>
               <MenuItem value="1">PRO</MenuItem>
               <MenuItem value="2">ANi</MenuItem>
