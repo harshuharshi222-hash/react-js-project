@@ -256,7 +256,7 @@ export default function MiniDrawer() {
                                     {/* <CircleRoundedIcon></CircleRoundedIcon> */}
                                 </ListItemIcon>
 
-                                <ListItemText primary="Promotional Activity" />
+                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}}/>
 
                             </ListItemButton>
                         </List>
