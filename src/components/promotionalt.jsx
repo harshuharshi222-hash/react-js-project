@@ -116,7 +116,7 @@ export default function PromotionalActivity() {
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
-  
+ 
    <Box
     sx={{
     display: "flex",
@@ -147,7 +147,7 @@ export default function PromotionalActivity() {
       variant="h6"
       sx={{
         color: "black",
-        fontWeight: 50,
+        fontWeight: 30,
         display: "flex",
         alignItems: "center",
       }}
@@ -173,8 +173,6 @@ export default function PromotionalActivity() {
                                  {/* <Divider sx={{mb:3}}/> */}
         <Box sx={{ display: "flex", gap: 2 }}>
             <FormControl size="small" sx={{ minWidth: 20   }}>
-           {/* <InputLabel><FilterListIcon></FilterListIcon></InputLabel> */}
-           
             <Select label="Project" >   
               <MenuItem value="">SL No</MenuItem>
               <MenuItem value="1">PRO</MenuItem>
