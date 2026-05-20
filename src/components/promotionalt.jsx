@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {
   Box,
   Button,
@@ -24,6 +25,7 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import IconButton from '@mui/material/IconButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { Directions } from "@mui/icons-material";
 const rows = [
   {
     id: 1,
@@ -114,28 +116,57 @@ export default function PromotionalActivity() {
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
-      <Box
+  
+   <Box
+    sx={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    mb: 2,
+  }}
+>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+    }}
+  >
+    {/* Menu Open Icon */}
+    <IconButton>
+      <MenuOpenIcon
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
+          color: "#555",
+          fontSize: 30,
+          mr: 1,
         }}
-      >
-        <Typography variant="h6" sx={{fontWeight:700}}>
-          Promotional Activity
-          <IconButton>
-                                   <AddCircleIcon 
-                                     sx={{
-                                       color: "#6c4ce3",
-                                       fontSize: 36,
-                                       padding:"5px",
-                                       margin:"5px",
-                                      
-                                     }}
-                                   />
-                                 </IconButton>
-        </Typography>
+      />
+    </IconButton>
+
+    {/* Title */}
+    <Typography
+      variant="h6"
+      sx={{
+        color: "black",
+        fontWeight: 50,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      Promotional Activity
+
+      {/* Add Icon */}
+      <IconButton>
+        <AddCircleIcon
+          sx={{
+            color: "#6c4ce3",
+            fontSize: 36,
+            p: "5px",
+            ml: 1,
+          }}
+        />
+      </IconButton>
+    </Typography>
+  </Box>
         
                      
                                 
@@ -344,111 +375,7 @@ export default function PromotionalActivity() {
     </Table>
 
 
-{/* 
-    <Table
-  stickyHeader
-  sx={{
-    minWidth: 1000,
-    border: "1px solid #dcdcdc",
-  }}
->
-  <TableHead>
-    <TableRow>
-      {[
-        "S1.No",
-        "Project",
-        "Category",
-        "Title",
-        "Description",
-        "Targeted Date",
-        "Task Status",
-      ].map((head) => (
-        <TableCell
-          key={head}
-          sx={{
-            borderRight: "1px solid #dcdcdc",
-            borderBottom: "1px solid #dcdcdc",
-            background: "#f5f5f5",
-            fontWeight: 700,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {head}
-        </TableCell>
-      ))}
-    </TableRow>
-  </TableHead>
 
-  <TableBody>
-    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((row) => (
-      <TableRow hover key={row}>
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          {row}
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          Project {row}
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          UI
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          Dashboard
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            minWidth: 250,
-          }}
-        >
-          Task Description
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          15-05-2026
-        </TableCell>
-
-        <TableCell
-          sx={{
-            borderBottom: "1px solid #e0e0e0",
-          }}
-        >
-          Pending
-        </TableCell>
-      </TableRow>
-    ))}
-  </TableBody>
-</Table> */}
-{/* table chat */}
 
   </TableContainer>
 
