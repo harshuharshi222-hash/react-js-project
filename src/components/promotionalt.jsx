@@ -123,6 +123,53 @@ export default function PromotionalActivity() {
  
     setSelected(typeof value === "string" ? value.split(",") : value);
  };
+ const columns = [
+  "S.No",
+  "Project Name",
+  "Activity Title",
+  "From Date",
+  "To Date",
+  "Description",
+  "Added By",
+  "Added On",
+  "Status",
+];
+
+const [columnWidths, setColumnWidths] = useState({
+  "S.No": 80,
+  "Project Name": 180,
+  "Activity Title": 180,
+  "From Date": 140,
+  "To Date": 140,
+  "Description": 220,
+  "Added By": 140,
+  "Added On": 140,
+  "Status": 120,
+});
+
+const startResize = (e, column) => {
+  e.preventDefault();
+
+  const startX = e.clientX;
+  const startWidth = columnWidths[column];
+
+  const handleMouseMove = (moveEvent) => {
+    const newWidth = startWidth + (moveEvent.clientX - startX);
+
+    setColumnWidths((prev) => ({
+      ...prev,
+      [column]: Math.max(newWidth, 60),
+    }));
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+  };
+
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("mouseup", handleMouseUp);
+};
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
@@ -289,134 +336,207 @@ export default function PromotionalActivity() {
     borderRadius: 2,
   }}
 >
-  <TableContainer>
-    <Table>
+  <TableContainer sx={{ overflowX: "auto" }}>
+    <Table sx={{tableLayout:"fixed", width:"100%"}}>
         
       <TableHead>
-        <TableRow sx={{ background: "#f1f1f1" }}>
-          {[
-            "S.No",
-            "Project Name",
-            "Activity Title",
-            "From Date",
-            "To Date",
-            "Description",
-            "Added By",
-            "Added On",
-            "Status",
-          ].map((head) => (
-            <TableCell
-              key={head}
-              sx={{
-                borderRight: "1px solid #dcdcdc",
-                borderBottom: "1px solid #dcdcdc",
-                fontWeight: 700,
-                background: "#f5f5f5",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {head}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
+  <TableRow sx={{ background: "#f1f1f1" }}>
+    {columns.map((head) => (
+      <TableCell
+        key={head}
+        sx={{
+          position: "relative",
+          width: columnWidths[head],
+          minWidth: columnWidths[head],
+          maxWidth: columnWidths[head],
+          borderBottom: "1px solid #dcdcdc",
+          fontWeight: 700,
+          background: "#f5f5f5",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+        }}
+      >
+        {head}
+
+        <Box
+          onMouseDown={(e) => startResize(e, head)}
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "8px",
+            height: "100%",
+            cursor: "col-resize",
+            zIndex: 10,
+
+            "&:hover": {
+              backgroundColor: "#1976d2",
+            },
+          }}
+        />
+      </TableCell>
+    ))}
+  </TableRow>
+</TableHead>
 
       <TableBody>
-        {rows
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((row) => (
-            <TableRow hover key={row.id}>
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                 
-                }}
-              >
-                {row.id}
-              </TableCell>
+  {rows
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .map((row) => (
+      <TableRow hover key={row.id}>
+        {/* S.No */}
+        <TableCell
+          sx={{
+            width: columnWidths["S.No"],
+            minWidth: columnWidths["S.No"],
+            maxWidth: columnWidths["S.No"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.id}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.project}
-              </TableCell>
+        {/* Project Name */}
+        <TableCell
+          sx={{
+            width: columnWidths["Project Name"],
+            minWidth: columnWidths["Project Name"],
+            maxWidth: columnWidths["Project Name"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.project}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.activity}
-              </TableCell>
+        {/* Activity Title */}
+        <TableCell
+          sx={{
+            width: columnWidths["Activity Title"],
+            minWidth: columnWidths["Activity Title"],
+            maxWidth: columnWidths["Activity Title"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.activity}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.fromDate}
-              </TableCell>
+        {/* From Date */}
+        <TableCell
+          sx={{
+            width: columnWidths["From Date"],
+            minWidth: columnWidths["From Date"],
+            maxWidth: columnWidths["From Date"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.fromDate}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.toDate}
-              </TableCell>
+        {/* To Date */}
+        <TableCell
+          sx={{
+            width: columnWidths["To Date"],
+            minWidth: columnWidths["To Date"],
+            maxWidth: columnWidths["To Date"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.toDate}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.description}
-              </TableCell>
+        {/* Description */}
+        <TableCell
+          sx={{
+            width: columnWidths["Description"],
+            minWidth: columnWidths["Description"],
+            maxWidth: columnWidths["Description"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.description}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.addedBy}
-              </TableCell>
+        {/* Added By */}
+        <TableCell
+          sx={{
+            width: columnWidths["Added By"],
+            minWidth: columnWidths["Added By"],
+            maxWidth: columnWidths["Added By"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.addedBy}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderRight: "1px solid #e0e0e0",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                {row.addedOn}
-              </TableCell>
+        {/* Added On */}
+        <TableCell
+          sx={{
+            width: columnWidths["Added On"],
+            minWidth: columnWidths["Added On"],
+            maxWidth: columnWidths["Added On"],
+            borderRight: "1px solid #e0e0e0",
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {row.addedOn}
+        </TableCell>
 
-              <TableCell
-                sx={{
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-              >
-                <Chip
-                  label={row.status}
-                  color="info"
-                  sx={{
-                    borderRadius: "20px",
-                    color: "#fff",
-                    minWidth: "80px",
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-      </TableBody>
+        {/* Status */}
+        <TableCell
+          sx={{
+            width: columnWidths["Status"],
+            minWidth: columnWidths["Status"],
+            maxWidth: columnWidths["Status"],
+            borderBottom: "1px solid #e0e0e0",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <Chip
+            label={row.status}
+            color="info"
+            sx={{
+              borderRadius: "20px",
+              color: "#fff",
+              minWidth: "80px",
+            }}
+          />
+        </TableCell>
+      </TableRow>
+    ))}
+</TableBody>
     </Table>
 
 
