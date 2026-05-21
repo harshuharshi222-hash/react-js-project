@@ -179,16 +179,6 @@ export default function PromotionalActivity() {
   </Box>
         
                      
-                                
-                                 {/* <Divider sx={{mb:3}}/> */}
-        {/* <Box sx={{ display: "flex", gap: 2 }}>
-            <FormControl size="small" sx={{ minWidth: 20   }}>
-            <Select label="Project" >   
-              <MenuItem value="">SL No</MenuItem>
-              <MenuItem value="1">PRO</MenuItem>
-              <MenuItem value="2">ANi</MenuItem>
-            </Select>
-          </FormControl> */}
 
 
           <Box
@@ -198,29 +188,24 @@ export default function PromotionalActivity() {
         gap: 2,
       }}
     >
-      {/* Filter Icon */}
-      <IconButton
-        sx={{
-          border: "1px solid #dcdcdc",
-          borderRadius: 2,
-          background: "#f5f5f5",
-        }}
-      >
-        <FilterListIcon />
-      </IconButton>
+      
 
       {/* Select Dropdown */}
-      <FormControl size="small" sx={{ minWidth: 180 }}>
+      <FormControl size="small" sx={{ minWidth: 50 }}>
         <Select
+        
           multiple
           value={selected}
           onChange={handleChange}
           displayEmpty
+          
           renderValue={(selected) => {
-            if (selected.length === 0) {
-              return "Select Option";
-            }
-            return selected.join(", ");
+            // if (selected === 0) {
+            //   return "Select Option";
+            // }
+           <FilterListIcon />
+
+            // return selected.join(" ");
           }}
         >
           <MenuItem value="SL No">
