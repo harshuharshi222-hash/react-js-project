@@ -17,6 +17,8 @@ export default function CreateCL(){
          milestoneName: '',
        percentage: '',
      },
+  
+
      validationSchema: Yup.object({
        userID: Yup.number()
          .integer(10, 'Must be a whole number')
@@ -32,6 +34,7 @@ export default function CreateCL(){
      onSubmit: values => {
        alert(JSON.stringify(values, null, 2));
      },
+     
    });
  
 return(
@@ -50,7 +53,7 @@ return(
                 <option>others</option>
 
             </select>
-            <TextField className ='inputElu' label="userID"  size="small" 
+            {/* <TextField className ='inputElu' label="userID"  size="small" 
             id='userID'
             name='userID'
             type='text'
@@ -61,7 +64,31 @@ return(
             <div className='errorUser'>{formik.errors.userID}</div>
 ):null}
              />
-        
+         */}
+
+
+           <div>
+          <TextField
+  fullWidth
+  label="User ID"
+  name="userID"
+  size='small'
+  sx={{mb: 2}}
+  value={formik.values.userID}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={formik.touched.userID && Boolean(formik.errors.userID)}
+  helperText={formik.touched.userID && formik.errors.userID}
+  FormHelperTextProps={{
+    sx: {
+      color: 'red',
+      fontSize: '13px',
+      
+    },
+  }}
+/>
+        </div>
+
             <TextField className ='inputEl' label="milestoneName"  sx= {{ mb: 2 }} 
             id='milestoneName'
             name='milestoneName'
@@ -92,6 +119,7 @@ return(
             rows={4}/>
           
         </div>
+      
 
         <div className='buttonsAlignment'>
                 
