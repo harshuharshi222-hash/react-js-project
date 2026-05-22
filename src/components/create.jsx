@@ -16,6 +16,7 @@ export default function CreateCL(){
       userID: '',
          milestoneName: '',
        percentage: '',
+       displayOrder: '',
      },
   
 
@@ -30,6 +31,9 @@ export default function CreateCL(){
        .test('Invalid len','must be lessthan 0 or qual to 3 digits',
         val => val && val.toString().length <= 3
        ),
+       displayOrder: Yup.string()
+         .matches(/^[a-zA-Z0-9]+$/, 'only letters and numbers are allowed')
+         .required('Required*'),
      }),
      onSubmit: values => {
        alert(JSON.stringify(values, null, 2));
@@ -44,7 +48,7 @@ return(
     <div className='formComponentContainer'>
         <div className='menuopenIconandComponentTitleContainer'>
         < MenuOpenIcon className='menuOpenIconAlignment'> </MenuOpenIcon>
-            <h1 className="title" style={{color:"black"}}>Create Construction Link Payment</h1>
+            <h1 className="title" style={{color:"black" }}>Create Construction Link Payment</h1>
         </div>
 
         <div className='formDataContainer'>
@@ -53,27 +57,15 @@ return(
                 <option>others</option>
 
             </select>
-            {/* <TextField className ='inputElu' label="userID"  size="small" 
-            id='userID'
-            name='userID'
-            type='text'
-            onChange={formik.handleChange}
-         onBlur={formik.handleBlur}
-         value={formik.values.userID}
-         helperText={formik.touched.userID && formik.errors.userID ? (
-            <div className='errorUser'>{formik.errors.userID}</div>
-):null}
-             />
-         */}
 
 
-           <div>
+
           <TextField
   fullWidth
   label="User ID"
   name="userID"
+sx={{mb: 2}}
   size='small'
-  sx={{mb: 2}}
   value={formik.values.userID}
   onChange={formik.handleChange}
   onBlur={formik.handleBlur}
@@ -83,34 +75,81 @@ return(
     sx: {
       color: 'red',
       fontSize: '13px',
-      
     },
   }}
 />
-        </div>
 
-            <TextField className ='inputEl' label="milestoneName"  sx= {{ mb: 2 }} 
-            id='milestoneName'
-            name='milestoneName'
-            type='milestoneName'
-            onChange={formik.handleChange}
-         onBlur={formik.handleBlur}
-         value={formik.values.milestoneName}
-         helperText={formik.touched.milestoneName && formik.errors.milestoneName ? (
-            <div className='errormilestoneName'>{formik.errors.milestoneName}</div>
-):null}
-            />
-             <TextField className ='inputEl' label="percentage" sx= {{ mb: 2 }} 
-              id='percentage'
-            name='percentage'
-            type='percentage'
-            onChange={formik.handleChange}
-         onBlur={formik.handleBlur}
-         value={formik.values.percentage}
-         helperText={formik.touched.percentage && formik.errors.percentage ? (
-            <div className='errorpercentage'>{formik.errors.percentage} </div>
-):null}
-             />
+    
+
+             <TextField
+  fullWidth
+  label="Milestone Name"
+  name="milestoneName"
+  sx={{mb: 2}}
+  value={formik.values.milestoneName}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={
+    formik.touched.milestoneName &&
+    Boolean(formik.errors.milestoneName)
+  }
+  helperText={
+    formik.touched.milestoneName &&
+    formik.errors.milestoneName
+  }
+  FormHelperTextProps={{
+    sx: {
+      color: 'red',
+    },
+  }}
+/>
+
+<TextField
+  fullWidth
+  label="Percentage"
+  name="percentage"
+  sx={{mb: 2}}
+  value={formik.values.percentage}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={
+    formik.touched.percentage &&
+    Boolean(formik.errors.percentage)
+  }
+  helperText={
+    formik.touched.percentage &&
+    formik.errors.percentage
+  }
+  FormHelperTextProps={{
+    sx: {
+      color: 'red',
+    },
+  }}
+/>
+
+<TextField
+  fullWidth
+  label="Display Oder"
+  name="displayOrder"
+  sx={{mb: 2}}
+  value={formik.values.displayOrder}
+  onChange={formik.handleChange}
+  onBlur={formik.handleBlur}
+  error={
+    formik.touched.displayOrder &&
+    Boolean(formik.errors.displayOrder)
+  }
+  helperText={
+    formik.touched.displayOrder &&
+    formik.errors.displayOrder
+  }
+  FormHelperTextProps={{
+    sx: {
+      color: 'red',
+    },
+  }}
+/>
+
             
              
             <TextField className ='inputElt' label="Description"   sx= {{ mb: 2}} 

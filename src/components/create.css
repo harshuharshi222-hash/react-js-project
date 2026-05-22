@@ -48,6 +48,16 @@ background-color: aliceblue ;
     border-width: 0px;
     margin-right: 8px;
 }
+.buttonStyle1{
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(128, 128, 240);
+    border-radius: 2px;
+    border-width: 0px;
+    margin-right: 8px;
+    width: 4%;
+}
 
 .inputEl{
     padding: 0px;
