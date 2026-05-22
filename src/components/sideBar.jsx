@@ -267,8 +267,8 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor: '#f1f8f8' }}>
                 <DrawerHeader />
                 <CreateCL></CreateCL>
-                <Update></Update>
-                <Get></Get>
+                {/* <Update></Update>
+                <Get></Get> */}
 
                 {/* <Dashboard></Dashboard> */}
                 {/* <PromotionalActivity></PromotionalActivity> */}
