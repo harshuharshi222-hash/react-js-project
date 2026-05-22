@@ -368,9 +368,11 @@ const startResize = (e, column) => {
             height: "100%",
             cursor: "col-resize",
             zIndex: 10,
+             borderRight: "1px solid #e0e0e0",
 
             "&:hover": {
-              backgroundColor: "#1976d2",
+              backgroundColor: "#16181a",
+             
             },
           }}
         />
