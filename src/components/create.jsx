@@ -3,14 +3,20 @@ import { TextField } from '@mui/material';
 // import './create.css'
 
 import { Height } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
 
  import React from 'react';
  import { useFormik } from 'formik';
  import * as Yup from 'yup';
 
+ import { useNavigate } from "react-router-dom";
+
 
 
 export default function CreateCL(){
+
+    const navigate = useNavigate();
+
    const formik = useFormik({
      initialValues: {
       userID: '',
@@ -47,7 +53,17 @@ return(
     <form>
     <div className='formComponentContainer'>
         <div className='menuopenIconandComponentTitleContainer'>
-        < MenuOpenIcon className='menuOpenIconAlignment'> </MenuOpenIcon>
+       
+       <IconButton>
+             <MenuOpenIcon
+               sx={{
+                 color: "#555",
+                 fontSize: 30,
+                 mr: 1,
+               }}
+               onClick={() =>  navigate("/components/promotionalt")}
+             />
+           </IconButton>
             <h1 className="title" style={{color:"black" }}>Create Construction Link Payment</h1>
         </div>
 

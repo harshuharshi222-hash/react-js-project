@@ -49,6 +49,9 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import MinimizeIcon from '@mui/icons-material/Minimize';
 
+import { useNavigate } from "react-router-dom";
+
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -130,6 +133,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+
+     const navigate = useNavigate();
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -256,7 +262,7 @@ export default function MiniDrawer() {
                                     {/* <CircleRoundedIcon></CircleRoundedIcon> */}
                                 </ListItemIcon>
 
-                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}}/>
+                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={() =>  navigate("/components/promotionalt")}/>
 
                             </ListItemButton>
                         </List>
@@ -266,11 +272,11 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor: '#f1f8f8' }}>
                 <DrawerHeader />
-                <CreateCL></CreateCL>
+                {/* <CreateCL></CreateCL> */}
                 {/* <Update></Update>
                 <Get></Get> */}
 
-                {/* <Dashboard></Dashboard> */}
+                <Dashboard></Dashboard>
                 {/* <PromotionalActivity></PromotionalActivity> */}
 
             </Box>

@@ -28,6 +28,10 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import IconButton from '@mui/material/IconButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Directions } from "@mui/icons-material";
+
+
+
+import { useNavigate } from "react-router-dom";
 const rows = [
   {
     id: 1,
@@ -99,6 +103,9 @@ const rows = [
 
 
 export default function PromotionalActivity() {
+
+   const navigate = useNavigate();
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -196,6 +203,7 @@ const startResize = (e, column) => {
           fontSize: 30,
           mr: 1,
         }}
+        onClick={() =>  navigate("/components/sideBar")}
       />
     </IconButton>
 
@@ -220,6 +228,8 @@ const startResize = (e, column) => {
             p: "5px",
             ml: 1,
           }}
+
+          onClick={() =>  navigate("/components/create")}
         />
       </IconButton>
     </Typography>
