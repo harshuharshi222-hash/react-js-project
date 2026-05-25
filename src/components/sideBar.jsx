@@ -262,7 +262,7 @@ export default function MiniDrawer() {
                                     {/* <CircleRoundedIcon></CircleRoundedIcon> */}
                                 </ListItemIcon>
 
-                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={() =>  navigate("/components/promotionalt")}/>
+                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={() =>  navigate("/components/promotionalt")} />
 
                             </ListItemButton>
                         </List>
@@ -276,7 +276,7 @@ export default function MiniDrawer() {
                 {/* <Update></Update>
                 <Get></Get> */}
 
-                <Dashboard></Dashboard>
+                {/* <Dashboard></Dashboard> */}
                 {/* <PromotionalActivity></PromotionalActivity> */}
 
             </Box>

@@ -39,7 +39,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
+    <Box sx={{ background: "#f5f5f5", minHeight: "80vh", p: 2 }}>
       {/* Top Header */}
       <Box
         sx={{
@@ -93,7 +93,7 @@ const Dashboard = () => {
       />
 
       {/* Main Card */}
-      <Card sx={{ borderRadius: 3 }}>
+      <Card sx={{ borderRadius: 2 }}>
         <CardContent>
           {/* Card Header */}
           <Box
@@ -201,7 +201,7 @@ const Dashboard = () => {
             <Paper
               sx={{
                 width: 360,
-                p: 3,
+                p: 2,
                 borderRadius: 3,
                 boxShadow: "none",
               }}
@@ -265,7 +265,7 @@ const Dashboard = () => {
                         margin: "auto",
                         borderRadius: "50%",
                         border:
-                          date === "16"
+                          date === "25"
                             ? "1px solid #444"
                             : "1px solid transparent",
                         cursor: "pointer",
