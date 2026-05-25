@@ -271,7 +271,7 @@ export default function MiniDrawer() {
                 <Get></Get> */}
 
                 {/* <Dashboard></Dashboard> */}
-                <PromotionalActivity></PromotionalActivity>
+                {/* <PromotionalActivity></PromotionalActivity> */}
 
             </Box>
         </Box >
