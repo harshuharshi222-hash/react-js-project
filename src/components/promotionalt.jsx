@@ -113,6 +113,8 @@ const rows = [
 
 export default function PromotionalActivity() {
 
+
+    const totalPages = 1;
      const navigate = useNavigate();
    const handlegotocreate = () => {
       navigate('/create')
@@ -582,7 +584,7 @@ const startResize = (e, column) => {
   </TableContainer>
 
   {/* Pagination */}
-   <TablePagination
+    {/* <TablePagination
     rowsPerPageOptions={[5, 10, 25]}
     component="div"
     count={rows.length}
@@ -593,7 +595,85 @@ const startResize = (e, column) => {
     sx={{
       borderTop: "1px solid #dcdcdc",
     }}
-  />
+  />  */}
+
+     <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "#f5f5f5",
+        padding: "10px 20px",
+        borderRadius: "4px",
+      }}
+    >
+      {/* Previous Button */}
+      <Button
+        variant="contained"
+        disabled={page === 1}
+        onClick={() => setPage(page - 1)}
+        sx={{
+          minWidth: "220px",
+          backgroundColor: "#e0e0e0",
+          color: "#9e9e9e",
+          textTransform: "none",
+          boxShadow: "none",
+          "&:hover": {
+            backgroundColor: "#d6d6d6",
+            boxShadow: "none",
+          },
+        }}
+      >
+        Previous
+      </Button>
+
+      {/* Page Text */}
+      <Typography
+        sx={{
+          fontSize: "20px",
+          fontWeight: 500,
+        }}
+      >
+        Page {page} of {totalPages}
+      </Typography>
+
+      {/* Rows Dropdown */}
+      <Select
+        value={rowsPerPage}
+        onChange={(e) => setRowsPerPage(e.target.value)}
+        size="small"
+        sx={{
+          width: "140px",
+          backgroundColor: "#fff",
+        }}
+      >
+        <MenuItem value={5}>5 rows</MenuItem>
+        <MenuItem value={10}>10 rows</MenuItem>
+        <MenuItem value={25}>25 rows</MenuItem>
+      </Select>
+
+      {/* Next Button */}
+      <Button
+        variant="contained"
+        disabled={page === totalPages}
+        onClick={() => setPage(page + 1)}
+        sx={{
+          minWidth: "220px",
+          backgroundColor: "#e0e0e0",
+          color: "#bdbdbd",
+          textTransform: "none",
+          boxShadow: "none",
+          "&:hover": {
+            backgroundColor: "#d6d6d6",
+            boxShadow: "none",
+          },
+        }}
+      >
+        Next
+      </Button>
+    </Box>
+  
 </Paper> 
 
 
