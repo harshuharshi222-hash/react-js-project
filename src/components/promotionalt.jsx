@@ -123,6 +123,11 @@ export default function PromotionalActivity() {
       navigate1('/dashboard')
    }
 
+    const navigate2 = useNavigate();
+        const handlegotoupdate = () => {
+           navigate2('/update')
+        }
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -551,7 +556,10 @@ const startResize = (e, column) => {
             overflow: "hidden",
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
+
+            
           }}
+          onClick={handlegotoupdate}
         >
           <Chip
             label={row.status}

@@ -287,6 +287,8 @@ export default function MiniDrawer() {
         <Route path="/create" element={< CreateCL />} />
         <Route path="/promotionalt" element={<PromotionalActivity />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/update" element={<Update />} />
+
       </Routes>
               
 

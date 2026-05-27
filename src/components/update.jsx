@@ -6,8 +6,17 @@ import { Height } from '@mui/icons-material';
 import { useFormik } from 'formik';
  import * as Yup from 'yup';
   import React from 'react';
+  import IconButton from '@mui/material/IconButton';
+
+
+   import { useNavigate } from "react-router-dom"
 
 export default function Update(){
+
+    const navigate = useNavigate();
+      const handlegotopromotionalt = () => {
+         navigate('/promotionalt')
+      }
 
     const formik = useFormik({
          initialValues: {
@@ -53,7 +62,16 @@ return(
     
     <div className='formComponentContainer'>
         <div className='menuopenIconandComponentTitleContainer'>
-        < MenuOpenIcon className='menuOpenIconAlignment'> </MenuOpenIcon>
+        <IconButton>
+             <MenuOpenIcon
+               sx={{
+                 color: "#555",
+                 fontSize: 30,
+                 mr: 1,
+               }}
+               onClick={handlegotopromotionalt}
+             />
+           </IconButton>
             <h1 className="title" style={{color:"black"}}>Update Construction Link Payment</h1>
         </div>
 
