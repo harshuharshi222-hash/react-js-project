@@ -1,25 +1,20 @@
-// import Get from './components/get.jsx'
-// import Update from './components/update.jsx'
-// import CreateCL from './components/create.jsx'
-// import Dashboard from './components/dashboard.jsx'
-// import PromotionalActivity from './components/promotionalt.jsx'
+
 import MiniDrawer from './components/sideBar.jsx'
 
+import './App.css'
+import { BrowserRouter } from "react-router-dom";
 
-
-
-
+ 
 
 export default function App() {
-
+// const root =ReactDom.createRoot(document.getElementById('root'));
   return (
     <>
+      <BrowserRouter>
+       
+        <MiniDrawer/>
  
-   
-
-       <MiniDrawer/>
-      
-            
+      </BrowserRouter>
 
     </>
   )

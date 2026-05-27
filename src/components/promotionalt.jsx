@@ -32,6 +32,7 @@ import { Directions } from "@mui/icons-material";
 
 
 import { useNavigate } from "react-router-dom";
+
 const rows = [
   {
     id: 1,
@@ -100,6 +101,8 @@ const rows = [
     status: "",
   },
 ];
+
+
 
 
 export default function PromotionalActivity() {
@@ -229,7 +232,7 @@ const startResize = (e, column) => {
             ml: 1,
           }}
 
-          onClick={() =>  navigate("/components/create")}
+        
         />
       </IconButton>
     </Typography>

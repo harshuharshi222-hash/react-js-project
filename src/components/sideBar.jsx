@@ -49,7 +49,13 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import MinimizeIcon from '@mui/icons-material/Minimize';
 
+import App from '../App.jsx';
+import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+
+
+
 
 
 const drawerWidth = 240;
@@ -133,8 +139,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
-
+     
      const navigate = useNavigate();
+ const handlegotopromotionalt = () => {
+    navigate('/promotionalt')
+ }
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -189,7 +198,7 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <img src='.\public\kns.png' alt='' width={40} className='logoStyling' />
+                    <img src='..\public\kns.png' alt='' width={40} className='logoStyling' />
                     <Typography variant="h6" noWrap component="div">
                         KNS
                     </Typography>
@@ -262,7 +271,7 @@ export default function MiniDrawer() {
                                     {/* <CircleRoundedIcon></CircleRoundedIcon> */}
                                 </ListItemIcon>
 
-                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={() =>  navigate("/components/promotionalt")} />
+                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={handlegotopromotionalt} />
 
                             </ListItemButton>
                         </List>
@@ -272,12 +281,12 @@ export default function MiniDrawer() {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor: '#f1f8f8' }}>
                 <DrawerHeader />
-                {/* <CreateCL></CreateCL> */}
-                {/* <Update></Update>
-                <Get></Get> */}
-
-                {/* <Dashboard></Dashboard> */}
-                {/* <PromotionalActivity></PromotionalActivity> */}
+             
+        <Routes>
+        {/* <Route path="/compoenets/sideBar" element={< MiniDrawer />} /> */}
+        <Route path="/promotionalt" element={<PromotionalActivity />} />
+      </Routes>
+              
 
             </Box>
         </Box >

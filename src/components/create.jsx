@@ -9,13 +9,13 @@ import IconButton from '@mui/material/IconButton';
  import { useFormik } from 'formik';
  import * as Yup from 'yup';
 
- import { useNavigate } from "react-router-dom";
+
 
 
 
 export default function CreateCL(){
 
-    const navigate = useNavigate();
+  
 
    const formik = useFormik({
      initialValues: {
@@ -61,7 +61,7 @@ return(
                  fontSize: 30,
                  mr: 1,
                }}
-               onClick={() =>  navigate("/components/promotionalt")}
+              
              />
            </IconButton>
             <h1 className="title" style={{color:"black" }}>Create Construction Link Payment</h1>
