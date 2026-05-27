@@ -10,10 +10,17 @@ import IconButton from '@mui/material/IconButton';
  import * as Yup from 'yup';
 
 
+ import { useNavigate } from "react-router-dom"
+
 
 
 
 export default function CreateCL(){
+
+    const navigate = useNavigate();
+   const handlegotopromotionalt = () => {
+      navigate('/promotionalt')
+   }
 
   
 
@@ -61,7 +68,7 @@ return(
                  fontSize: 30,
                  mr: 1,
                }}
-              
+               onClick={handlegotopromotionalt}
              />
            </IconButton>
             <h1 className="title" style={{color:"black" }}>Create Construction Link Payment</h1>

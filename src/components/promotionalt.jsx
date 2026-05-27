@@ -31,7 +31,13 @@ import { Directions } from "@mui/icons-material";
 
 
 
+import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+
+
+
+
 
 const rows = [
   {
@@ -107,7 +113,15 @@ const rows = [
 
 export default function PromotionalActivity() {
 
-   const navigate = useNavigate();
+     const navigate = useNavigate();
+   const handlegotocreate = () => {
+      navigate('/create')
+   }
+
+       const navigate1 = useNavigate();
+   const handlegotodashboard = () => {
+      navigate1('/dashboard')
+   }
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -206,7 +220,7 @@ const startResize = (e, column) => {
           fontSize: 30,
           mr: 1,
         }}
-        onClick={() =>  navigate("/components/sideBar")}
+       onClick={handlegotodashboard}
       />
     </IconButton>
 
@@ -232,7 +246,7 @@ const startResize = (e, column) => {
             ml: 1,
           }}
 
-        
+        onClick={handlegotocreate}
         />
       </IconButton>
     </Typography>
