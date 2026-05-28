@@ -272,41 +272,67 @@ const startResize = (e, column) => {
       
 
       {/* Select Dropdown */}
-      <FormControl size="small" sx={{ minWidth: 50 }}>
-        <Select
-        
-          multiple
-          value={selected}
-          onChange={handleChange}
-          displayEmpty
-          
-          renderValue={(selected) => {
-            // if (selected === 0) {
-            //   return "Select Option";
-            // }
-           <FilterListIcon />
-
-            // return selected.join(" ");
-          }}
-        >
-          <MenuItem value="SL No">
-            <Checkbox checked={selected.indexOf("SL No") > -1} />
-            <ListItemText primary="SL No" />
-          </MenuItem>
-
-          <MenuItem value="PRO">
-            <Checkbox checked={selected.indexOf("PRO") > -1} />
-            <ListItemText primary="PRO" />
-          </MenuItem>
-
-          <MenuItem value="ANi">
-            <Checkbox checked={selected.indexOf("ANi") > -1} />
-            <ListItemText primary="ANi" />
-          </MenuItem>
-        </Select>
-      </FormControl>
+     
       
-    
+  
+     <div>
+  <FormControl size="small">
+    <Select
+      multiple
+      value={selected}
+      onChange={handleChange}
+      displayEmpty
+      IconComponent={() => null}
+
+      renderValue={() => (
+        <FilterListIcon
+          sx={{
+            color: "#6c6868",
+            fontSize: 26,
+          }}
+        />
+      )}
+
+      sx={{
+        width: 45,
+        height: 40,
+        border: "1px solid #a5a8ad",
+        borderRadius: "3px",
+      
+
+        "& .MuiOutlinedInput-notchedOutline": {
+          border: "none",
+        },
+
+        "& .MuiSelect-select": {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0px !important",
+        },
+
+        "&:hover": {
+         
+        },
+      }}
+    >
+      <MenuItem value="SL No">
+        <Checkbox checked={selected.indexOf("SL No") > -1} />
+        <ListItemText primary="SL No" />
+      </MenuItem>
+
+      <MenuItem value="PRO">
+        <Checkbox checked={selected.indexOf("PRO") > -1} />
+        <ListItemText primary="PRO" />
+      </MenuItem>
+
+      <MenuItem value="ANi">
+        <Checkbox checked={selected.indexOf("ANi") > -1} />
+        <ListItemText primary="ANi" />
+      </MenuItem>
+    </Select>
+  </FormControl>
+</div>
 
 
           
