@@ -15,7 +15,8 @@ export default function Update(){
 
     const navigate = useNavigate();
       const handlegotopromotionalt = () => {
-         navigate('/promotionalt')
+        //  navigate('/promotionalt')
+        navigate('/dashboard/promotionalt')
       }
 
     const formik = useFormik({
