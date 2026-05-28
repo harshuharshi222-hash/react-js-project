@@ -1,133 +1,140 @@
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import { TextField } from '@mui/material';
-import './create.css';
-import Button from '@mui/material/Button';
-import { Height } from '@mui/icons-material';
-import { useFormik } from 'formik';
- import * as Yup from 'yup';
-  import React from 'react';
-  import IconButton from '@mui/material/IconButton';
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { TextField } from "@mui/material";
+import "./create.css";
+import React from "react";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
+export default function Update() {
+  const navigate = useNavigate();
 
-   import { useNavigate } from "react-router-dom"
+  const handlegotopromotionalt = () => {
+    navigate("/promotionalt");
+  };
 
-export default function Update(){
+  const formik = useFormik({
+    initialValues: {
+      userID: "",
+      clpID: "",
+      milestoneName: "",
+      percentage: "",
+      displayOrder: "",
+      description: "",
+      status: "",
+    },
 
-    const navigate = useNavigate();
-      const handlegotopromotionalt = () => {
-        //  navigate('/promotionalt')
-        navigate('/dashboard/promotionalt')
-      }
+    validationSchema: Yup.object({
+      userID: Yup.number()
+        .typeError("Must be a number")
+        .integer("Must be a whole number")
+        .required("Required*"),
 
-    const formik = useFormik({
-         initialValues: {
-          userID: '',
-          clpID: '',
-            milestoneName: '',
-           percentage: '',
-           displayOrder: '',
-           discription: '',
-           status: '',
-         },
+      clpID: Yup.number()
+        .typeError("Must be a number")
+        .integer("Must be a whole number")
+        .required("Required*"),
 
+      milestoneName: Yup.string()
+        .matches(
+          /^[a-zA-Z0-9]+$/,
+          "only letters and numbers are allowed"
+        )
+        .required("Required*"),
 
-         validationSchema: Yup.object({
-                userID: Yup.number()
-                  .integer(10, 'Must be a whole number')
-                  .required('Required*'),
-                clpID: Yup.number()
-                  .integer(8, 'Must be a whole number')
-                  .required('Required*'),
-                milestoneName: Yup.string()
-                         .matches(/^[a-zA-Z0-9]+$/, 'only letters and numbers are allowed')
-                         .required('Required*'),
-                percentage: Yup.number()
-                       .test('Invalid len','must be lessthan 0 or qual to 3 digits',
-                        val => val && val.toString().length <= 3
-                       ),  
-                displayOrder: Yup.string()
-                         .matches(/^[a-zA-Z0-9]+$/, 'only letters and numbers are allowed')
-                         .required('Required*'),
-                     }),
+      percentage: Yup.number().test(
+        "Invalid len",
+        "must be less than or equal to 3 digits",
+        (val) => !val || val.toString().length <= 3
+      ),
 
-            onSubmit: values => {
-       alert(JSON.stringify(values, null, 2));
-     },
-     
-   });
+      displayOrder: Yup.string()
+        .matches(
+          /^[a-zA-Z0-9]+$/,
+          "only letters and numbers are allowed"
+        )
+        .required("Required*"),
+    }),
 
-            
-return(
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  return (
     <>
-    <form>
-    
-    <div className='formComponentContainer'>
-        <div className='menuopenIconandComponentTitleContainer'>
-        <IconButton>
-             <MenuOpenIcon
-               sx={{
-                 color: "#555",
-                 fontSize: 30,
-                 mr: 1,
-               }}
-               onClick={handlegotopromotionalt}
-             />
-           </IconButton>
-            <h1 className="title" style={{color:"black"}}>Update Construction Link Payment</h1>
-        </div>
+      {/* CONNECT FORM WITH FORMIK */}
+      <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+        <div className="formComponentContainer">
+          <div className="menuopenIconandComponentTitleContainer">
+            <IconButton>
+              <MenuOpenIcon
+                sx={{
+                  color: "#555",
+                  fontSize: 30,
+                  mr: 1,
+                }}
+                onClick={handlegotopromotionalt}
+              />
+            </IconButton>
 
-        <div className='formDataContainer'>
-            <select name='project' className='selectE1' >
-                <option>Update Construction Payment Link</option>
-                <option> Construction Payment Link</option>
-                <option>others</option>  
+            <h1 className="title" style={{ color: "black" }}>
+              Update Construction Link Payment
+            </h1>
+          </div>
 
+          <div className="formDataContainer">
+            <select name="project" className="selectE1">
+              <option>Update Construction Payment Link</option>
+              <option>Construction Payment Link</option>
+              <option>others</option>
             </select>
-           
+
             <TextField
               fullWidth
               label="User ID"
               name="userID"
-            sx={{mb: 2}}
-              size='small'
+              sx={{ mb: 2 }}
+              size="small"
               value={formik.values.userID}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.userID && Boolean(formik.errors.userID)}
-              helperText={formik.touched.userID && formik.errors.userID}
-              FormHelperTextProps={{
-                sx: {
-                  color: 'red',
-                  fontSize: '13px',
-                },
-              }}
+              error={
+                formik.touched.userID &&
+                Boolean(formik.errors.userID)
+              }
+              helperText={
+                formik.touched.userID &&
+                formik.errors.userID
+              }
             />
-
 
             <TextField
               fullWidth
               label="CLP ID"
               name="clpID"
-            sx={{mb: 2}}
-              size='small'
+              sx={{ mb: 2 }}
+              size="small"
               value={formik.values.clpID}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.clpID && Boolean(formik.errors.clpID)}
-              helperText={formik.touched.clpID && formik.errors.clpID}
-              FormHelperTextProps={{
-                sx: {
-                  color: 'red',
-                  fontSize: '13px',
-                },
-              }}
+              error={
+                formik.touched.clpID &&
+                Boolean(formik.errors.clpID)
+              }
+              helperText={
+                formik.touched.clpID &&
+                formik.errors.clpID
+              }
             />
 
             <TextField
               fullWidth
               label="Milestone Name"
               name="milestoneName"
-              sx={{mb: 2}}
+              sx={{ mb: 2 }}
               value={formik.values.milestoneName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -139,19 +146,13 @@ return(
                 formik.touched.milestoneName &&
                 formik.errors.milestoneName
               }
-              FormHelperTextProps={{
-                sx: {
-                  color: 'red',
-                },
-              }}
             />
-            
-            
+
             <TextField
               fullWidth
               label="Percentage"
               name="percentage"
-              sx={{mb: 2}}
+              sx={{ mb: 2 }}
               value={formik.values.percentage}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -163,19 +164,13 @@ return(
                 formik.touched.percentage &&
                 formik.errors.percentage
               }
-              FormHelperTextProps={{
-                sx: {
-                  color: 'red',
-                },
-              }}
             />
-            
 
             <TextField
               fullWidth
-              label="Display Oder"
+              label="Display Order"
               name="displayOrder"
-              sx={{mb: 2}}
+              sx={{ mb: 2 }}
               value={formik.values.displayOrder}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -187,36 +182,44 @@ return(
                 formik.touched.displayOrder &&
                 formik.errors.displayOrder
               }
-              FormHelperTextProps={{
-                sx: {
-                  color: 'red',
-                },
-              }}
             />
-            
 
+            <TextField
+              fullWidth
+              className="inputElt"
+              label="Description"
+              name="description"
+              sx={{ mb: 2 }}
+              multiline
+              rows={4}
+              value={formik.values.description}
+              onChange={formik.handleChange}
+            />
 
+            <select
+              name="status"
+              className="selectE1"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+            >
+              <option value="">Status</option>
+              <option value="Active">Active</option>
+            </select>
+          </div>
 
-           
-             
-            <TextField className ='inputElt' label="Description"   sx= {{ mb: 2}} 
-            multiline
-            rows={4}/>
-           <select name='project' className='selectE1' >
-                <option>Status</option>
-                <option> Active</option>
-                </select>
+          <div className="buttonsAlignment">
+            {/* SUBMIT BUTTON */}
+            <button className="buttonStyle" type="submit">
+              Update
+            </button>
+
+            {/* RESET BUTTON */}
+            <button className="buttonStyle" type="reset">
+              Reset
+            </button>
+          </div>
         </div>
-
-        <div className='buttonsAlignment'>
-                
-            <button className='buttonStyle'  type='update'>Update</button>
-            <button className='buttonStyle' type='reset' >Reset</button>
-
-        </div>
-        </div>
-        </form>
-       
-        </>
-)
+      </form>
+    </>
+  );
 }
