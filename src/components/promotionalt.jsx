@@ -141,16 +141,24 @@ export default function PromotionalActivity() {
 
       console.log("API Response:", response);
 
-      setTableData(response.data || []);
+      setTableData(response.data?.data || []);
+      console.log("tableData after API:", response.data);
     } catch (err) {
       console.error("API Error:", err);
     }
   };
+  // useEffect(() => {
+  //   loadData();
+  // }, []);
   useEffect(() => {
-    loadData();
-  }, []);
+  console.log("Updated tableData:", tableData);
+}, [tableData]);
    console.log(tableData,"tableData")
+   console.log(tableData);
+console.log(tableData[0]);
 
+console.log("tableData =", tableData);
+console.log("first row =", tableData[0]);
   // return (
   //   <div>
   //     <h2>Construction Payment List</h2>
@@ -469,7 +477,7 @@ const startResize = (e, column) => {
         
       <TableHead>
   <TableRow sx={{ background: "#f1f1f1" }}>
-    {columns.map((head) => (
+    {columns?.map((head) => (
       <TableCell
         key={head}
         sx={{
@@ -508,15 +516,7 @@ const startResize = (e, column) => {
     ))}
   </TableRow>
 </TableHead>
-{/* <TableBody>
-  {tableData.map((row, index) => (
-    <TableRow key={index}>
-      <TableCell>{row.ID}</TableCell>
-      <TableCell>{row.Name}</TableCell>
-      <TableCell>{row.Mobile}</TableCell>
-    </TableRow>
-  ))}
-</TableBody> */}
+
 <TableBody>
   {isLoading ? (
     <TableRow>
@@ -530,18 +530,18 @@ const startResize = (e, column) => {
         Error Loading Data
       </TableCell>
     </TableRow>
-  ) : tableData.length > 0 ? (
-    tableData.map((row, index) => (
+  ) : tableData?.length > 0 ? (
+    tableData?.map((rows, index) => (
       <TableRow key={index}>
         <TableCell>{index + 1}</TableCell>
-        <TableCell>{row.ProjectName}</TableCell>
-        <TableCell>{row.ActivityTitle}</TableCell>
-        <TableCell>{row.FromDate}</TableCell>
-        <TableCell>{row.ToDate}</TableCell>
-        <TableCell>{row.Description}</TableCell>
-        <TableCell>{row.AddedBy}</TableCell>
-        <TableCell>{row.AddedOn}</TableCell>
-        <TableCell>{row.Status}</TableCell>
+        <TableCell>{rows.ProjectName}</TableCell>
+        <TableCell>{rows.ActivityTitle}</TableCell>
+        <TableCell>{rows.FromDate}</TableCell>
+        <TableCell>{rows.ToDate}</TableCell>
+        <TableCell>{rows.Description}</TableCell>
+        <TableCell>{rows.AddedBy}</TableCell>
+        <TableCell>{rows.AddedOn}</TableCell>
+        <TableCell>{rows.Status}</TableCell>
       </TableRow>
     ))
   ) : (
@@ -560,18 +560,7 @@ const startResize = (e, column) => {
   </TableContainer>
 
   {/* Pagination */}
-    {/* <TablePagination
-    rowsPerPageOptions={[5, 10, 25]}
-    component="div"
-    count={rows.length}
-    rowsPerPage={rowsPerPage}
-    page={page}
-    onPageChange={handleChangePage}
-    onRowsPerPageChange={handleChangeRowsPerPage}
-    sx={{
-      borderTop: "1px solid #dcdcdc",
-    }}
-  />  */}
+
 
      <Box
       sx={{
