@@ -15,6 +15,7 @@ import {
   Paper,
   Select,
   Table,
+  
   TableBody,
   TableCell,
   TableContainer,
@@ -125,7 +126,7 @@ export default function PromotionalActivity() {
     { isLoading, error },
   ] = useGetConstructionLinkPaymentMutation();
 
-  console.log(tableData,"tableData")
+ 
 
   const loadData = async () => {
     try {
@@ -148,34 +149,37 @@ export default function PromotionalActivity() {
   useEffect(() => {
     loadData();
   }, []);
+   console.log(tableData,"tableData")
 
-  return (
-    <div>
-      <h2>Construction Payment List</h2>
+  // return (
+  //   <div>
+  //     <h2>Construction Payment List</h2>
 
-      {isLoading && <p>Loading...</p>}
+  //     {isLoading && <p>Loading...</p>}
 
-      {error && <p>Error Loading Data</p>}
+  //     {error && <p>Error Loading Data</p>}
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-        </thead>
+  //     <table border="1">
+  //       <thead>
+  //         <tr>
+  //           <th>ID</th>
+  //           <th>Name</th>
+  //           <th>Mobile</th>
+  //         </tr>
+  //       </thead>
 
-        <tbody>
-          {tableData.map((row, index) => (
-            <tr key={index}>
-              <td>{row.ID}</td>
-              <td>{row.Name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  //       <tbody>
+  //         {tableData.map((rows, index) => (
+  //           <tr key={index}>
+  //             <td>{rows.ID}</td>
+  //             <td>{rows.Name}</td>
+  //             <td>{rows.Mobile}</td>
+  //           </tr>
+  //         ))}
+  //       </tbody>
+  //     </table>
+  //   </div>
+  // );
 
 
     const totalPages = 1;
@@ -504,7 +508,7 @@ const startResize = (e, column) => {
     ))}
   </TableRow>
 </TableHead>
-<TableBody>
+{/* <TableBody>
   {tableData.map((row, index) => (
     <TableRow key={index}>
       <TableCell>{row.ID}</TableCell>
@@ -512,6 +516,41 @@ const startResize = (e, column) => {
       <TableCell>{row.Mobile}</TableCell>
     </TableRow>
   ))}
+</TableBody> */}
+<TableBody>
+  {isLoading ? (
+    <TableRow>
+      <TableCell colSpan={9} align="center">
+        Loading...
+      </TableCell>
+    </TableRow>
+  ) : error ? (
+    <TableRow>
+      <TableCell colSpan={9} align="center">
+        Error Loading Data
+      </TableCell>
+    </TableRow>
+  ) : tableData.length > 0 ? (
+    tableData.map((row, index) => (
+      <TableRow key={index}>
+        <TableCell>{index + 1}</TableCell>
+        <TableCell>{row.ProjectName}</TableCell>
+        <TableCell>{row.ActivityTitle}</TableCell>
+        <TableCell>{row.FromDate}</TableCell>
+        <TableCell>{row.ToDate}</TableCell>
+        <TableCell>{row.Description}</TableCell>
+        <TableCell>{row.AddedBy}</TableCell>
+        <TableCell>{row.AddedOn}</TableCell>
+        <TableCell>{row.Status}</TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={9} align="center">
+        No Data Found
+      </TableCell>
+    </TableRow>
+  )}
 </TableBody>
     </Table>
 
