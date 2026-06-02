@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -49,7 +49,7 @@ const rows = [
     description: "",
     addedBy: "",
     addedOn: "",
-    status: "",
+    status: "Active",
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ const rows = [
     description: "",
     addedBy: "",
     addedOn: "",
-    status: "",
+    status: "In-Active",
   },
   {
     id: 3,
@@ -107,11 +107,75 @@ const rows = [
     status: "",
   },
 ];
+import React, { useEffect, useState } from "react";
+
+import {
+  useGetConstructionLinkPaymentMutation,
+} from "../api/constructionApi";
 
 
 
 
 export default function PromotionalActivity() {
+
+   const [tableData, setTableData] = useState([]);
+
+  const [
+    getConstructionLinkPayment,
+    { isLoading, error },
+  ] = useGetConstructionLinkPaymentMutation();
+
+  console.log(tableData,"tableData")
+
+  const loadData = async () => {
+    try {
+      const payload = {
+        // UserID: "171903551052335600",
+        userID:"171903551052335600",milestoneName:"",status:"Active",generalSearch:"",sortOrder:"",iDisplayStart:0,iDisplayLength:10
+        // CompanyID: "1",
+      };
+
+      const response =
+        await getConstructionLinkPayment(payload).unwrap();
+
+      console.log("API Response:", response);
+
+      setTableData(response.data || []);
+    } catch (err) {
+      console.error("API Error:", err);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  return (
+    <div>
+      <h2>Construction Payment List</h2>
+
+      {isLoading && <p>Loading...</p>}
+
+      {error && <p>Error Loading Data</p>}
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {tableData.map((row, index) => (
+            <tr key={index}>
+              <td>{row.ID}</td>
+              <td>{row.Name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 
 
     const totalPages = 1;
@@ -175,7 +239,7 @@ const [columnWidths, setColumnWidths] = useState({
   "Description": 220,
   "Added By": 140,
   "Added On": 140,
-  "Status": 120,
+  "Status": 120,  
 });
 
 const startResize = (e, column) => {
@@ -202,7 +266,7 @@ const startResize = (e, column) => {
   document.addEventListener("mouseup", handleMouseUp);
 };
   return (
-    <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
+    <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>    
       {/* Header */}
  
    <Box
@@ -440,167 +504,14 @@ const startResize = (e, column) => {
     ))}
   </TableRow>
 </TableHead>
-
-      <TableBody>
-  {rows
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map((row) => (
-      <TableRow hover key={row.id}>
-        {/* S.No */}
-        <TableCell
-          sx={{
-            width: columnWidths["S.No"],
-            minWidth: columnWidths["S.No"],
-            maxWidth: columnWidths["S.No"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.id}
-        </TableCell>
-
-        {/* Project Name */}
-        <TableCell
-          sx={{
-            width: columnWidths["Project Name"],
-            minWidth: columnWidths["Project Name"],
-            maxWidth: columnWidths["Project Name"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.project}
-        </TableCell>
-
-        {/* Activity Title */}
-        <TableCell
-          sx={{
-            width: columnWidths["Activity Title"],
-            minWidth: columnWidths["Activity Title"],
-            maxWidth: columnWidths["Activity Title"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.activity}
-        </TableCell>
-
-        {/* From Date */}
-        <TableCell
-          sx={{
-            width: columnWidths["From Date"],
-            minWidth: columnWidths["From Date"],
-            maxWidth: columnWidths["From Date"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.fromDate}
-        </TableCell>
-
-        {/* To Date */}
-        <TableCell
-          sx={{
-            width: columnWidths["To Date"],
-            minWidth: columnWidths["To Date"],
-            maxWidth: columnWidths["To Date"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.toDate}
-        </TableCell>
-
-        {/* Description */}
-        <TableCell
-          sx={{
-            width: columnWidths["Description"],
-            minWidth: columnWidths["Description"],
-            maxWidth: columnWidths["Description"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.description}
-        </TableCell>
-
-        {/* Added By */}
-        <TableCell
-          sx={{
-            width: columnWidths["Added By"],
-            minWidth: columnWidths["Added By"],
-            maxWidth: columnWidths["Added By"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.addedBy}
-        </TableCell>
-
-        {/* Added On */}
-        <TableCell
-          sx={{
-            width: columnWidths["Added On"],
-            minWidth: columnWidths["Added On"],
-            maxWidth: columnWidths["Added On"],
-            borderRight: "1px solid #e0e0e0",
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {row.addedOn}
-        </TableCell>
-
-        {/* Status */}
-        <TableCell
-          sx={{
-            width: columnWidths["Status"],
-            minWidth: columnWidths["Status"],
-            maxWidth: columnWidths["Status"],
-            borderBottom: "1px solid #e0e0e0",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-
-            
-          }}
-          onClick={handlegotoupdate}
-        >
-          <Chip
-            label={row.status}
-            color="info"
-            sx={{
-              borderRadius: "20px",
-              color: "#fff",
-              minWidth: "80px",
-            }}
-          />
-        </TableCell>
-      </TableRow>
-    ))}
+<TableBody>
+  {tableData.map((row, index) => (
+    <TableRow key={index}>
+      <TableCell>{row.ID}</TableCell>
+      <TableCell>{row.Name}</TableCell>
+      <TableCell>{row.Mobile}</TableCell>
+    </TableRow>
+  ))}
 </TableBody>
     </Table>
 
