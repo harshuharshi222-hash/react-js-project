@@ -71,18 +71,18 @@ export default function CreateCL() {
               />
             </IconButton>
 
-            <h1 className="title" style={{ color: "black" }}>
-              Create Construction Link Payment
+            <h1 className="title" style={{ color: "black", fontSize:"30px" }}>
+             Create CLP Milestone
             </h1>
           </div>
 
-          <div className="formDataContainer">
+          {/* <div className="formDataContainer">
             <select name="project" className="selectE1">
               <option>Create Construction Payment Link</option>
               <option>others</option>
-            </select>
+            </select> */}
 
-            <TextField
+            {/* <TextField
               fullWidth
               label="User ID"
               name="userID"
@@ -99,7 +99,7 @@ export default function CreateCL() {
                 formik.touched.userID &&
                 formik.errors.userID
               }
-            />
+            /> */}
 
             <TextField
               fullWidth
@@ -118,6 +118,7 @@ export default function CreateCL() {
                 formik.errors.milestoneName
               }
             />
+            
 
             <TextField
               fullWidth
@@ -136,11 +137,10 @@ export default function CreateCL() {
                 formik.errors.percentage
               }
             />
-
-            <TextField
+              <TextField
               fullWidth
               label="Display Order"
-              name="displayOrder"
+              name="displayorder"
               sx={{ mb: 2 }}
               value={formik.values.displayOrder}
               onChange={formik.handleChange}
@@ -154,6 +154,8 @@ export default function CreateCL() {
                 formik.errors.displayOrder
               }
             />
+
+           
 
             <TextField
               fullWidth
@@ -179,7 +181,7 @@ export default function CreateCL() {
               Save
             </button>
           </div>
-        </div>
+        
       </form>
     </>
   );

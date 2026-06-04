@@ -29,7 +29,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import IconButton from '@mui/material/IconButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Directions } from "@mui/icons-material";
-
+import ClearIcon from "@mui/icons-material/Clear";
 
 
 import { Routes, Route } from "react-router-dom";
@@ -45,7 +45,7 @@ const rows = [
     id: 1,
     project: "",
     activity: "",
-    fromDate: "",
+    addedOn: "",
     toDate: "",
     description: "",
     addedBy: "",
@@ -126,30 +126,65 @@ export default function PromotionalActivity() {
     { isLoading, error },
   ] = useGetConstructionLinkPaymentMutation();
 
+  
  
 
-  const loadData = async () => {
-    try {
-      const payload = {
-        // UserID: "171903551052335600",
-        userID:"171903551052335600",milestoneName:"",status:"Active",generalSearch:"",sortOrder:"",iDisplayStart:0,iDisplayLength:10
-        // CompanyID: "1",
-      };
+  // const loadData = async () => {
+  //   try {
+  //     const payload = {
+  //       // UserID: "171903551052335600",
+  //       userID:"171903551052335600",milestoneName:"",status:"Active",generalSearch:"",sortOrder:"",iDisplayStart:0,iDisplayLength:10
+  //       // CompanyID: "1",
+  //     };
 
-      const response =
-        await getConstructionLinkPayment(payload).unwrap();
+  //     const response =
+  //       await getConstructionLinkPayment(payload).unwrap();
 
-      console.log("API Response:", response);
+  //     console.log("API Response:", response);
 
-      setTableData(response.data?.data || []);
-      console.log("tableData after API:", response.data);
-    } catch (err) {
-      console.error("API Error:", err);
-    }
-  };
+  //     setTableData(response.data?.data || []);
+  //     console.log("tableData after API:", response.data);
+  //   } catch (err) {
+  //     console.error("API Error:", err);
+  //   }
+  // };
+
+
   // useEffect(() => {
   //   loadData();
   // }, []);
+  
+  const loadData = async () => {
+  try {
+    const payload = {
+      userID: "171903551052335600",
+      milestoneName: "",
+      status: "Active",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: 10,
+    };
+
+    const response = await getConstructionLinkPayment(payload).unwrap();
+
+    console.log("Full Response:", response);
+
+    // Check actual API structure here
+    const data =
+      response?.data ||
+      response?.result ||
+      response?.records ||
+      [];
+
+    setTableData(data);
+
+    console.log("Mapped Data:", data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+  
   useEffect(() => {
   console.log("Updated tableData:", tableData);
 }, [tableData]);
@@ -232,21 +267,21 @@ console.log("first row =", tableData[0]);
  };
  const columns = [
   "S.No",
-  "Project Name",
-  "Activity Title",
-  "From Date",
-  "To Date",
-  "Description",
-  "Added By",
-  "Added On",
+  // "ID",
+  "Milestone Name",
+  "Display Order",
+  "Percentage",
+  "added By",
+  "Added On ",
   "Status",
 ];
 
 const [columnWidths, setColumnWidths] = useState({
   "S.No": 80,
+  "Project Id":80,
   "Project Name": 180,
   "Activity Title": 180,
-  "From Date": 140,
+  "Added On": 140,
   "To Date": 140,
   "Description": 220,
   "Added By": 140,
@@ -277,6 +312,8 @@ const startResize = (e, column) => {
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("mouseup", handleMouseUp);
 };
+console.log("tableData =", tableData);
+console.log("First Row =", tableData?.[0]);
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>    
       {/* Header */}
@@ -317,7 +354,7 @@ const startResize = (e, column) => {
         alignItems: "center",
       }}
     >
-      Promotional Activity
+      CLP Milestone
 
       {/* Add Icon */}
       <IconButton>
@@ -414,7 +451,7 @@ const startResize = (e, column) => {
           
 
                                       
-
+{/* 
           <FormControl size="small" sx={{ minWidth: 220 }}>
             <InputLabel>Project</InputLabel>
             <Select label="Project">
@@ -422,14 +459,14 @@ const startResize = (e, column) => {
               <MenuItem value="1">ANIRVAN PHASE - 1</MenuItem>
               <MenuItem value="2">ANIRVAN PHASE - 4</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <FormControl size="small" sx={{ minWidth: 160 }}>
             <InputLabel>Status</InputLabel>
             <Select label="Status">
-              <MenuItem value="">All</MenuItem>
+             
               <MenuItem value="Active">Active</MenuItem>
-              <MenuItem value="Inactive">Inactive</MenuItem>
+              <MenuItem value="Inactive">In-Active</MenuItem>
             </Select>
           </FormControl>
 
@@ -456,8 +493,15 @@ const startResize = (e, column) => {
         variant="standard"
       />
    
-
-          <Button variant="contained" size="small">Search</Button>
+{/* 
+          <Button variant="contained" size="small">Search</Button> */}
+          <Button
+  variant="contained"
+  size="small"
+  onClick={loadData}
+>
+  Search
+</Button>
         </Box>
       </Box>
 
@@ -516,7 +560,7 @@ const startResize = (e, column) => {
     ))}
   </TableRow>
 </TableHead>
-
+{/* 
 <TableBody>
   {isLoading ? (
     <TableRow>
@@ -542,6 +586,31 @@ const startResize = (e, column) => {
         <TableCell>{rows.AddedBy}</TableCell>
         <TableCell>{rows.AddedOn}</TableCell>
         <TableCell>{rows.Status}</TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={9} align="center">
+        No Data Found
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody> */}
+
+<TableBody>
+  {tableData?.length > 0 ? (
+    tableData.map((row, index) => (
+      <TableRow key={index}>
+        <TableCell>{index + 1}</TableCell>
+         {/* <TableCell>{row.id}</TableCell> */}
+        <TableCell>{row.milestone_name}</TableCell>
+        <TableCell>{row.display_order}</TableCell>
+        <TableCell>{row.percentage}</TableCell>
+        <TableCell>{row.updated_user_name}</TableCell>
+        {/* <TableCell>{row.description}</TableCell> */}
+        {/* <TableCell>{row.added_by}</TableCell> */}
+        <TableCell>{row.added_on}</TableCell>
+        <TableCell>{row.status}</TableCell>
       </TableRow>
     ))
   ) : (

@@ -272,7 +272,7 @@ export default function MiniDrawer() {
                                     {/* <CircleRoundedIcon></CircleRoundedIcon> */}
                                 </ListItemIcon>
 
-                                <ListItemText primary="Promotional Activity"  sx={{size:'small'}} onClick={handlegotopromotionalt} />
+                                <ListItemText primary="CLP Milestone"  sx={{size:'small'}} onClick={handlegotopromotionalt} />
 
                             </ListItemButton>
                         </List>
