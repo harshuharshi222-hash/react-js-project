@@ -2,6 +2,7 @@
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import {
   Box,
   Checkbox,
@@ -30,6 +31,7 @@ import IconButton from '@mui/material/IconButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Directions } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
+import Tooltip from '@mui/material/Tooltip';
 
 
 import { Routes, Route } from "react-router-dom";
@@ -118,6 +120,34 @@ import {
 
 
 export default function PromotionalActivity() {
+
+const handleDownload = () => {
+  if (!tableData || tableData.length === 0) {
+    alert("No data available");
+    return;
+  }
+
+  const headers = Object.keys(tableData[0]).join(",");
+  const rows = tableData.map((row) =>
+    Object.values(row).join(",")
+  );
+
+  const csvContent = [headers, ...rows].join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;",
+  });
+
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "table_data.csv");
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
     const [searchText, setSearchText] = useState("");
    const [tableData, setTableData] = useState([]);
@@ -227,7 +257,6 @@ console.log("first row =", tableData[0]);
  };
  const columns = [
   "S.No",
-  // "ID",
   "Milestone Name",
   "Display Order",
   "Percentage",
@@ -303,6 +332,7 @@ console.log("First Row =", tableData?.[0]);
        onClick={handlegotodashboard}
       />
     </IconButton>
+    
 
     {/* Title */}
     <Typography
@@ -317,8 +347,9 @@ console.log("First Row =", tableData?.[0]);
       CLP Milestone
 
       {/* Add Icon */}
-      <IconButton>
-        <AddCircleIcon
+      
+ <IconButton>
+       <AddCircleIcon
           sx={{
             color: "#6c4ce3",
             fontSize: 36,
@@ -328,7 +359,19 @@ console.log("First Row =", tableData?.[0]);
 
         onClick={handlegotocreate}
         />
+
+    </IconButton>
+    <Tooltip title="Export">
+    <IconButton onClick={handleDownload}>
+  <SystemUpdateAltIcon
+    sx={{
+      color: "#6C63FF",
+      fontSize: 30,
+       ml: -2,
+    }}
+  />
       </IconButton>
+      </Tooltip>
     </Typography>
   </Box>
         
@@ -394,15 +437,37 @@ console.log("First Row =", tableData?.[0]);
         <ListItemText primary="SL No" />
       </MenuItem>
 
-      <MenuItem value="PRO">
-        <Checkbox checked={selected.indexOf("PRO") > -1} />
-        <ListItemText primary="PRO" />
+      <MenuItem value="Milestone">
+        <Checkbox checked={selected.indexOf("Milestone") > -1} />
+        <ListItemText primary="Milestone" />
       </MenuItem>
 
-      <MenuItem value="ANi">
-        <Checkbox checked={selected.indexOf("ANi") > -1} />
-        <ListItemText primary="ANi" />
+      <MenuItem value="Display Order">
+        <Checkbox checked={selected.indexOf("Display Order") > -1} />
+        <ListItemText primary="Display Order" />
       </MenuItem>
+
+      <MenuItem value="Percentage">
+        <Checkbox checked={selected.indexOf("Percentage") > -1} />
+        <ListItemText primary="percentage" />
+      </MenuItem>
+
+      <MenuItem value="Added By">
+        <Checkbox checked={selected.indexOf("Added By") > -1} />
+        <ListItemText primary="Added By" />
+      </MenuItem>
+      
+      <MenuItem value="Added On">
+        <Checkbox checked={selected.indexOf("Added On") > -1} />
+        <ListItemText primary="Added On" />
+      </MenuItem>
+      
+       <MenuItem value="Status">
+        <Checkbox checked={selected.indexOf("Status") > -1} />
+        <ListItemText primary="Status" />
+      </MenuItem>
+
+      
     </Select>
   </FormControl>
 </div>
