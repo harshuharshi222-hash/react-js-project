@@ -119,6 +119,7 @@ import {
 
 export default function PromotionalActivity() {
 
+    const [searchText, setSearchText] = useState("");
    const [tableData, setTableData] = useState([]);
 
   const [
@@ -127,27 +128,10 @@ export default function PromotionalActivity() {
   ] = useGetConstructionLinkPaymentMutation();
 
   
- 
-
-  // const loadData = async () => {
-  //   try {
-  //     const payload = {
-  //       // UserID: "171903551052335600",
-  //       userID:"171903551052335600",milestoneName:"",status:"Active",generalSearch:"",sortOrder:"",iDisplayStart:0,iDisplayLength:10
-  //       // CompanyID: "1",
-  //     };
-
-  //     const response =
-  //       await getConstructionLinkPayment(payload).unwrap();
-
-  //     console.log("API Response:", response);
-
-  //     setTableData(response.data?.data || []);
-  //     console.log("tableData after API:", response.data);
-  //   } catch (err) {
-  //     console.error("API Error:", err);
-  //   }
-  // };
+ useEffect(() => {
+    loadData();
+   }, []);
+   
 
 
   // useEffect(() => {
@@ -194,36 +178,12 @@ console.log(tableData[0]);
 
 console.log("tableData =", tableData);
 console.log("first row =", tableData[0]);
-  // return (
-  //   <div>
-  //     <h2>Construction Payment List</h2>
-
-  //     {isLoading && <p>Loading...</p>}
-
-  //     {error && <p>Error Loading Data</p>}
-
-  //     <table border="1">
-  //       <thead>
-  //         <tr>
-  //           <th>ID</th>
-  //           <th>Name</th>
-  //           <th>Mobile</th>
-  //         </tr>
-  //       </thead>
-
-  //       <tbody>
-  //         {tableData.map((rows, index) => (
-  //           <tr key={index}>
-  //             <td>{rows.ID}</td>
-  //             <td>{rows.Name}</td>
-  //             <td>{rows.Mobile}</td>
-  //           </tr>
-  //         ))}
-  //       </tbody>
-  //     </table>
-  //   </div>
-  // );
-
+ 
+  const filteredData = tableData.filter((row) =>
+  row.milestone_name
+    ?.toLowerCase()
+    .includes(searchText.toLowerCase())
+);
 
     const totalPages = 1;
      const navigate = useNavigate();
@@ -450,16 +410,7 @@ console.log("First Row =", tableData?.[0]);
 
           
 
-                                      
-{/* 
-          <FormControl size="small" sx={{ minWidth: 220 }}>
-            <InputLabel>Project</InputLabel>
-            <Select label="Project">
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="1">ANIRVAN PHASE - 1</MenuItem>
-              <MenuItem value="2">ANIRVAN PHASE - 4</MenuItem>
-            </Select>
-          </FormControl> */}
+
 
           <FormControl size="small" sx={{ minWidth: 160 }}>
             <InputLabel>Status</InputLabel>
@@ -470,31 +421,26 @@ console.log("First Row =", tableData?.[0]);
             </Select>
           </FormControl>
 
-          {/* <TextField size="small" label="Search" /> */}
+       
          
-          <TextField
-          
-        id={`${textFieldId}-input`}
-        label="Search"
-        size="small"
-       
-       
-        slotProps={{
-          input: {
-            startAdornment: (
-              <InputAdornment position="start">
-               
-              <SearchIcon/>
 
-              </InputAdornment>
-            ),
-          },
-        }}
-        variant="standard"
-      />
-   
-{/* 
-          <Button variant="contained" size="small">Search</Button> */}
+    <TextField
+  label="Search"
+  size="small"
+  variant="standard"
+  value={searchText}
+  onChange={(e) => setSearchText(e.target.value)}
+  slotProps={{
+    input: {
+      startAdornment: (
+        <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
+      ),
+    },
+  }}
+/>
+
           <Button
   variant="contained"
   size="small"
@@ -502,6 +448,8 @@ console.log("First Row =", tableData?.[0]);
 >
   Search
 </Button>
+
+
         </Box>
       </Box>
 
@@ -560,67 +508,50 @@ console.log("First Row =", tableData?.[0]);
     ))}
   </TableRow>
 </TableHead>
-{/* 
-<TableBody>
-  {isLoading ? (
-    <TableRow>
-      <TableCell colSpan={9} align="center">
-        Loading...
-      </TableCell>
-    </TableRow>
-  ) : error ? (
-    <TableRow>
-      <TableCell colSpan={9} align="center">
-        Error Loading Data
-      </TableCell>
-    </TableRow>
-  ) : tableData?.length > 0 ? (
-    tableData?.map((rows, index) => (
-      <TableRow key={index}>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{rows.ProjectName}</TableCell>
-        <TableCell>{rows.ActivityTitle}</TableCell>
-        <TableCell>{rows.FromDate}</TableCell>
-        <TableCell>{rows.ToDate}</TableCell>
-        <TableCell>{rows.Description}</TableCell>
-        <TableCell>{rows.AddedBy}</TableCell>
-        <TableCell>{rows.AddedOn}</TableCell>
-        <TableCell>{rows.Status}</TableCell>
-      </TableRow>
-    ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={9} align="center">
-        No Data Found
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody> */}
 
-<TableBody>
-  {tableData?.length > 0 ? (
-    tableData.map((row, index) => (
+
+
+        <TableBody>
+  {filteredData.length > 0 ? (
+    filteredData.map((row, index) => (
       <TableRow key={index}>
         <TableCell>{index + 1}</TableCell>
-         {/* <TableCell>{row.id}</TableCell> */}
         <TableCell>{row.milestone_name}</TableCell>
         <TableCell>{row.display_order}</TableCell>
         <TableCell>{row.percentage}</TableCell>
         <TableCell>{row.updated_user_name}</TableCell>
-        {/* <TableCell>{row.description}</TableCell> */}
-        {/* <TableCell>{row.added_by}</TableCell> */}
         <TableCell>{row.added_on}</TableCell>
-        <TableCell>{row.status}</TableCell>
+        <TableCell align="center">
+  <Button
+    variant="contained"
+    sx={{
+      
+      minWidth: "85px",
+      height: "35px",
+      borderRadius: "20px",
+      textTransform: "none",
+      backgroundColor: "#74BFD0",
+      "&:hover": {
+        backgroundColor: "#74BFD0",
+      },
+    }}
+   onClick={handlegotoupdate}
+  >
+   {row.status}
+  </Button>
+</TableCell>
       </TableRow>
     ))
   ) : (
     <TableRow>
       <TableCell colSpan={9} align="center">
-        No Data Found
+    
+  
       </TableCell>
     </TableRow>
   )}
 </TableBody>
+
     </Table>
 
 

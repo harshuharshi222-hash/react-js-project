@@ -19,7 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import '../components/sideBar.css';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
@@ -48,6 +48,7 @@ import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import MinimizeIcon from '@mui/icons-material/Minimize';
+import CircleIcon from '@mui/icons-material/Circle';
 
 import App from '../App.jsx';
 import { Routes, Route } from "react-router-dom";
@@ -180,7 +181,7 @@ export default function MiniDrawer() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
+            <CssBaseline  />
             <AppBar position="fixed" >
                 <Toolbar sx={{ backgroundColor: 'white', color: 'black' }}>
 
@@ -244,9 +245,9 @@ export default function MiniDrawer() {
                     </ListItemButton>
                     <ListItemButton onClick={handleClick}>
                         <ListItemIcon sx={{ color: 'white' }}>
-                            <AlignHorizontalLeftIcon />
+                            <AlignHorizontalLeftIcon  onClick={handleDrawerOpen}/>
                         </ListItemIcon>
-                        <ListItemText primary="Master" sx={{ pl: 1.4 }} />
+                        <ListItemText primary="Master" sx={{ pl: 1.4 }}  />
 
                         {openNestedList ? <ExpandLess /> : <ExpandMore />}
 
@@ -254,7 +255,7 @@ export default function MiniDrawer() {
                     <Collapse in={openNestedList} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItemButton onClick={handleClick1} sx={{ pl: 4 }}>
-                                <ListItemText primary="CRM" />
+                                <ListItemText primary="CRM"/>
                                 {openNestedList1 ? <RemoveIcon /> : <AddIcon />}
 
                                 {/* {closed ? <ExpandLess /> : <ExpandMore /> ,<MinimizeIcon/>} */}
@@ -264,14 +265,16 @@ export default function MiniDrawer() {
                     <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
-
+                                  
 
 
                                 <ListItemIcon sx={{ color: 'white' }}>
-
-                                    {/* <CircleRoundedIcon></CircleRoundedIcon> */}
+                                 
+                                   
                                 </ListItemIcon>
-
+                               <div sx={{size:'1px',}}>
+                                <CircleIcon  sx={{fontSize:10,mr:1,}}></CircleIcon>
+                               </div>
                                 <ListItemText primary="CLP Milestone"  sx={{size:'small'}} onClick={handlegotopromotionalt} />
 
                             </ListItemButton>

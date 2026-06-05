@@ -1,12 +1,12 @@
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuOpenIcon  from "@mui/icons-material/MenuOpen";
 import { TextField } from "@mui/material";
 import "./create.css";
 import React from "react";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { InputLabel,  Select, MenuItem } from "@mui/material";
 
 export default function Update() {
   const navigate = useNavigate();
@@ -80,56 +80,13 @@ export default function Update() {
               />
             </IconButton>
 
-            <h1 className="title" style={{ color: "black" }}>
-              Update Construction Link Payment
+            <h1 className="title" style={{ color: "black", fontSize:"25px" }}>
+             Update CLP Milestone
             </h1>
           </div>
 
           <div className="formDataContainer">
-            <select name="project" className="selectE1">
-              <option>Update Construction Payment Link</option>
-              <option>Construction Payment Link</option>
-              <option>others</option>
-            </select>
-
-            <TextField
-              fullWidth
-              label="User ID"
-              name="userID"
-              sx={{ mb: 2 }}
-              size="small"
-              value={formik.values.userID}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.userID &&
-                Boolean(formik.errors.userID)
-              }
-              helperText={
-                formik.touched.userID &&
-                formik.errors.userID
-              }
-            />
-
-            <TextField
-              fullWidth
-              label="CLP ID"
-              name="clpID"
-              sx={{ mb: 2 }}
-              size="small"
-              value={formik.values.clpID}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.clpID &&
-                Boolean(formik.errors.clpID)
-              }
-              helperText={
-                formik.touched.clpID &&
-                formik.errors.clpID
-              }
-            />
-
+          
             <TextField
               fullWidth
               label="Milestone Name"
@@ -194,29 +151,27 @@ export default function Update() {
               rows={4}
               value={formik.values.description}
               onChange={formik.handleChange}
+            
             />
 
-            <select
+                      <select
               name="status"
               className="selectE1"
               value={formik.values.status}
-              onChange={formik.handleChange}
-            >
-              <option value="">Status</option>
-              <option value="Active">Active</option>
-            </select>
+              onChange={formik.handleChange}>
+                         <option value="Active">Active</option>
+                          <option value="Inactive">In-Active</option>
+                   </select>
+                
           </div>
 
           <div className="buttonsAlignment">
             {/* SUBMIT BUTTON */}
             <button className="buttonStyle" type="submit">
-              Update
+              Save
             </button>
 
-            {/* RESET BUTTON */}
-            <button className="buttonStyle" type="reset">
-              Reset
-            </button>
+            
           </div>
         </div>
       </form>
