@@ -1,183 +1,205 @@
-import MenuOpenIcon  from "@mui/icons-material/MenuOpen";
-import { TextField } from "@mui/material";
-import "./create.css";
+// 
 import React from "react";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { TextField, Button ,
+   Box ,
+   Typography ,
+   Paper , 
+   FormControl , 
+    InputLabel , 
+    Select , 
+    MenuItem } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { InputLabel,  Select, MenuItem } from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Margin, WidthFull } from "@mui/icons-material";
+
+
+
 
 export default function Update() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const rowData = location.state || {};
+
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      milestoneName: rowData.milestone_name || "",
+      percentage: rowData.percentage || "",
+      displayOrder: rowData.display_order || "",
+      description: rowData.description || "",
+      status: rowData.status || "",
+    },
+
+    validationSchema: Yup.object({
+      status: Yup.string().required("Required"),
+    }),
+
+    onSubmit: (values) => {
+      const milestones =
+        JSON.parse(localStorage.getItem("clpMilestones")) || [];
+
+      const updatedData = milestones.map((item) => {
+        if (
+          item.milestone_name === rowData.milestone_name
+        ) {
+          return {
+            ...item,
+            status: values.status,
+          };
+        }
+        return item;
+      });
+
+      localStorage.setItem(
+        "clpMilestones",
+        JSON.stringify(updatedData)
+      );
+
+      navigate("/promotionalt");
+    },
+  });
 
   const handlegotopromotionalt = () => {
     navigate("/promotionalt");
   };
 
-  const formik = useFormik({
-    initialValues: {
-      userID: "",
-      clpID: "",
-      milestoneName: "",
-      percentage: "",
-      displayOrder: "",
-      description: "",
-      status: "",
-    },
 
-    validationSchema: Yup.object({
-      userID: Yup.number()
-        .typeError("Must be a number")
-        .integer("Must be a whole number")
-        .required("Required*"),
-
-      clpID: Yup.number()
-        .typeError("Must be a number")
-        .integer("Must be a whole number")
-        .required("Required*"),
-
-      milestoneName: Yup.string()
-        .matches(
-          /^[a-zA-Z0-9]+$/,
-          "only letters and numbers are allowed"
-        )
-        .required("Required*"),
-
-      percentage: Yup.number().test(
-        "Invalid len",
-        "must be less than or equal to 3 digits",
-        (val) => !val || val.toString().length <= 3
-      ),
-
-      displayOrder: Yup.string()
-        .matches(
-          /^[a-zA-Z0-9]+$/,
-          "only letters and numbers are allowed"
-        )
-        .required("Required*"),
-    }),
-
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
 
   return (
     <>
-      {/* CONNECT FORM WITH FORMIK */}
-      <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-        <div className="formComponentContainer">
-          <div className="menuopenIconandComponentTitleContainer">
-            <IconButton>
-              <MenuOpenIcon
-                sx={{
+      
+
+
+<Box
+  sx={{
+    minHeight: "100vh",
+    background: "#f5f5f5",
+    p: 3,
+  }}
+>
+  {/* Header */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      mb: 4,
+    }}
+  >
+    <IconButton onClick={handlegotopromotionalt}>
+      <MenuOpenIcon  sx={{
                   color: "#555",
                   fontSize: 30,
                   mr: 1,
-                }}
-                onClick={handlegotopromotionalt}
-              />
-            </IconButton>
+                }} />
+    </IconButton>
 
-            <h1 className="title" style={{ color: "black", fontSize:"25px" }}>
-             Update CLP Milestone
-            </h1>
-          </div>
+    <Typography
+      variant="h4"
+      sx={{
+        ml: 2,
+        fontWeight: 700,
+      }}
+    >
+      Update CLP Milestone
+    </Typography>
+  </Box>
 
-          <div className="formDataContainer">
-          
-            <TextField
-              fullWidth
-              label="Milestone Name"
-              name="milestoneName"
-              sx={{ mb: 2 }}
-              value={formik.values.milestoneName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.milestoneName &&
-                Boolean(formik.errors.milestoneName)
-              }
-              helperText={
-                formik.touched.milestoneName &&
-                formik.errors.milestoneName
-              }
-            />
+  <form onSubmit={formik.handleSubmit}>
+    <Paper
+      elevation={0}
+      sx={{
+        p: 4,
+        borderRadius: 3,
+        background: "#fafafa",
 
-            <TextField
-              fullWidth
-              label="Percentage"
-              name="percentage"
-              sx={{ mb: 2 }}
-              value={formik.values.percentage}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.percentage &&
-                Boolean(formik.errors.percentage)
-              }
-              helperText={
-                formik.touched.percentage &&
-                formik.errors.percentage
-              }
-            />
+      }}
+    >
+      <TextField
+        fullWidth
+        label="Milestone Name"
+        value={formik.values.milestoneName}
+        InputProps={{ readOnly: true }}
+        sx={{ mb: 3 }}
+          InputProps={{
+    readOnly: true,
+  }}
+      />
 
-            <TextField
-              fullWidth
-              label="Display Order"
-              name="displayOrder"
-              sx={{ mb: 2 }}
-              value={formik.values.displayOrder}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.displayOrder &&
-                Boolean(formik.errors.displayOrder)
-              }
-              helperText={
-                formik.touched.displayOrder &&
-                formik.errors.displayOrder
-              }
-            />
+      <TextField
+        fullWidth
+        label="Percentage"
+        value={formik.values.percentage}
+        InputProps={{ readOnly: true }}
+        sx={{ mb: 3 }}
+          InputProps={{
+    readOnly: true,
+  }}
+      />
 
-            <TextField
-              fullWidth
-              className="inputElt"
-              label="Description"
-              name="description"
-              sx={{ mb: 2 }}
-              multiline
-              rows={4}
-              value={formik.values.description}
-              onChange={formik.handleChange}
-            
-            />
+      <TextField
+        fullWidth
+        label="Display Order"
+        value={formik.values.displayOrder}
+        InputProps={{ readOnly: true }}
+        sx={{ mb: 3 }}
+          InputProps={{
+    readOnly: true,
+  }}
+      />
 
-                      <select
-              name="status"
-              className="selectE1"
-              value={formik.values.status}
-              onChange={formik.handleChange}>
-                         <option value="Active">Active</option>
-                          <option value="Inactive">In-Active</option>
-                   </select>
-                
-          </div>
+      <TextField
+        fullWidth
+        multiline
+        rows={5}
+        label="Description"
+        value={formik.values.description}
+        InputProps={{ readOnly: true }}
+        sx={{ mb: 3 }}
+      />
 
-          <div className="buttonsAlignment">
-            {/* SUBMIT BUTTON */}
-            <button className="buttonStyle" type="submit">
-              Save
-            </button>
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel>Status</InputLabel>
 
-            
-          </div>
-        </div>
-      </form>
-    </>
+        <Select
+          name="status"
+          value={formik.values.status}
+          label="Status"
+          onChange={formik.handleChange}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="In-Active">In-Active</MenuItem>
+        </Select>
+      </FormControl>
+    </Paper>
+
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        mt: 3,
+      }}
+    >
+      <Button
+        type="submit"
+        variant="contained"
+        size="large"
+        sx={{
+          minWidth: 120,
+          height: 50,
+          fontWeight: 600,
+        }}
+      >
+        SAVE
+      </Button>
+    </Box>
+  </form>
+</Box>
+  </>
   );
+
 }
-
-
-
