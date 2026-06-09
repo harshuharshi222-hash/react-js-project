@@ -187,15 +187,25 @@ const handleDownload = () => {
     console.log("Full Response:", response);
 
     // Check actual API structure here
-    const data =
+    const apiData =
       response?.data ||
       response?.result ||
       response?.records ||
       [];
 
-    setTableData(data);
+    // setTableData(data);
 
-    console.log("Mapped Data:", data);
+     const localData =
+      JSON.parse(localStorage.getItem("clpMilestones")) || [];
+
+    console.log("API Data", apiData);
+    console.log("Local Data", localData);
+
+     const mergedData = [...localData, ...apiData];
+
+    console.log("Merged Data:", mergedData);
+    // console.log("Mapped Data:", data);
+    setTableData([...localData, ...apiData]);
   } catch (err) {
     console.error(err);
   }
@@ -211,14 +221,6 @@ const handleDownload = () => {
 
 console.log("tableData =", tableData);
 console.log("first row =", tableData[0]);
- 
-//   const filteredData = tableData.filter((row) =>{
-
-//   }
-//   row.milestone_name
-//     ?.toLowerCase()
-//     .includes(searchText.toLowerCase())
-// );
 
 
 

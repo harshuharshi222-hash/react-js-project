@@ -22,38 +22,53 @@ export default function CreateCL() {
       description: "",
     },
 
-    validationSchema: Yup.object({
-      userID: Yup.number()
-        .typeError("Must be a number")
-        .integer("Must be a whole number")
-        .required("Required*"),
+   
 
-      milestoneName: Yup.string()
-        .matches(
-          /^[a-zA-Z0-9]+$/,
-          "only letters and numbers are allowed"
-        )
-        .required("Required*"),
+  validationSchema: Yup.object({
+  milestoneName: Yup.string()
+    .matches(
+      /^[a-zA-Z0-9]+$/,
+      "only letters and numbers are allowed"
+    )
+    .required("Required*"),
 
-      percentage: Yup.number().test(
-        "Invalid len",
-        "must be less than or equal to 3 digits",
-        (val) => !val || val.toString().length <= 3
-      ),
+  percentage: Yup.number().test(
+    "Invalid len",
+    "must be less than or equal to 3 digits",
+    (val) => !val || val.toString().length <= 3
+  ),
 
-      displayOrder: Yup.string()
-        .matches(
-          /^[a-zA-Z0-9]+$/,
-          "only letters and numbers are allowed"
-        )
-        .required("Required*"),
-    }),
+  displayOrder: Yup.string()
+    .matches(
+      /^[a-zA-Z0-9]+$/,
+      "only letters and numbers are allowed"
+    )
+    .required("Required*"),
+}),
+onSubmit: (values) => {
+  const existingData =
+    JSON.parse(localStorage.getItem("clpMilestones")) || [];
 
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+  const newMilestone = {
+    milestone_name: values.milestoneName,
+    display_order: values.displayOrder,
+    percentage: values.percentage,
+    updated_user_name: "Admin",
+    added_on: new Date().toLocaleDateString(),
+    status: "Active",
+    description: values.description,
+  };
 
+  existingData.unshift(newMilestone);
+
+  localStorage.setItem(
+    "clpMilestones",
+    JSON.stringify(existingData)
+  );
+
+  navigate("/promotionalt");
+},
+});
   return (
     <>
       {/* CONNECT FORM WITH FORMIK */}
@@ -76,31 +91,7 @@ export default function CreateCL() {
             </h1>
           </div>
 
-          {/* <div className="formDataContainer">
-            <select name="project" className="selectE1">
-              <option>Create Construction Payment Link</option>
-              <option>others</option>
-            </select> */}
-
-            {/* <TextField
-              fullWidth
-              label="User ID"
-              name="userID"
-              sx={{ mb: 2 }}
-              size="small"
-              value={formik.values.userID}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.userID &&
-                Boolean(formik.errors.userID)
-              }
-              helperText={
-                formik.touched.userID &&
-                formik.errors.userID
-              }
-            /> */}
-
+          
             <TextField
               fullWidth
               label="Milestone Name"
@@ -140,7 +131,7 @@ export default function CreateCL() {
               <TextField
               fullWidth
               label="Display Order"
-              name="displayorder"
+              name="displayOrder"
               sx={{ mb: 2 }}
               value={formik.values.displayOrder}
               onChange={formik.handleChange}
@@ -169,7 +160,9 @@ export default function CreateCL() {
               onChange={formik.handleChange}
             />
           </div>
-
+              {/* <pre>
+       {JSON.stringify(formik.errors, null, 2)}
+    </pre> */}
           <div className="buttonsAlignment">
             {/* RESET BUTTON */}
             <button className="buttonStyle" type="reset">
