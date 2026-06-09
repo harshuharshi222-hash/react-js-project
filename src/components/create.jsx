@@ -35,8 +35,12 @@ export default function CreateCL() {
   percentage: Yup.number().test(
     "Invalid len",
     "must be less than or equal to 3 digits",
+   
     (val) => !val || val.toString().length <= 3
-  ),
+    
+  )
+   .required("Required*"),
+  
 
   displayOrder: Yup.string()
     .matches(
@@ -56,7 +60,9 @@ onSubmit: (values) => {
     updated_user_name: "Admin",
     added_on: new Date().toLocaleDateString(),
     status: "Active",
+    
     description: values.description,
+    
   };
 
   existingData.unshift(newMilestone);
