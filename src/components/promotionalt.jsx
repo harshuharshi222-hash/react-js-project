@@ -121,6 +121,12 @@ import {
 
 export default function PromotionalActivity() {
 
+
+  
+const [searchText, setSearchText] = useState("");
+const [tableData, setTableData] = useState([]);
+const [status, setStatus] = useState("Active");
+
 const handleDownload = () => {
   if (!tableData || tableData.length === 0) {
     alert("No data available");
@@ -149,8 +155,7 @@ const handleDownload = () => {
   document.body.removeChild(link);
 };
 
-    const [searchText, setSearchText] = useState("");
-   const [tableData, setTableData] = useState([]);
+   
 
   const [
     getConstructionLinkPayment,
@@ -164,17 +169,14 @@ const handleDownload = () => {
    
 
 
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
-  
+ 
   const loadData = async () => {
   try {
     const payload = {
       userID: "171903551052335600",
-      milestoneName: "",
-      status: "Active",
-      generalSearch: "",
+      milestoneName: searchText,
+      status: status,
+      generalSearch: searchText,
       sortOrder: "",
       iDisplayStart: 0,
       iDisplayLength: 10,
@@ -203,17 +205,38 @@ const handleDownload = () => {
   console.log("Updated tableData:", tableData);
 }, [tableData]);
    console.log(tableData,"tableData")
-   console.log(tableData);
-console.log(tableData[0]);
+  console.log("tableData =", tableData);
+  console.log("first row =", tableData?.[0]);
+
 
 console.log("tableData =", tableData);
 console.log("first row =", tableData[0]);
  
-  const filteredData = tableData.filter((row) =>
-  row.milestone_name
-    ?.toLowerCase()
-    .includes(searchText.toLowerCase())
-);
+//   const filteredData = tableData.filter((row) =>{
+
+//   }
+//   row.milestone_name
+//     ?.toLowerCase()
+//     .includes(searchText.toLowerCase())
+// );
+
+
+
+const filteredData = tableData.filter((row) => {
+  const matchesSearch =
+    row.milestone_name
+      ?.toLowerCase()
+      .includes(searchText.toLowerCase());
+
+  const matchesStatus =
+    !status ||
+    row.status?.toLowerCase() === status.toLowerCase();
+
+  return matchesSearch && matchesStatus;
+});
+
+
+
 
     const totalPages = 1;
      const navigate = useNavigate();
@@ -250,6 +273,8 @@ console.log("first row =", tableData[0]);
 
    const [selected, setSelected] = useState([]);
 
+  //  const [status, setStatus] = useState("Active");
+
   const handleChange = (event) => {
     const value = event.target.value;
  
@@ -260,7 +285,7 @@ console.log("first row =", tableData[0]);
   "Milestone Name",
   "Display Order",
   "Percentage",
-  "added By",
+  "Added By",
   "Added On ",
   "Status",
 ];
@@ -439,7 +464,7 @@ console.log("First Row =", tableData?.[0]);
 
       <MenuItem value="Milestone">
         <Checkbox checked={selected.indexOf("Milestone") > -1} />
-        <ListItemText primary="Milestone" />
+        <ListItemText primary="Milestone Name" />
       </MenuItem>
 
       <MenuItem value="Display Order">
@@ -449,7 +474,7 @@ console.log("First Row =", tableData?.[0]);
 
       <MenuItem value="Percentage">
         <Checkbox checked={selected.indexOf("Percentage") > -1} />
-        <ListItemText primary="percentage" />
+        <ListItemText primary="Percentage" />
       </MenuItem>
 
       <MenuItem value="Added By">
@@ -473,18 +498,18 @@ console.log("First Row =", tableData?.[0]);
 </div>
 
 
-          
-
-
-
+        
           <FormControl size="small" sx={{ minWidth: 160 }}>
-            <InputLabel>Status</InputLabel>
-            <Select label="Status">
-             
-              <MenuItem value="Active">Active</MenuItem>
-              <MenuItem value="Inactive">In-Active</MenuItem>
-            </Select>
-          </FormControl>
+  <InputLabel>Status</InputLabel>
+  <Select
+    value={status}
+    label="Status"
+    onChange={(e) => setStatus(e.target.value)}
+  >
+    <MenuItem value="Active">Active</MenuItem>
+    <MenuItem value="In-Active">In-Active</MenuItem>
+  </Select>
+</FormControl>
 
        
          
@@ -527,102 +552,135 @@ console.log("First Row =", tableData?.[0]);
     overflow: "hidden",
     border: "1px solid #dcdcdc",
     borderRadius: 2,
+    
   }}
 >
-  <TableContainer sx={{ overflowX: "auto" }}>
-    <Table sx={{tableLayout:"fixed", width:"100%"}}>
-        
-      <TableHead>
-  <TableRow sx={{ background: "#f1f1f1" }}>
-    {columns?.map((head) => (
-      <TableCell
-        key={head}
-        sx={{
-          position: "relative",
-          width: columnWidths[head],
-          minWidth: columnWidths[head],
-          maxWidth: columnWidths[head],
-          borderBottom: "1px solid #dcdcdc",
-          fontWeight: 700,
-          background: "#f5f5f5",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-        }}
-      >
-        {head}
 
-        <Box
-          onMouseDown={(e) => startResize(e, head)}
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: "8px",
-            height: "100%",
-            cursor: "col-resize",
-            zIndex: 10,
-             borderRight: "1px solid #e0e0e0",
-
-            "&:hover": {
-              // backgroundColor: "#16181a",
-             
-            },
-          }}
-        />
-      </TableCell>
-    ))}
-  </TableRow>
-</TableHead>
-
-
-
-        <TableBody>
-  {filteredData.length > 0 ? (
-    filteredData.map((row, index) => (
-      <TableRow key={index}>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{row.milestone_name}</TableCell>
-        <TableCell>{row.display_order}</TableCell>
-        <TableCell>{row.percentage}</TableCell>
-        <TableCell>{row.updated_user_name}</TableCell>
-        <TableCell>{row.added_on}</TableCell>
-        <TableCell align="center">
-  <Button
-    variant="contained"
-    sx={{
-      
-      minWidth: "85px",
-      height: "35px",
-      borderRadius: "20px",
-      textTransform: "none",
-      backgroundColor: "#74BFD0",
-      "&:hover": {
-        backgroundColor: "#74BFD0",
-      },
-    }}
-   onClick={handlegotoupdate}
-  >
-   {row.status}
-  </Button>
-</TableCell>
-      </TableRow>
-    ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={9} align="center">
+  <TableContainer
+  component={Paper}
+  sx={{
+    overflowX: "auto",
+    border: "1px solid #dcdcdc",
     
-  
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody>
+  }}
+>
+  <Table
+    sx={{
+      tableLayout: "auto",
+      width: "100%",
+      borderCollapse: "collapse",
+      whiteSpace: "nowrap",
+      textAlign: "center",
+    }}
+  >
+    <TableHead>
+      <TableRow sx={{ background: "#f1f1f1" }}>
+        {columns?.map((head) => (
+          <TableCell
+            key={head}
+            sx={{
+              position: "relative",
+              width: columnWidths[head],
+              minWidth: columnWidths[head],
+              maxWidth: columnWidths[head],
+              fontWeight: 700,
+              background: "#f5f5f5",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textAlign: "center",
+              border: "1px solid #dcdcdc", // Header border
+            }}
+          >
+            {head}
 
-    </Table>
+            <Box
+              onMouseDown={(e) => startResize(e, head)}
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: "8px",
+                height: "100%",
+                cursor: "col-resize",
+                zIndex: 10,
+                textAlign: "center",
+              }}
+            />
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+
+    <TableBody>
+      {filteredData.length > 0 ? (
+        filteredData.map((row, index) => (
+          <TableRow key={index}>
+            <TableCell sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto", textAlign :"center"}}>
+              {index + 1}
+            </TableCell>
+
+            <TableCell sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto",textAlign :"center" }}>
+              {row.milestone_name}
+            </TableCell>
+
+            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
+              {row.display_order}
+            </TableCell>
+
+            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
+              {row.percentage}
+            </TableCell>
+
+            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
+              {row.updated_user_name}
+            </TableCell>
+
+            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
+              {row.added_on}
+            </TableCell>
+
+            <TableCell
+              align="center"
+              sx={{ border: "1px solid #dcdcdc" }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  minWidth: "85px",
+                  height: "35px",
+                  borderRadius: "20px",
+                  textTransform: "none",
+                  backgroundColor: "#74BFD0",
+                  "&:hover": {
+                    backgroundColor: "#74BFD0",
+                  },
+                }}
+                onClick={handlegotoupdate}
+              >
+                {row.status}
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))
+      ) : (
+        <TableRow>
+          <TableCell
+            colSpan={9}
+            align="center"
+            sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto", }}
+          >
+            No Data Found
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
+  </Table>
+</TableContainer> 
 
 
 
 
-  </TableContainer>
+
 
   {/* Pagination */}
 
