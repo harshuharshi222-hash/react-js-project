@@ -191,13 +191,10 @@ const handleDownload = () => {
     console.log("Full Response:", response);
 
     // Check actual API structure here
-    // const apiData =
-    //   response?.data ||
-    //   response?.result ||
-    //   response?.records ||
-    //   [];
+   
     
-    const apiData =
+    
+  const apiData =
   response?.data ||
   response?.result ||
   response?.records ||
@@ -226,31 +223,31 @@ const formattedData = apiData.map((item) => ({
     item.status || "Active",
 }));
 
-// const formattedData = apiData.map((item) => ({
-//   clpID: item.clpID || item.clp_id,
+const updatedData = apiData.map((item) => ({
+  clpID: item.clpID || item.clp_id,
 
-//   milestone_name:
-//     item.milestone_name || item.milestoneName,
+  milestone_name:
+    item.milestone_name || item.milestoneName,
 
-//   display_order:
-//     item.display_order || item.displayOrder,
+  display_order:
+    item.display_order || item.displayOrder,
 
-//   percentage: item.percentage,
+  percentage: item.percentage,
 
-//   description: item.description,
+  description: item.description,
 
-//   status: item.status,
+  status: item.status,
 
-//   updated_user_name:
-//     item.updated_user_name ||
-//     item.updatedUserName,
+  updated_user_name:
+    item.updated_user_name ||
+    item.updatedUserName,
 
-//   added_on:
-//     item.added_on ||
-//     item.addedOn,
-// }));
+  added_on:
+    item.added_on ||
+    item.addedOn,
+}));
 
-
+setTableData(updatedData);
 
 setTableData(formattedData);
     // setTableData(data);
@@ -575,7 +572,7 @@ console.log("First Row =", tableData?.[0]);
     onChange={(e) => setStatus(e.target.value)}
   >
     <MenuItem value="Active">Active</MenuItem>
-    <MenuItem value="In-Active">In-Active</MenuItem>
+    <MenuItem value="inActive">In-Active</MenuItem>
   </Select>
 </FormControl>
 
@@ -720,7 +717,7 @@ console.log("First Row =", tableData?.[0]);
                   textTransform: "none",
                   backgroundColor: "#74BFD0",
                   "&:hover": {
-                    backgroundColor: "#74BFD0",
+                    backgroundColor: "#5e42ea",
                   },
                 }}
                 // onClick={handlegotoupdate}

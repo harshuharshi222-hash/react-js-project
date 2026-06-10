@@ -25,7 +25,7 @@ export default function Update() {
   const location = useLocation();
 
   const rowData = location.state || {};
-
+   console.log(rowData,"rowdatadata");
   const [updateConstructionLinkPayment] =
   useUpdateConstructionLinkPaymentMutation();
 
@@ -33,6 +33,10 @@ export default function Update() {
     enableReinitialize: true,
 
     initialValues: {
+      
+    
+      
+
       milestoneName: rowData.milestone_name || "",
       percentage: rowData.percentage || "",
       displayOrder: rowData.display_order || "",
@@ -71,7 +75,7 @@ export default function Update() {
   try {
     const payload = {
       userID: "171903551052335600",
-      clpID: rowData.clpID || rowData.clp_id,
+      clpID: rowData.id || rowData.id,
       milestoneName: values.milestoneName,
       percentage: values.percentage,
       displayOrder: values.displayOrder,
@@ -202,7 +206,7 @@ export default function Update() {
           onChange={formik.handleChange}
         >
           <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="In-Active">In-Active</MenuItem>
+          <MenuItem value="inActive">In-Active</MenuItem>
         </Select>
       </FormControl>
     </Paper>
