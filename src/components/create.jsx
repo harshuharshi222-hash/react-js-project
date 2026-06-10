@@ -49,33 +49,143 @@ export default function CreateCL() {
     )
     .required("Required*"),
 }),
-onSubmit: (values) => {
-  const existingData =
-    JSON.parse(localStorage.getItem("clpMilestones")) || [];
+// onSubmit: (values) => {
+//   const existingData =
+//     JSON.parse(localStorage.getItem("clpMilestones")) || [];
 
-  const newMilestone = {
-    milestone_name: values.milestoneName,
-    display_order: values.displayOrder,
-    percentage: values.percentage,
-    updated_user_name: "Admin",
-    added_on: new Date().toLocaleDateString(),
-    status: "Active",
+//   const newMilestone = {
+//     milestone_name: values.milestoneName,
+//     display_order: values.displayOrder,
+//     percentage: values.percentage,
+//     updated_user_name: "Admin",
+//     added_on: new Date().toLocaleDateString(),
+//     status: "Active",
     
-    description: values.description,
+//     description: values.description,
     
-  };
+//   };
 
-  existingData.unshift(newMilestone);
+//   existingData.unshift(newMilestone);
 
-  localStorage.setItem(
-    "clpMilestones",
-    JSON.stringify(existingData)
-  );
+//   localStorage.setItem(
+//     "clpMilestones",
+//     JSON.stringify(existingData)
+//   );
 
-  navigate("/promotionalt");
+//   navigate("/promotionalt");
+// },
+// });
+//   onSubmit: async (values) => {
+//   const payload = {
+//     userID: "171903551052335600",
+//     milestoneName: values.milestoneName,
+//     percentage: Number(values.percentage),
+//     displayOrder: Number(values.displayOrder),
+//     description: values.description,
+//   };
+
+//   try {
+//     const response = await fetch(
+//       "https://knsonline.in/test/RestAPI_V1/crm/v2/createConstructionLinkPayment",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Accept: "application/json",
+//         },
+//         body: JSON.stringify(payload),
+//       }
+//     );
+
+//     const result = await response.json();
+
+//     console.log("Response:", result);
+
+//     if (response.ok) {
+//       alert("Record Created Successfully");
+//       navigate("/promotionalt");
+//     } else {
+//       alert(result.message || "Failed");
+//     }
+//   } catch (error) {
+//     console.error("API Error:", error);
+//     alert("Something went wrong");
+//   }
+// },
+//   });
+
+// onSubmit: async (values) => {
+//   const formData = new URLSearchParams();
+
+//   formData.append("userID", "171903551052335600");
+//   formData.append("milestoneName", values.milestoneName);
+//   formData.append("percentage", values.percentage);
+//   formData.append("displayOrder", values.displayOrder);
+//   formData.append("description", values.description);
+
+//   try {
+//     const response = await fetch(
+//       "https://knsonline.in/test/RestAPI_V1/crm/v2/createConstructionLinkPayment",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded",
+//         },
+//         body: formData,
+//       }
+//     );
+
+//     const result = await response.json();
+
+//     console.log(result);
+
+//     if (response.ok) {
+//       alert("Record Created Successfully");
+//       navigate("/promotionalt");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// },
+onSubmit: async (values) => {
+  const formData = new URLSearchParams();
+
+  formData.append("userID", "171903551052335600");
+  formData.append("milestoneName", values.milestoneName);
+  formData.append("percentage", values.percentage);
+  formData.append("displayOrder", values.displayOrder);
+  formData.append("description", values.description);
+
+  try {
+    const response = await fetch(
+      "https://knsonline.in/test/RestAPI_V1/crm/v2/createConstructionLinkPayment",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
+      }
+    );
+
+    const text = await response.text();
+
+    console.log("Status:", response.status);
+    console.log("Response:", text);
+
+    if (response.ok) {
+      alert("Record Created Successfully");
+      navigate("/promotionalt");
+    } else {
+      alert(`API Error ${response.status}`);
+    }
+  } catch (error) {
+    console.error("API Error:", error);
+  }
 },
 });
-  return (
+  
+return (
     <>
       {/* CONNECT FORM WITH FORMIK */}
       <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
