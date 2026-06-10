@@ -14,7 +14,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Margin, WidthFull } from "@mui/icons-material";
-
+import {
+  useUpdateConstructionLinkPaymentMutation,
+} from "../api/constructionApi";
 
 
 
@@ -23,6 +25,9 @@ export default function Update() {
   const location = useLocation();
 
   const rowData = location.state || {};
+
+  const [updateConstructionLinkPayment] =
+  useUpdateConstructionLinkPaymentMutation();
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -39,29 +44,56 @@ export default function Update() {
       status: Yup.string().required("Required"),
     }),
 
-    onSubmit: (values) => {
-      const milestones =
-        JSON.parse(localStorage.getItem("clpMilestones")) || [];
+    // onSubmit: (values) => {
+    //   const milestones =
+    //     JSON.parse(localStorage.getItem("clpMilestones")) || [];
 
-      const updatedData = milestones.map((item) => {
-        if (
-          item.milestone_name === rowData.milestone_name
-        ) {
-          return {
-            ...item,
-            status: values.status,
-          };
-        }
-        return item;
-      });
+    //   const updatedData = milestones.map((item) => {
+    //     if (
+    //       item.milestone_name === rowData.milestone_name
+    //     ) {
+    //       return {
+    //         ...item,
+    //         status: values.status,
+    //       };
+    //     }
+    //     return item;
+    //   });
 
-      localStorage.setItem(
-        "clpMilestones",
-        JSON.stringify(updatedData)
-      );
+    //   localStorage.setItem(
+    //     "clpMilestones",
+    //     JSON.stringify(updatedData)
+    //   );
 
-      navigate("/promotionalt");
-    },
+    //   navigate("/promotionalt");
+    // },
+    onSubmit: async (values) => {
+  try {
+    const payload = {
+      userID: "171903551052335600",
+      clpID: rowData.clpID || rowData.clp_id,
+      milestoneName: values.milestoneName,
+      percentage: values.percentage,
+      displayOrder: values.displayOrder,
+      description: values.description,
+      status: values.status,
+    };
+
+    console.log("Update Payload:", payload);
+
+    const response =
+      await updateConstructionLinkPayment(payload).unwrap();
+
+    console.log("Update Response:", response);
+
+    alert("Updated Successfully");
+
+    navigate("/promotionalt");
+  } catch (error) {
+    console.error("Update Error:", error);
+    alert("Update Failed");
+  }
+},
   });
 
   const handlegotopromotionalt = () => {
@@ -125,9 +157,9 @@ export default function Update() {
         value={formik.values.milestoneName}
         InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
-          InputProps={{
-    readOnly: true,
-  }}
+  //         InputProps={{
+  //   readOnly: true,
+  // }}
       />
 
       <TextField
@@ -136,9 +168,9 @@ export default function Update() {
         value={formik.values.percentage}
         InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
-          InputProps={{
-    readOnly: true,
-  }}
+  //         InputProps={{
+  //   readOnly: true,
+  // }}
       />
 
       <TextField
@@ -147,9 +179,7 @@ export default function Update() {
         value={formik.values.displayOrder}
         InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
-          InputProps={{
-    readOnly: true,
-  }}
+   
       />
 
       <TextField
@@ -158,7 +188,7 @@ export default function Update() {
         rows={5}
         label="Description"
         value={formik.values.description}
-        InputProps={{ readOnly: true }}
+        // InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
       />
 

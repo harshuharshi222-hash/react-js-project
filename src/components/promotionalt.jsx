@@ -116,7 +116,9 @@ import {
   useGetConstructionLinkPaymentMutation,
 } from "../api/constructionApi";
 
-
+import {
+  useUpdateConstructionLinkPaymentMutation,
+} from "../api/constructionApi";
 
 
 export default function PromotionalActivity() {
@@ -162,6 +164,8 @@ const handleDownload = () => {
     { isLoading, error },
   ] = useGetConstructionLinkPaymentMutation();
 
+  const [updateConstructionLinkPayment] =
+  useUpdateConstructionLinkPaymentMutation();
   
  useEffect(() => {
     loadData();
@@ -221,6 +225,34 @@ const formattedData = apiData.map((item) => ({
   status:
     item.status || "Active",
 }));
+
+// const formattedData = apiData.map((item) => ({
+//   clpID: item.clpID || item.clp_id,
+
+//   milestone_name:
+//     item.milestone_name || item.milestoneName,
+
+//   display_order:
+//     item.display_order || item.displayOrder,
+
+//   percentage: item.percentage,
+
+//   description: item.description,
+
+//   status: item.status,
+
+//   updated_user_name:
+//     item.updated_user_name ||
+//     item.updatedUserName,
+
+//   added_on:
+//     item.added_on ||
+//     item.addedOn,
+// }));
+
+
+
+setTableData(formattedData);
     // setTableData(data);
 
      const localData =
@@ -280,9 +312,15 @@ const filteredData = tableData.filter((row) => {
    }
 
     const navigate2 = useNavigate();
-        const handlegotoupdate = () => {
-           navigate2('/update')
-        }
+        // const handlegotoupdate = () => {
+        //    navigate2('/update')
+        // }
+
+        const handlegotoupdate = (row) => {
+  navigate2("/update", {
+    state: row,
+  });
+};
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -685,7 +723,8 @@ console.log("First Row =", tableData?.[0]);
                     backgroundColor: "#74BFD0",
                   },
                 }}
-                onClick={handlegotoupdate}
+                // onClick={handlegotoupdate}
+                onClick={() => handlegotoupdate(row)}
               >
                 {row.status}
               </Button>
@@ -757,6 +796,7 @@ console.log("First Row =", tableData?.[0]);
       </Typography>
 
       {/* Rows Dropdown */}
+
       <Select
         value={rowsPerPage}
         onChange={(e) => setRowsPerPage(e.target.value)}
@@ -770,6 +810,8 @@ console.log("First Row =", tableData?.[0]);
         <MenuItem value={10}>10 rows</MenuItem>
         <MenuItem value={25}>25 rows</MenuItem>
       </Select>
+
+
 
       {/* Next Button */}
       <Button

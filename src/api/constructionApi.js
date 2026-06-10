@@ -1,5 +1,6 @@
 
 
+
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // export const constructionApi = createApi({
@@ -22,24 +23,30 @@
 //         body: data,
 //       }),
 //     }),
-//   }),
 
-//   endpoints: (builder) => ({
-//   createConstructionLinkPayment: builder.mutation({
-//   query: (body) => ({
-//     url: "createConstructionLinkPayment",
-//     method: "POST",
-//     body,
+//     createConstructionLinkPayment: builder.mutation({
+//       query: (body) => ({
+//         url: "createConstructionLinkPayment",
+//         method: "POST",
+//         body,
+//       }),
+//     }),
+
+
+//      updateConstructionLinkPayment: builder.mutation({
+//       query: (body) => ({
+//         url: "updateConstructionLinkPayment",
+//         method: "POST",
+//         body,
+//       }),
 //   }),
-// }),
-// }),
-// });
+//   });
 
 // export const {
 //   useGetConstructionLinkPaymentMutation,
-//    useCreateConstructionLinkPaymentMutation,
+//   useCreateConstructionLinkPaymentMutation,
+//    useUpdateConstructionLinkPaymentMutation,
 // } = constructionApi;
-
 
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -72,10 +79,19 @@ export const constructionApi = createApi({
         body,
       }),
     }),
+
+    updateConstructionLinkPayment: builder.mutation({
+      query: (body) => ({
+        url: "updateConstructionLinkPayment",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetConstructionLinkPaymentMutation,
   useCreateConstructionLinkPaymentMutation,
+  useUpdateConstructionLinkPaymentMutation,
 } = constructionApi;
