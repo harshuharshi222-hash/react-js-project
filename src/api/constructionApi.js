@@ -6,7 +6,7 @@ export const constructionApi = createApi({
   reducerPath: "constructionApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/test/RestAPI_V1/sales/v2/",
+    baseUrl: "/api/test/RestAPI_V1/crm/v2/",
     prepareHeaders: (headers) => {
       headers.set("Content-Type", "application/json");
       headers.set("Accept", "application/json");
