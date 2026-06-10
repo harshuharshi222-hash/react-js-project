@@ -187,12 +187,40 @@ const handleDownload = () => {
     console.log("Full Response:", response);
 
     // Check actual API structure here
+    // const apiData =
+    //   response?.data ||
+    //   response?.result ||
+    //   response?.records ||
+    //   [];
+    
     const apiData =
-      response?.data ||
-      response?.result ||
-      response?.records ||
-      [];
+  response?.data ||
+  response?.result ||
+  response?.records ||
+  [];
 
+const formattedData = apiData.map((item) => ({
+  milestone_name:
+    item.milestone_name || item.milestoneName,
+
+  display_order:
+    item.display_order || item.displayOrder,
+
+  percentage: item.percentage,
+
+  updated_user_name:
+    item.updated_user_name ||
+    item.updatedUserName ||
+    "",
+
+  added_on:
+    item.added_on ||
+    item.addedOn ||
+    "",
+
+  status:
+    item.status || "Active",
+}));
     // setTableData(data);
 
      const localData =
