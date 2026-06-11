@@ -48,29 +48,7 @@ export default function Update() {
       status: Yup.string().required("Required"),
     }),
 
-    // onSubmit: (values) => {
-    //   const milestones =
-    //     JSON.parse(localStorage.getItem("clpMilestones")) || [];
-
-    //   const updatedData = milestones.map((item) => {
-    //     if (
-    //       item.milestone_name === rowData.milestone_name
-    //     ) {
-    //       return {
-    //         ...item,
-    //         status: values.status,
-    //       };
-    //     }
-    //     return item;
-    //   });
-
-    //   localStorage.setItem(
-    //     "clpMilestones",
-    //     JSON.stringify(updatedData)
-    //   );
-
-    //   navigate("/promotionalt");
-    // },
+   
     onSubmit: async (values) => {
   try {
     const payload = {
@@ -161,9 +139,7 @@ export default function Update() {
         value={formik.values.milestoneName}
         InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
-  //         InputProps={{
-  //   readOnly: true,
-  // }}
+
       />
 
       <TextField
@@ -172,9 +148,7 @@ export default function Update() {
         value={formik.values.percentage}
         InputProps={{ readOnly: true }}
         sx={{ mb: 3 }}
-  //         InputProps={{
-  //   readOnly: true,
-  // }}
+
       />
 
       <TextField
@@ -185,16 +159,28 @@ export default function Update() {
         sx={{ mb: 3 }}
    
       />
-
+{/* 
       <TextField
         fullWidth
         multiline
         rows={5}
         label="Description"
         value={formik.values.description}
-        // InputProps={{ readOnly: true }}
+     
         sx={{ mb: 3 }}
-      />
+      /> */}
+
+      
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    name="description"
+                    sx={{ mb: 2 }}
+                    multiline
+                    rows={3}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                  />
 
       <FormControl fullWidth sx={{ mb: 3 }}>
         <InputLabel>Status</InputLabel>
