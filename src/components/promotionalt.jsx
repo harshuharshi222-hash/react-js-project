@@ -335,7 +335,7 @@ const filteredData = tableData.filter((row) => {
   const textFieldId = React.useId();
   const sxId = React.useId();
 
-
+  
 
   const allColumns = [
   "SL No",
@@ -800,7 +800,7 @@ const totalPages = Math.ceil(
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#f5f5f5",
-    padding: "10px 20px",
+    padding: "10px 35px",
   }}
   >
   <Button
