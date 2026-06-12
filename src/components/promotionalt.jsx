@@ -261,7 +261,7 @@ setTableData(formattedData);
      const mergedData = [...localData, ...apiData];
 
     console.log("Merged Data:", mergedData);
-   s;
+  
     setTableData([...localData, ...apiData]);
   } catch (err) {
     console.error(err);
@@ -297,7 +297,7 @@ const filteredData = tableData.filter((row) => {
 
 
 
-    const totalPages = 1;
+
      const navigate = useNavigate();
    const handlegotocreate = () => {
       navigate('/create')
@@ -336,9 +336,7 @@ const filteredData = tableData.filter((row) => {
   const sxId = React.useId();
 
 
-  //  const [selected, setSelected] = useState([]);
 
-  //  const [status, setStatus] = useState("Active");
   const allColumns = [
   "SL No",
   "Milestone",
@@ -415,6 +413,10 @@ const startResize = (e, column) => {
 };
 console.log("tableData =", tableData);
 console.log("First Row =", tableData?.[0]);
+
+const totalPages = Math.ceil(
+  filteredData.length / rowsPerPage
+);
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>    
       {/* Header */}
@@ -701,7 +703,13 @@ console.log("First Row =", tableData?.[0]);
 
     <TableBody>
       {filteredData.length > 0 ? (
-        filteredData.map((row, index) => (
+        // filteredData.map((row, index) => (
+          filteredData
+  .slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  )
+  .map((row, index) => (
         
           <TableRow key={index}>
   {selected.includes("SL No") && (
@@ -782,85 +790,53 @@ console.log("First Row =", tableData?.[0]);
   {/* Pagination */}
 
 
-     <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "#f5f5f5",
-        padding: "10px 20px",
-        borderRadius: "4px",
-      }}
-    >
-      {/* Previous Button */}
-      <Button
-        variant="contained"
-        disabled={page === 1}
-        onClick={() => setPage(page - 1)}
-        sx={{
-          minWidth: "220px",
-          backgroundColor: "#e0e0e0",
-          color: "#9e9e9e",
-          textTransform: "none",
-          boxShadow: "none",
-          "&:hover": {
-            backgroundColor: "#d6d6d6",
-            boxShadow: "none",
-          },
-        }}
-      >
-        Previous
-      </Button>
+     
+  
 
-      {/* Page Text */}
-      <Typography
-        sx={{
-          fontSize: "20px",
-          fontWeight: 500,
-        }}
-      >
-        Page {page} of {totalPages}
-      </Typography>
+    <Box
+  sx={{
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#f5f5f5",
+    padding: "10px 20px",
+  }}
+  >
+  <Button
+    variant="contained"
+    disabled={page === 0}
+    onClick={() => setPage((prev) => prev - 1)}
+  >
+    Previous
+  </Button>
 
-      {/* Rows Dropdown */}
+  <Typography>
+    Page {totalPages === 0 ? 0 : page + 1} of {totalPages}
+  </Typography>
 
-      <Select
-        value={rowsPerPage}
-        onChange={(e) => setRowsPerPage(e.target.value)}
-        size="small"
-        sx={{
-          width: "140px",
-          backgroundColor: "#fff",
-        }}
-      >
-        <MenuItem value={5}>5 rows</MenuItem>
-        <MenuItem value={10}>10 rows</MenuItem>
-        <MenuItem value={25}>25 rows</MenuItem>
-      </Select>
+  <Select
+    value={rowsPerPage}
+    size="small"
+    onChange={(e) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(0);
+    }}
+  >
+    <MenuItem value={5}>5 rows</MenuItem>
+    <MenuItem value={10}>10 rows</MenuItem>
+    <MenuItem value={25}>25 rows</MenuItem>
+    <MenuItem value={50}>50 rows</MenuItem>
+  </Select>
 
-
-
-      {/* Next Button */}
-      <Button
-        variant="contained"
-        disabled={page === totalPages}
-        onClick={() => setPage(page + 1)}
-        sx={{
-          minWidth: "220px",
-          backgroundColor: "#e0e0e0",
-          color: "#bdbdbd",
-          textTransform: "none",
-          boxShadow: "none",
-          "&:hover": {
-            backgroundColor: "#d6d6d6",
-            boxShadow: "none",
-          },
-        }}
-      >
-        Next
-      </Button>
-    </Box>
+  <Button
+    variant="contained"
+    disabled={page >= totalPages - 1}
+    onClick={() => setPage((prev) => prev + 1)}
+  >
+    Next
+  </Button>
+</Box>
   
 </Paper> 
 
