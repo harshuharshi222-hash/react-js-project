@@ -833,6 +833,7 @@ const totalPages = Math.ceil(
     variant="contained"
     disabled={page >= totalPages - 1}
     onClick={() => setPage((prev) => prev + 1)}
+   
   >
     Next
   </Button>
