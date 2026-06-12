@@ -261,7 +261,7 @@ setTableData(formattedData);
      const mergedData = [...localData, ...apiData];
 
     console.log("Merged Data:", mergedData);
-    // console.log("Mapped Data:", data);
+   s;
     setTableData([...localData, ...apiData]);
   } catch (err) {
     console.error(err);
@@ -336,9 +336,31 @@ const filteredData = tableData.filter((row) => {
   const sxId = React.useId();
 
 
-   const [selected, setSelected] = useState([]);
+  //  const [selected, setSelected] = useState([]);
 
   //  const [status, setStatus] = useState("Active");
+  const allColumns = [
+  "SL No",
+  "Milestone",
+  "Display Order",
+  "Percentage",
+  "Added By",
+  "Added On",
+  "Status",
+];
+
+const [selected, setSelected] = useState(allColumns);
+
+
+const visibleColumns = [
+  selected.includes("SL No") && "S.No",
+  selected.includes("Milestone") && "Milestone Name",
+  selected.includes("Display Order") && "Display Order",
+  selected.includes("Percentage") && "Percentage",
+  selected.includes("Added By") && "Added By",
+  selected.includes("Added On") && "Added On",
+  selected.includes("Status") && "Status",
+].filter(Boolean);
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -640,7 +662,8 @@ console.log("First Row =", tableData?.[0]);
   >
     <TableHead>
       <TableRow sx={{ background: "#f1f1f1" }}>
-        {columns?.map((head) => (
+      
+          {visibleColumns.map((head) => (
           <TableCell
             key={head}
             sx={{
@@ -679,54 +702,62 @@ console.log("First Row =", tableData?.[0]);
     <TableBody>
       {filteredData.length > 0 ? (
         filteredData.map((row, index) => (
+        
           <TableRow key={index}>
-            <TableCell sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto", textAlign :"center"}}>
-              {index + 1}
-            </TableCell>
+  {selected.includes("SL No") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {index + 1}
+    </TableCell>
+  )}
 
-            <TableCell sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto",textAlign :"center" }}>
-              {row.milestone_name}
-            </TableCell>
+  {selected.includes("Milestone") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {row.milestone_name}
+    </TableCell>
+  )}
 
-            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
-              {row.display_order}
-            </TableCell>
+  {selected.includes("Display Order") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {row.display_order}
+    </TableCell>
+  )}
 
-            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
-              {row.percentage}
-            </TableCell>
+  {selected.includes("Percentage") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {row.percentage}
+    </TableCell>
+  )}
 
-            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
-              {row.updated_user_name}
-            </TableCell>
+  {selected.includes("Added By") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {row.updated_user_name}
+    </TableCell>
+  )}
 
-            <TableCell sx={{ border: "1px solid #dcdcdc" }}>
-              {row.added_on}
-            </TableCell>
+  {selected.includes("Added On") && (
+    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
+      {row.added_on}
+    </TableCell>
+  )}
 
-            <TableCell
-              align="center"
-              sx={{ border: "1px solid #dcdcdc" }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  minWidth: "85px",
-                  height: "35px",
-                  borderRadius: "20px",
-                  textTransform: "none",
-                  backgroundColor: "#74BFD0",
-                  "&:hover": {
-                    backgroundColor: "#5e42ea",
-                  },
-                }}
-                // onClick={handlegotoupdate}
-                onClick={() => handlegotoupdate(row)}
-              >
-                {row.status}
-              </Button>
-            </TableCell>
-          </TableRow>
+  {selected.includes("Status") && (
+    <TableCell align="center" sx={{ border: "1px solid #dcdcdc" }}>
+      <Button
+        variant="contained"
+        sx={{
+          minWidth: "85px",
+          height: "35px",
+          borderRadius: "20px",
+          textTransform: "none",
+          backgroundColor: "#74BFD0",
+        }}
+        onClick={() => handlegotoupdate(row)}
+      >
+        {row.status}
+      </Button>
+    </TableCell>
+  )}
+</TableRow>
         ))
       ) : (
         <TableRow>

@@ -177,7 +177,7 @@ export default function Update() {
                     name="description"
                     sx={{ mb: 2 }}
                     multiline
-                    rows={3}
+                    rows={3   }
                     value={formik.values.description}
                     onChange={formik.handleChange}
                   />
