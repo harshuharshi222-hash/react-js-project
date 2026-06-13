@@ -198,6 +198,7 @@ const handleDownload = () => {
   response?.data ||
   response?.result ||
   response?.records ||
+  response?.data?.records ||
   [];
 
 const formattedData = apiData.map((item) => ({
