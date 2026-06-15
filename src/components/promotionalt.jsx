@@ -1,4 +1,10 @@
 // import React, { useState } from "react";
+
+import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+// import TableRow from "@mui/material/TableRow";
+// import TableCell from "@mui/material/TableCell";
+
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -18,7 +24,7 @@ import {
   Table,
   
   TableBody,
-  TableCell,
+
   TableContainer,
   TableHead,
   TablePagination,
@@ -123,7 +129,32 @@ import {
 
 export default function PromotionalActivity() {
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#dcdcdc",
+    color: "#060606",
+    fontWeight: 700,
+    border: "1px solid #b6aeae",
+    textAlign: "center",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    border: "1px solid #dcdcdc",
+    textAlign: "center",
+  },
+}));
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#f9f9f9",
+  },
+  "&:hover": {
+    backgroundColor: "#f1f1f1",
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
   
 const [searchText, setSearchText] = useState("");
 const [tableData, setTableData] = useState([]);
@@ -651,6 +682,7 @@ const totalPages = Math.ceil(
   sx={{
     overflowX: "auto",
     border: "1px solid #dcdcdc",
+    // backgroundColor: "#dcdcdc",
     
   }}
 >
@@ -664,122 +696,114 @@ const totalPages = Math.ceil(
     }}
   >
     <TableHead>
-      <TableRow sx={{ background: "#f1f1f1" }}>
-      
-          {visibleColumns.map((head) => (
-          <TableCell
-            key={head}
-            sx={{
-              position: "relative",
-              width: columnWidths[head],
-              minWidth: columnWidths[head],
-              maxWidth: columnWidths[head],
-              fontWeight: 700,
-              background: "#f5f5f5",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textAlign: "center",
-              border: "1px solid #dcdcdc", // Header border
-            }}
-          >
-            {head}
+  
+  <TableRow>
+    {visibleColumns.map((head) => (
+      <StyledTableCell
+        key={head}
+        sx={{
+          position: "relative",
+          width: columnWidths[head],
+          minWidth: columnWidths[head],
+          maxWidth: columnWidths[head],
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+        }}
+      >
+        {head}
 
-            <Box
-              onMouseDown={(e) => startResize(e, head)}
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                width: "8px",
-                height: "100%",
-                cursor: "col-resize",
-                zIndex: 10,
-                textAlign: "center",
-              }}
-            />
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+        <Box
+          onMouseDown={(e) => startResize(e, head)}
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "8px",
+            height: "100%",
+            cursor: "col-resize",
+            zIndex: 10,
+          }}
+        />
+      </StyledTableCell>
+    ))}
+  </TableRow>
+</TableHead>
 
     <TableBody>
-      {filteredData.length > 0 ? (
-        // filteredData.map((row, index) => (
-          filteredData
-  .slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  )
-  .map((row, index) => (
-        
-          <TableRow key={index}>
-  {selected.includes("SL No") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {index + 1}
-    </TableCell>
-  )}
+  {filteredData.length > 0 ? (
+    filteredData
+      .slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      )
+      .map((row, index) => (
+        <StyledTableRow key={index}>
+          {selected.includes("SL No") && (
+            <StyledTableCell>
+              {page * rowsPerPage + index + 1}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Milestone") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {row.milestone_name}
-    </TableCell>
-  )}
+          {selected.includes("Milestone") && (
+            <StyledTableCell>
+              {row.milestone_name}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Display Order") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {row.display_order}
-    </TableCell>
-  )}
+          {selected.includes("Display Order") && (
+            <StyledTableCell>
+              {row.display_order}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Percentage") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {row.percentage}
-    </TableCell>
-  )}
+          {selected.includes("Percentage") && (
+            <StyledTableCell>
+              {row.percentage}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Added By") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {row.updated_user_name}
-    </TableCell>
-  )}
+          {selected.includes("Added By") && (
+            <StyledTableCell>
+              {row.updated_user_name}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Added On") && (
-    <TableCell sx={{ border: "1px solid #dcdcdc", textAlign: "center" }}>
-      {row.added_on}
-    </TableCell>
-  )}
+          {selected.includes("Added On") && (
+            <StyledTableCell>
+              {row.added_on}
+            </StyledTableCell>
+          )}
 
-  {selected.includes("Status") && (
-    <TableCell align="center" sx={{ border: "1px solid #dcdcdc" }}>
-      <Button
-        variant="contained"
-        sx={{
-          minWidth: "85px",
-          height: "35px",
-          borderRadius: "20px",
-          textTransform: "none",
-          backgroundColor: "#74BFD0",
-        }}
-        onClick={() => handlegotoupdate(row)}
+          {selected.includes("Status") && (
+            <StyledTableCell align="center">
+              <Button
+                variant="contained"
+                sx={{
+                  minWidth: "85px",
+                  height: "35px",
+                  borderRadius: "20px",
+                  textTransform: "none",
+                  backgroundColor: "#74BFD0",
+                }}
+                onClick={() => handlegotoupdate(row)}
+              >
+                {row.status}
+              </Button>
+            </StyledTableCell>
+          )}
+        </StyledTableRow>
+      ))
+  ) : (
+    <StyledTableRow>
+      <StyledTableCell
+        colSpan={visibleColumns.length}
+        align="center"
       >
-        {row.status}
-      </Button>
-    </TableCell>
+        No Data Found
+      </StyledTableCell>
+    </StyledTableRow>
   )}
-</TableRow>
-        ))
-      ) : (
-        <TableRow>
-          <TableCell
-            colSpan={9}
-            align="center"
-            sx={{ border: "1px solid #dcdcdc",   tableLayout: "auto", }}
-          >
-            No Data Found
-          </TableCell>
-        </TableRow>
-      )}
-    </TableBody>
+</TableBody>
   </Table>
 </TableContainer> 
 
