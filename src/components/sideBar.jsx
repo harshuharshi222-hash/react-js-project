@@ -24,7 +24,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import GavelIcon from '@mui/icons-material/Gavel';
 import AlignHorizontalLeftIcon from '@mui/icons-material/AlignHorizontalLeft';
-import AccountMenu from '../components/profile.jsx';
+import AccountMenu from '../Pages/Profiles/profile.jsx';
 
 
 import Badge from '@mui/material/Badge';
