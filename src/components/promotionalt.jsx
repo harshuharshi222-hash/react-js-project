@@ -48,74 +48,7 @@ import { BrowserRouter } from "react-router-dom";
 
 
 
-const rows = [
-  {
-    id: 1,
-    project: "",
-    activity: "",
-    addedOn: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "Active",
-  },
-  {
-    id: 2,
-    project: "",
-    activity: "",
-    fromDate: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "In-Active",
-  },
-  {
-    id: 3,
-    project: "",
-    activity: "",
-    fromDate: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "",
-  },
-  {
-    id: 4,
-    project: "",
-    activity: "",
-    fromDate: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "",
-  },
-   {
-    id: 5,
-    project: "",
-    activity: "",
-    fromDate: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "",
-  },
-   {
-    id: 6,
-    project: "",
-    activity: "",
-    fromDate: "",
-    toDate: "",
-    description: "",
-    addedBy: "",
-    addedOn: "",
-    status: "",
-  },
-];
+
 import React, { useEffect, useState } from "react";
 
 import {

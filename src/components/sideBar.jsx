@@ -39,10 +39,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
 import PromotionalActivity from './promotionalt.jsx'
-import Dashboard from './dashboard.jsx'
-import CreateCL from './create.jsx';
-import Get from './get.jsx';
-import Update from './update.jsx';
+import Dashboard from '../Pages/dashboard.jsx'
+import CreateCL from '../Pages/create.jsx';
+import Get from '../Pages/get.jsx';
+import Update from '../Pages/update.jsx';
 
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import RemoveIcon from '@mui/icons-material/Remove';

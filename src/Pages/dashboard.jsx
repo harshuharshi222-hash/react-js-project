@@ -281,21 +281,24 @@ const Dashboard = () => {
       </Box>
 
       {/* Week Days */}
+     
       <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          textAlign: "center",
-          mb: 2,
-          color: "#666",
-          fontSize: "18px",
-          fontWeight: 600,
-        }}
-      >
-        {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
-          <Box key={day}>{day}</Box>
-        ))}
-      </Box>
+  sx={{
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    textAlign: "center",
+    mb: 2,
+    color: "#666",
+    fontSize: "18px",
+    fontWeight: 600,
+  }}
+>
+  {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+    <Box key={`${day}-${index}`}>
+      {day}
+    </Box>
+  ))}
+</Box>
 
       {/* Dates */}
       {calendarDays.map((week, index) => (
