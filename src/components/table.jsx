@@ -100,6 +100,8 @@ const [searchText, setSearchText] = useState("");
 const [tableData, setTableData] = useState([]);
 const [status, setStatus] = useState("Active");
 
+const [data,setData] = useState([])
+
 const handleDownload = () => {
   if (!tableData || tableData.length === 0) {
     alert("No data available");
@@ -154,7 +156,7 @@ const handleDownload = () => {
       generalSearch: searchText,
       sortOrder: "",
       iDisplayStart: 0,
-      iDisplayLength: 10,
+      iDisplayLength: 50,
     };
 
     const response = await getConstructionLinkPayment(payload).unwrap();
@@ -163,7 +165,7 @@ const handleDownload = () => {
 
     // Check actual API structure here
    
-    
+    setData(response)
     
   const apiData =
   response?.data ||
@@ -171,6 +173,9 @@ const handleDownload = () => {
   response?.records ||
   response?.data?.records ||
   [];
+
+
+
 
 const formattedData = apiData.map((item) => ({
   milestone_name:
@@ -240,6 +245,10 @@ setTableData(formattedData);
   }
 };
   
+
+console.log("response Data",data)
+
+
   useEffect(() => {
   console.log("Updated tableData:", tableData);
 }, [tableData]);
@@ -566,8 +575,9 @@ const totalPages = Math.ceil(
     value={status}
     label="Status"
     onChange={(e) => setStatus(e.target.value)}
+    onClick={loadData}
   >
-    <MenuItem value="Active">Active</MenuItem>
+    <MenuItem value="Active" >Active</MenuItem>
     <MenuItem value="inActive">In-Active</MenuItem>
   </Select>
 </FormControl>
@@ -725,6 +735,7 @@ const totalPages = Math.ceil(
     height: "35px",
     borderRadius: "20px",
     textTransform: "none",
+    
 
     backgroundColor:
       row.status?.toLowerCase() === "active"
@@ -807,6 +818,8 @@ const totalPages = Math.ceil(
     <MenuItem value={10}>10 rows</MenuItem>
     <MenuItem value={25}>25 rows</MenuItem>
     <MenuItem value={50}>50 rows</MenuItem>
+    <MenuItem value={data?.totalCount}>{data?.totalCount} rows</MenuItem>
+
   </Select>
 
   <Button
