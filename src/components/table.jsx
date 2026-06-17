@@ -411,7 +411,7 @@ const totalPages = Math.ceil(
     <IconButton>
       <MenuOpenIcon
         sx={{
-          color: "#555",
+          color: "#1273ea",
           fontSize: 30,
           mr: 1,
         }}
@@ -648,6 +648,7 @@ const totalPages = Math.ceil(
           maxWidth: columnWidths[head],
           whiteSpace: "nowrap",
           overflow: "hidden",
+          
         }}
       >
         {head}
@@ -727,8 +728,8 @@ const totalPages = Math.ceil(
 
     backgroundColor:
       row.status?.toLowerCase() === "active"
-        ? "#74BFD0" // Active = Green
-        : "#6C63FF", // Inactive = Red
+        ? "#74BFD0" // Active = skyblue
+        : "#6C63FF", // Inactive = purpal
 
     color: "#fff",
 

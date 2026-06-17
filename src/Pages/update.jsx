@@ -78,8 +78,8 @@ export default function Update() {
 },
   });
 
-  const handlegotopromotionalt = () => {
-    navigate("/promotionalt");
+  const handlegototable = () => {
+    navigate("/table");
   };
 
 
@@ -104,9 +104,9 @@ export default function Update() {
       mb: 4,
     }}
   >
-    <IconButton onClick={handlegotopromotionalt}>
+    <IconButton onClick={handlegototable}>
       <MenuOpenIcon  sx={{
-                  color: "#555",
+                  color: "#1273ea",
                   fontSize: 30,
                   mr: 1,
                 }} />
@@ -177,7 +177,7 @@ export default function Update() {
                     name="description"
                     sx={{ mb: 2 }}
                     multiline
-                    rows={3   }
+                    rows={3}
                     value={formik.values.description}
                     onChange={formik.handleChange}
                   />

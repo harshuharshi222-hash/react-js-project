@@ -12,8 +12,8 @@ import {
 export default function CreateCL() {
   const navigate = useNavigate();
 
-  const handlegotopromotionalt = () => {
-    navigate("/promotionalt");
+  const handlegototable = () => {
+    navigate("/table");
   };
    
 const [createConstructionLinkPayment] =
@@ -84,11 +84,11 @@ return (
             <IconButton>
               <MenuOpenIcon
                 sx={{
-                  color: "#555",
+                  color: "#1273ea",
                   fontSize: 30,
                   mr: 1,
                 }}
-                onClick={handlegotopromotionalt}
+                onClick={handlegototable}
               />
             </IconButton>
 

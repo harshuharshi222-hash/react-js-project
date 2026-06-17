@@ -38,7 +38,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
-import PromotionalActivity from './promotionalt.jsx'
+import PromotionalActivity from './table.jsx'
 import Dashboard from '../Pages/dashboard.jsx'
 import CreateCL from '../Pages/create.jsx';
 import Get from '../Pages/get.jsx';
@@ -144,7 +144,7 @@ export default function MiniDrawer() {
      
      const navigate = useNavigate();
  const handlegotopromotionalt = () => {
-    navigate('/promotionalt')
+    navigate('/table')
  }
 
     const theme = useTheme();
@@ -172,11 +172,7 @@ export default function MiniDrawer() {
 
     const [selectedIndex, setSelectedIndex] = React.useState();
 
-    // const handleListItemClick = (event, index) => {
-    //     setSelectedIndex(index);
-    //     setOpenNestedList(!openNestedList);
-    // }
-
+    
 
 
     return (
@@ -290,7 +286,7 @@ export default function MiniDrawer() {
              
                     <Routes>
                     <Route path="/create" element={< CreateCL />} />
-                    <Route path="/promotionalt" element={<PromotionalActivity />} />
+                    <Route path="/table" element={<PromotionalActivity />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/update" element={<Update />} />
                     </Routes>
