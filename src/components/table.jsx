@@ -1,9 +1,8 @@
-// import React, { useState } from "react";
+
 
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-// import TableRow from "@mui/material/TableRow";
-// import TableCell from "@mui/material/TableCell";
+
 
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
@@ -346,28 +345,37 @@ const visibleColumns = [
  
     setSelected(typeof value === "string" ? value.split(",") : value);
  };
- const columns = [
-  "S.No",
-  "Milestone Name",
-  "Display Order",
-  "Percentage",
-  "Added By",
-  "Added On ",
-  "Status",
-];
-
+//  const columns = [
+//   "S.No",
+//   "Milestone Name",
+//   "Display Order",
+//   "Percentage",
+//   "Added By",
+//   "Added On ",
+//   "Status",
+// ];
 const [columnWidths, setColumnWidths] = useState({
   "S.No": 80,
-  "Project Id":80,
-  "Project Name": 180,
-  "Activity Title": 180,
-  "Added On": 140,
-  "To Date": 140,
-  "Description": 220,
-  "Added By": 140,
-  "Added On": 140,
-  "Status": 120,  
+  "Milestone Name": 220,
+  "Display Order": 150,
+  "Percentage": 120,
+  "Added By": 180,
+  "Added On": 180,
+  "Status": 140,
 });
+
+// const [columnWidths, setColumnWidths] = useState({
+//   "S.No": 80,
+//   "Project Id":80,
+//   "Project Name": 180,
+//   "Activity Title": 180,
+//   "Added On": 140,
+//   "To Date": 140,
+//   "Description": 220,
+//   "Added By": 140,
+//   "Added On": 140,
+//   "Status": 120,  
+// });
 
 const startResize = (e, column) => {
   e.preventDefault();
@@ -653,9 +661,9 @@ const totalPages = Math.ceil(
         key={head}
         sx={{
           position: "relative",
-          width: columnWidths[head],
-          minWidth: columnWidths[head],
-          maxWidth: columnWidths[head],
+           width: `${columnWidths[head]}px`,
+          minWidth: `${columnWidths[head]}px`,
+          maxWidth: `${columnWidths[head]}px`,
           whiteSpace: "nowrap",
           overflow: "hidden",
           
@@ -665,15 +673,28 @@ const totalPages = Math.ceil(
 
         <Box
           onMouseDown={(e) => startResize(e, head)}
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: "8px",
-            height: "100%",
-            cursor: "col-resize",
-            zIndex: 10,
-          }}
+          // sx={{
+          //   position: "absolute",
+          //   top: 0,
+          //   right: 0,
+          //   width: "8px",
+          //   height: "100%",
+          //   cursor: "col-resize",
+          //   zIndex: 10,
+          // }}
+            sx={{
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: "6px",
+    height: "100%",
+    cursor: "col-resize",
+    backgroundColor: "transparent",
+
+    "&:hover": {
+      backgroundColor: "#b8babd",
+    },
+  }}
         />
       </StyledTableCell>
     ))}
