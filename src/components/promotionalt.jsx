@@ -66,6 +66,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#dcdcdc",
     color: "#060606",
+    borderRight: "1px solid #dcdcdc",
+     borderBottom: "1px solid #dcdcdc",
     fontWeight: 700,
     border: "1px solid #b6aeae",
     textAlign: "center",
@@ -74,6 +76,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
     border: "1px solid #dcdcdc",
     textAlign: "center",
+       borderRight: "1px solid #dcdcdc",
+    borderBottom: "1px solid #dcdcdc",
+  },
+  "&:last-child": {
+    borderRight: "1px solid #dcdcdc", // last column line
   },
 }));
 
@@ -709,19 +716,33 @@ const totalPages = Math.ceil(
 
           {selected.includes("Status") && (
             <StyledTableCell align="center">
+              
               <Button
-                variant="contained"
-                sx={{
-                  minWidth: "85px",
-                  height: "35px",
-                  borderRadius: "20px",
-                  textTransform: "none",
-                  backgroundColor: "#74BFD0",
-                }}
-                onClick={() => handlegotoupdate(row)}
-              >
-                {row.status}
-              </Button>
+  variant="contained"
+  sx={{
+    minWidth: "85px",
+    height: "35px",
+    borderRadius: "20px",
+    textTransform: "none",
+
+    backgroundColor:
+      row.status?.toLowerCase() === "active"
+        ? "#74BFD0" // Active = Green
+        : "#6C63FF", // Inactive = Red
+
+    color: "#fff",
+
+    "&:hover": {
+      backgroundColor:
+        row.status?.toLowerCase() === "active"
+          ? "#74BFD0"
+          : "#6C63FF",
+    },
+  }}
+  onClick={() => handlegotoupdate(row)}
+>
+  {row.status}
+</Button>
             </StyledTableCell>
           )}
         </StyledTableRow>
