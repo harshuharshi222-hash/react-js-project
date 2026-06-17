@@ -674,7 +674,7 @@ const totalPages = Math.ceil(
   sx={{
     minWidth: 1200, // table expands
     borderCollapse: "collapse",
-    whiteSpace: "nowrap",
+    // whiteSpace: "nowrap",
     tableLayout: "fixed",
      
   }}
