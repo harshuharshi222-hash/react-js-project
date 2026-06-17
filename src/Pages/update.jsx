@@ -70,7 +70,7 @@ export default function Update() {
 
     alert("Updated Successfully");
 
-    navigate("/promotionalt");
+    navigate("/table");
   } catch (error) {
     console.error("Update Error:", error);
     alert("Update Failed");

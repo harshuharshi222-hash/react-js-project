@@ -33,7 +33,7 @@ const [createConstructionLinkPayment] =
   validationSchema: Yup.object({
   milestoneName: Yup.string()
     .matches(
-      /^[a-zA-Z0-9]+$/,
+      /^[a-z A-Z 0-9 ]+$/,
       "only letters and numbers are allowed"
     )
     .required("Required*"),
@@ -50,12 +50,19 @@ const [createConstructionLinkPayment] =
 
   displayOrder: Yup.string()
     .matches(
-      /^[a-zA-Z0-9]+$/,
+      /^[a-z A-Z 0-9 ]+$/,
       "only letters and numbers are allowed"
     )
     .required("Required*"),
-}),
 
+
+  description : Yup.string()
+    .matches(
+      /^[a-z A-Z 0-9 ]+$/,
+      "only letters and numbers are allowed"
+    )
+    .required("Required*"),
+    }),
 
 onSubmit: async (values) => {
   try {
@@ -68,7 +75,7 @@ onSubmit: async (values) => {
     }).unwrap();
 
     alert("Created Successfully");
-    navigate("/promotionalt");
+    navigate("/table");
   } catch (err) {
     console.log(err);
   }
@@ -164,11 +171,17 @@ return (
               rows={4}
               value={formik.values.description}
               onChange={formik.handleChange}
+              error={
+                formik.touched.displayOrder &&
+                Boolean(formik.errors.displayOrder)
+              }
+              helperText={
+                formik.touched.displayOrder &&
+                formik.errors.displayOrder
+              }
             />
           </div>
-              {/* <pre>
-       {JSON.stringify(formik.errors, null, 2)}
-    </pre> */}
+      
           <div className="buttonsAlignment">
             {/* RESET BUTTON */}
             <button className="buttonStyle" type="reset">
