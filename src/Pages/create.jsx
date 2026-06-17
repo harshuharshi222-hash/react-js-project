@@ -38,31 +38,45 @@ const [createConstructionLinkPayment] =
     )
     .required("Required*"),
 
-  percentage: Yup.number().test(
-    "Invalid len",
-    "must be less than or equal to 3 digits",
+  // percentage: Yup.number().test(
+  //   "Invalid len",
+  //   "must be less than or equal to 3 digits",
    
-    (val) => !val || val.toString().length <= 3
+  //   (val) => !val || val.toString().length <= 3
     
+  // )
+  //  .required("Required*"),
+  percentage: Yup.number()
+  .test(
+    "Invalid len",
+    "Must be less than or equal to 3 digits",
+    (val) => !val || val.toString().length <= 3
   )
-   .required("Required*"),
-  
+  .max(100, "Percentage cannot be greater than 100")
+  .required("Required*"),
 
   displayOrder: Yup.string()
     .matches(
-      /^[a-z A-Z 0-9 ]+$/,
-      "only letters and numbers are allowed"
+      /^[ 0-9 ]+$/,
+      "only numbers are allowed"
     )
     .required("Required*"),
 
 
-  description : Yup.string()
-    .matches(
-      /^[a-z A-Z 0-9 ]+$/,
-      "only letters and numbers are allowed"
-    )
-    .required("Required*"),
-    }),
+  // description : Yup.string()
+  //   .matches(
+  //     /^[a-z A-Z 0-9 ]+$/,
+  //     "only letters and numbers are allowed"
+  //   )
+  //   .required("Required*"),
+  //   }),
+
+  displayOrder: Yup.number()
+  .typeError("Only numbers are allowed")
+  .integer("Only whole numbers are allowed")
+  .positive("Must be greater than 0")
+  .required("Required*"),
+  }),
 
 onSubmit: async (values) => {
   try {
@@ -130,7 +144,14 @@ return (
               name="percentage"
               sx={{ mb: 2 }}
               value={formik.values.percentage}
-              onChange={formik.handleChange}
+               onChange={(e) => {
+    const value = e.target.value;
+
+    // Allow only numbers
+    if (/^\d*$/.test(value)) {
+      formik.setFieldValue("percentage", value);
+    }
+  }}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.percentage &&
@@ -141,24 +162,31 @@ return (
                 formik.errors.percentage
               }
             />
-              <TextField
-              fullWidth
-              label="Display Order"
-              name="displayOrder"
-              sx={{ mb: 2 }}
-              value={formik.values.displayOrder}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.displayOrder &&
-                Boolean(formik.errors.displayOrder)
-              }
-              helperText={
-                formik.touched.displayOrder &&
-                formik.errors.displayOrder
-              }
-            />
+      
+          <TextField
+            fullWidth
+            label="Display Order"
+            name="displayOrder"
+            sx={{ mb: 2 }}
+            value={formik.values.displayOrder}
+            onChange={(e) => {
+              const value = e.target.value;
 
+              // Allow only numbers
+              if (/^\d*$/.test(value)) {
+                formik.setFieldValue("displayOrder", value);
+              }
+            }}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.displayOrder &&
+              Boolean(formik.errors.displayOrder)
+            }
+            helperText={
+              formik.touched.displayOrder &&
+              formik.errors.displayOrder
+            }
+          />
            
 
             <TextField

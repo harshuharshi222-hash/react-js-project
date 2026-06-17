@@ -95,7 +95,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
   
-const [searchText, setSearchText] = useState("");
+// const [searchText, setSearchText] = useState("");
+const [searchText, setSearchText] = useState(
+  localStorage.getItem("clpSearchText") || ""
+);
+
+useEffect(() => {
+  localStorage.setItem("clpSearchText", searchText);
+}, [searchText]);
 const [tableData, setTableData] = useState([]);
 const [status, setStatus] = useState("Active");
 
@@ -631,6 +638,7 @@ const totalPages = Math.ceil(
     overflow: "hidden",
     border: "1px solid #dcdcdc",
     borderRadius: 2,
+
     
   }}
 >
@@ -638,21 +646,39 @@ const totalPages = Math.ceil(
   <TableContainer
   component={Paper}
   sx={{
-    overflowX: "auto",
+    // overflowX: "auto",
     border: "1px solid #dcdcdc",
+    display:"flex",
+     maxHeight: "500px", 
+       overflowY: "auto",
+    overflowX: "auto",
+
+    "&::-webkit-scrollbar": {
+      height: "8px",
+      width: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#bdbdbd",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "#f1f1f1",
+    },
     // backgroundColor: "#dcdcdc",
     
   }}
 >
+ 
   <Table
-    sx={{
-      tableLayout: "auto",
-      width: "100%",
-      borderCollapse: "collapse",
-      whiteSpace: "nowrap",
-      textAlign: "center",
-    }}
-  >
+  stickyHeader
+  sx={{
+    minWidth: 1200, // table expands
+    borderCollapse: "collapse",
+    whiteSpace: "nowrap",
+    tableLayout: "fixed",
+     
+  }}
+>
     <TableHead>
   
   <TableRow>
@@ -673,15 +699,7 @@ const totalPages = Math.ceil(
 
         <Box
           onMouseDown={(e) => startResize(e, head)}
-          // sx={{
-          //   position: "absolute",
-          //   top: 0,
-          //   right: 0,
-          //   width: "8px",
-          //   height: "100%",
-          //   cursor: "col-resize",
-          //   zIndex: 10,
-          // }}
+         
             sx={{
     position: "absolute",
     top: 0,
@@ -802,19 +820,21 @@ const totalPages = Math.ceil(
   {/* Pagination */}
 
 
-     
-  
-
-    <Box
+  <Box
   sx={{
-    width: "100%",
+    position: "sticky",
+    bottom: 0,
+    zIndex: 100,
+    backgroundColor: "#fff",
+    borderTop: "1px solid #dcdcdc",
+
     display: "flex",
-    alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#f5f5f5",
-    padding: "10px 35px",
+    alignItems: "center",
+
+    p: 2,
   }}
-  >
+>
   <Button
     variant="contained"
     disabled={page === 0}
@@ -843,14 +863,18 @@ const totalPages = Math.ceil(
 
   </Select>
 
-  <Button
-    variant="contained"
-    disabled={page >= totalPages - 1}
-    onClick={() => setPage((prev) => prev + 1)}
-   
-  >
-    Next
-  </Button>
+  
+
+<Button
+  variant="contained"
+  disabled={page >= totalPages - 1}
+  onClick={() => setPage((prev) => prev + 1)}
+  sx={{
+    minWidth: 120,
+  }}
+>
+  Next
+</Button>
 </Box>
   
 </Paper> 
