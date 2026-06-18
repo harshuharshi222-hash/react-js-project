@@ -146,14 +146,19 @@ const handleDownload = () => {
   const [updateConstructionLinkPayment] =
   useUpdateConstructionLinkPaymentMutation();
   
- useEffect(() => {
-    loadData();
-   }, []);
+//  useEffect(() => {
+//     loadData();
+//    }, []);
    
-
+useEffect(() => {
+  loadData();
+}, [status]);
 
  
-  const loadData = async () => {
+
+
+
+const loadData = async () => {
   try {
     const payload = {
       userID: "171903551052335600",
@@ -165,92 +170,47 @@ const handleDownload = () => {
       iDisplayLength: 50,
     };
 
-    const response = await getConstructionLinkPayment(payload).unwrap();
+    const response =
+      await getConstructionLinkPayment(payload).unwrap();
 
-    console.log("Full Response:", response);
+    setData(response);
 
-    // Check actual API structure here
-   
-    setData(response)
-    
-  const apiData =
-  response?.data ||
-  response?.result ||
-  response?.records ||
-  response?.data?.records ||
-  [];
+    const apiData =
+      response?.data ||
+      response?.result ||
+      response?.records ||
+      response?.data?.records ||
+      [];
 
+    const formattedData = apiData.map((item) => ({
+      clpID: item.clpID || item.clp_id,
+      milestone_name:
+        item.milestone_name || item.milestoneName,
+      display_order:
+        item.display_order || item.displayOrder,
+      percentage: item.percentage,
+      description: item.description,
+      status: item.status || "Active",
+      updated_user_name:
+        item.updated_user_name ||
+        item.updatedUserName ||
+        "",
+      added_on:
+        item.added_on ||
+        item.addedOn ||
+        "",
+    }));
 
+    const localData =
+      JSON.parse(
+        localStorage.getItem("clpMilestones")
+      ) || [];
 
-
-const formattedData = apiData.map((item) => ({
-  milestone_name:
-    item.milestone_name || item.milestoneName,
-
-  display_order:
-    item.display_order || item.displayOrder,
-
-  percentage: item.percentage,
-
-  updated_user_name:
-    item.updated_user_name ||
-    item.updatedUserName ||
-    "",
-
-  added_on:
-    item.added_on ||
-    item.addedOn ||
-    "",
-
-  status:
-    item.status || "Active",
-}));
-
-const updatedData = apiData.map((item) => ({
-  clpID: item.clpID || item.clp_id,
-
-  milestone_name:
-    item.milestone_name || item.milestoneName,
-
-  display_order:
-    item.display_order || item.displayOrder,
-
-  percentage: item.percentage,
-
-  description: item.description,
-
-  status: item.status,
-
-  updated_user_name:
-    item.updated_user_name ||
-    item.updatedUserName,
-
-  added_on:
-    item.added_on ||
-    item.addedOn,
-}));
-
-setTableData(updatedData);
-
-setTableData(formattedData);
-    // setTableData(data);
-
-     const localData =
-      JSON.parse(localStorage.getItem("clpMilestones")) || [];
-
-    console.log("API Data", apiData);
-    console.log("Local Data", localData);
-
-     const mergedData = [...localData, ...apiData];
-
-    console.log("Merged Data:", mergedData);
-  
-    setTableData([...localData, ...apiData]);
+    setTableData([...localData, ...formattedData]);
   } catch (err) {
-    console.error(err);
+    console.error("LoadData Error:", err);
   }
 };
-  
 
 console.log("response Data",data)
 
@@ -352,15 +312,7 @@ const visibleColumns = [
  
     setSelected(typeof value === "string" ? value.split(",") : value);
  };
-//  const columns = [
-//   "S.No",
-//   "Milestone Name",
-//   "Display Order",
-//   "Percentage",
-//   "Added By",
-//   "Added On ",
-//   "Status",
-// ];
+
 const [columnWidths, setColumnWidths] = useState({
   "S.No": 80,
   "Milestone Name": 220,
@@ -371,18 +323,6 @@ const [columnWidths, setColumnWidths] = useState({
   "Status": 140,
 });
 
-// const [columnWidths, setColumnWidths] = useState({
-//   "S.No": 80,
-//   "Project Id":80,
-//   "Project Name": 180,
-//   "Activity Title": 180,
-//   "Added On": 140,
-//   "To Date": 140,
-//   "Description": 220,
-//   "Added By": 140,
-//   "Added On": 140,
-//   "Status": 120,  
-// });
 
 const startResize = (e, column) => {
   e.preventDefault();
@@ -586,15 +526,18 @@ const totalPages = Math.ceil(
         
           <FormControl size="small" sx={{ minWidth: 160 }}>
   <InputLabel>Status</InputLabel>
-  <Select
-    value={status}
-    label="Status"
-    onChange={(e) => setStatus(e.target.value)}
-    onClick={loadData}
-  >
-    <MenuItem value="Active" >Active</MenuItem>
-    <MenuItem value="inActive">In-Active</MenuItem>
-  </Select>
+ 
+  
+ 
+<Select
+  value={status}
+  label="Status"
+  onChange={(e) => setStatus(e.target.value)}
+>
+  <MenuItem value="Active">Active</MenuItem>
+  <MenuItem value="inActive">In-Active</MenuItem>
+</Select>
+
 </FormControl>
 
        
