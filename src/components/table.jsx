@@ -247,7 +247,7 @@ const filteredData = tableData.filter((row) => {
 
      const navigate = useNavigate();
    const handlegotocreate = () => {
-      navigate('/create')
+      navigate('/dashboard/table/create')
    }
 
        const navigate1 = useNavigate();
@@ -256,14 +256,13 @@ const filteredData = tableData.filter((row) => {
    }
 
     const navigate2 = useNavigate();
-        // const handlegotoupdate = () => {
-        //    navigate2('/update')
-        // }
+       
 
         const handlegotoupdate = (row) => {
-  navigate2("/update", {
+  navigate2("/dashboard/table/update/:id", {
     state: row,
   });
+
 };
 
   const [page, setPage] = useState(0);
@@ -533,6 +532,7 @@ const totalPages = Math.ceil(
   value={status}
   label="Status"
   onChange={(e) => setStatus(e.target.value)}
+  // onChange={handleStatusChange}
 >
   <MenuItem value="Active">Active</MenuItem>
   <MenuItem value="inActive">In-Active</MenuItem>
