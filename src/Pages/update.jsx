@@ -23,17 +23,7 @@ import {
 
 
 export default function Update() {
-//   const navigate = useNavigate();
 
-
-//   const rowData = location.state || {};
-//    console.log(rowData,"rowdatadata");
-//   const [updateConstructionLinkPayment] =
-//   useUpdateConstructionLinkPaymentMutation();
-
-
-  
-// const location = useLocation();
 
 const navigate = useNavigate();
 

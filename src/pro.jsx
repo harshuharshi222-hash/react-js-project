@@ -537,7 +537,7 @@ const loadData = async () => {
   try {
     const payload = {
       userID: "171903551052335600",
-      milestoneName: "",
+      milestoneName: searchText,
       status: status,
       generalSearch: searchText,
       sortOrder: "",
@@ -558,7 +558,7 @@ const loadData = async () => {
       [];
 
     const formattedData = apiData.map((item) => ({
-      clpID: item.clpID || item.id,
+      clpID:  item.id,
       milestone_name:
         item.milestone_name || item.milestoneName,
       display_order:
