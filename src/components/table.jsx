@@ -226,9 +226,6 @@ console.log("response Data",data)
   console.log("first row =", tableData?.[0]);
 
 
-console.log("tableData =", tableData);
-console.log("first row =", tableData[0]);
-
 
 
 const filteredData = tableData.filter((row) => {
@@ -253,19 +250,19 @@ const filteredData = tableData.filter((row) => {
       navigate('/dashboard/table/create')
    }
 
-       const navigate1 = useNavigate();
+      //  const navigate1 = useNavigate();
    const handlegotodashboard = () => {
-      navigate1('/dashboard')
+      navigate('/dashboard')
    }
 
-    const navigate2 = useNavigate();
+    // const navigate2 = useNavigate();
         // const handlegotoupdate = () => {
         //    navigate2('/update')
         // }
 
         const handlegotoupdate = (row) => {
           console.log(row,"row")
-  navigate2("/dashboard/table/update", {
+  navigate("/dashboard/table/update", {
     state: row,
   });
 };
@@ -273,18 +270,18 @@ const filteredData = tableData.filter((row) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
-  const adornmentId = React.useId();
-  const textFieldId = React.useId();
-  const sxId = React.useId();
+  // const adornmentId = React.useId();
+  // const textFieldId = React.useId();
+  // const sxId = React.useId();
 
   
 
@@ -352,8 +349,6 @@ const startResize = (e, column) => {
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("mouseup", handleMouseUp);
 };
-console.log("tableData =", tableData);
-console.log("First Row =", tableData?.[0]);
 
 const totalPages = Math.ceil(
   filteredData.length / rowsPerPage
