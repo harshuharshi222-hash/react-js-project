@@ -92,7 +92,7 @@ console.log("Received CLP ID:", location.state?.clpID);
 
     alert("Updated Successfully");
 
-    navigate("/table");
+    navigate("/dashboard/table");
   } catch (error) {
     console.error("Update Error:", error);
     alert("Update Failed");

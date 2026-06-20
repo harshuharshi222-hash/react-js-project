@@ -89,7 +89,7 @@ onSubmit: async (values) => {
     }).unwrap();
 
     alert("Created Successfully");
-    navigate("/table");
+    navigate("/dashboard/table");
   } catch (err) {
     console.log(err);
   }
