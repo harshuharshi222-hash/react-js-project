@@ -12,29 +12,6 @@ import Get from '../Pages/get.jsx';
 import Update from '../Pages/update.jsx';
 
 export default function AppRoutes(){
-
-    
-         const navigate = useNavigate();
-       const handlegotocreate = () => {
-          navigate('/dashboard/table/create')
-       }
-    
-           const navigate1 = useNavigate();
-       const handlegotodashboard = () => {
-          navigate1('/dashboard')
-       }
-    
-        const navigate2 = useNavigate();
-           
-    
-            const handlegotoupdate = (row) => {
-      navigate2("/dashboard/table/update/:id", {
-        state: row,
-      });
-
-    return(
-
- 
     <Router>
         <Routes>
                             <Route path="/create" element={< CreateCL />} />
@@ -43,6 +20,4 @@ export default function AppRoutes(){
                             <Route path="/update" element={<Update />} />
                             </Routes>
     </Router>
-    );
-}
 }

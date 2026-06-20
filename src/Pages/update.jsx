@@ -20,14 +20,46 @@ import {
 
 
 
-export default function Update() {
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const rowData = location.state || {};
-   console.log(rowData,"rowdatadata");
-  const [updateConstructionLinkPayment] =
+
+export default function Update() {
+//   const navigate = useNavigate();
+
+
+//   const rowData = location.state || {};
+//    console.log(rowData,"rowdatadata");
+//   const [updateConstructionLinkPayment] =
+//   useUpdateConstructionLinkPaymentMutation();
+
+
+  
+// const location = useLocation();
+
+const navigate = useNavigate();
+
+const location = useLocation();
+
+const rowData = location?.state || {};
+
+console.log("Location State:", location?.state);
+console.log("Row Data:", rowData);
+
+const [updateConstructionLinkPayment] =
   useUpdateConstructionLinkPaymentMutation();
+
+  if (!location?.state) {
+    return (
+      <Box p={3}>
+        <Typography color="error">
+          No record selected. Please go back and select a row.
+        </Typography>
+      </Box>
+    );
+  }
+
+console.log("Received Data:", location.state);
+console.log("Received CLP ID:", location.state?.clpID);
+
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -53,7 +85,7 @@ export default function Update() {
   try {
     const payload = {
       userID: "171903551052335600",
-      clpID: rowData.id || rowData.id,
+      clpID: rowData?.clpID ,
       milestoneName: values.milestoneName,
       percentage: values.percentage,
       displayOrder: values.displayOrder,
@@ -137,7 +169,8 @@ export default function Update() {
         fullWidth
         label="Milestone Name"
         value={formik.values.milestoneName}
-        InputProps={{ readOnly: true }}
+        // InputProps={{ readOnly: true }}
+        disabled
         sx={{ mb: 3 }}
 
       />
@@ -146,7 +179,8 @@ export default function Update() {
         fullWidth
         label="Percentage"
         value={formik.values.percentage}
-        InputProps={{ readOnly: true }}
+        // InputProps={{ readOnly: true }}
+        disabled
         sx={{ mb: 3 }}
 
       />
@@ -155,20 +189,11 @@ export default function Update() {
         fullWidth
         label="Display Order"
         value={formik.values.displayOrder}
-        InputProps={{ readOnly: true }}
+        // InputProps={{ readOnly: true }}
+        disabled
         sx={{ mb: 3 }}
    
       />
-{/* 
-      <TextField
-        fullWidth
-        multiline
-        rows={5}
-        label="Description"
-        value={formik.values.description}
-     
-        sx={{ mb: 3 }}
-      /> */}
 
       
                   <TextField

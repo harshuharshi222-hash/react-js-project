@@ -183,7 +183,7 @@ const loadData = async () => {
       [];
 
     const formattedData = apiData.map((item) => ({
-      clpID: item.clpID || item.clp_id,
+      clpID: item.id,
       milestone_name:
         item.milestone_name || item.milestoneName,
       display_order:
@@ -247,7 +247,7 @@ const filteredData = tableData.filter((row) => {
 
      const navigate = useNavigate();
    const handlegotocreate = () => {
-      navigate('/dashboard/table/create')
+      navigate('/create')
    }
 
        const navigate1 = useNavigate();
@@ -256,13 +256,15 @@ const filteredData = tableData.filter((row) => {
    }
 
     const navigate2 = useNavigate();
-       
+        // const handlegotoupdate = () => {
+        //    navigate2('/update')
+        // }
 
         const handlegotoupdate = (row) => {
-  navigate2("/dashboard/table/update/:id", {
+          console.log(row,"row")
+  navigate2("/update", {
     state: row,
   });
-
 };
 
   const [page, setPage] = useState(0);
