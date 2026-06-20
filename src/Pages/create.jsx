@@ -13,7 +13,7 @@ export default function CreateCL() {
   const navigate = useNavigate();
 
   const handlegototable = () => {
-    navigate("/table");
+    navigate("/dashboard/table");
   };
    
 const [createConstructionLinkPayment] =

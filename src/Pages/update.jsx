@@ -101,7 +101,7 @@ console.log("Received CLP ID:", location.state?.clpID);
   });
 
   const handlegototable = () => {
-    navigate("/table");
+    navigate("/dashboard/table");
   };
 
 

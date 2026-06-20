@@ -99,10 +99,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const [searchText, setSearchText] = useState(
   localStorage.getItem("clpSearchText") || ""
 );
+console.log("Searching:", searchText);
+
 
 useEffect(() => {
   localStorage.setItem("clpSearchText", searchText);
 }, [searchText]);
+
 const [tableData, setTableData] = useState([]);
 const [status, setStatus] = useState("Active");
 
@@ -162,7 +165,7 @@ const loadData = async () => {
   try {
     const payload = {
       userID: "171903551052335600",
-      milestoneName: searchText,
+      milestoneName: "",
       status: status,
       generalSearch: searchText,
       sortOrder: "",
@@ -247,7 +250,7 @@ const filteredData = tableData.filter((row) => {
 
      const navigate = useNavigate();
    const handlegotocreate = () => {
-      navigate('/create')
+      navigate('/dashboard/table/create')
    }
 
        const navigate1 = useNavigate();
@@ -262,7 +265,7 @@ const filteredData = tableData.filter((row) => {
 
         const handlegotoupdate = (row) => {
           console.log(row,"row")
-  navigate2("/update", {
+  navigate2("/dashboard/table/update", {
     state: row,
   });
 };
@@ -323,6 +326,7 @@ const [columnWidths, setColumnWidths] = useState({
   "Added On": 180,
   "Status": 140,
 });
+
 
 
 const startResize = (e, column) => {

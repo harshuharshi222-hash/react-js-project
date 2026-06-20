@@ -469,7 +469,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-  
+ 
+const [debouncedSearch, setDebouncedSearch] = useState("");
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(searchText);
+  }, 500); // API after 500ms stop typing
+
+  return () => clearTimeout(timer);
+}, [searchText]);
+
 // const [searchText, setSearchText] = useState("");
 const [searchText, setSearchText] = useState(
   localStorage.getItem("clpSearchText") || ""
@@ -527,7 +537,7 @@ const handleDownload = () => {
    
 useEffect(() => {
   loadData();
-}, [status]);
+}, [status, searchText ]);
 
  
 
@@ -537,9 +547,10 @@ const loadData = async () => {
   try {
     const payload = {
       userID: "171903551052335600",
-      milestoneName: searchText,
+      milestoneName: "",
       status: status,
-      generalSearch: searchText,
+      // generalSearch: searchText,
+      generalSearch: debouncedSearch,
       sortOrder: "",
       iDisplayStart: 0,
       iDisplayLength: 50,
@@ -1310,7 +1321,7 @@ console.log("Received CLP ID:", location.state?.clpID);
 
     alert("Updated Successfully");
 
-    navigate("/table");
+    navigate("/dashboard/table");
   } catch (error) {
     console.error("Update Error:", error);
     alert("Update Failed");
@@ -1319,7 +1330,7 @@ console.log("Received CLP ID:", location.state?.clpID);
   });
 
   const handlegototable = () => {
-    navigate("/table");
+    navigate("/dashboard/table");
   };
 
 

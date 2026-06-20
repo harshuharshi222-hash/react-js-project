@@ -144,7 +144,7 @@ export default function MiniDrawer() {
      
      const navigate = useNavigate();
  const handlegotopromotionalt = () => {
-    navigate('/table')
+    navigate('/dashboard/table')
  }
 
     const theme = useTheme();
@@ -285,10 +285,10 @@ export default function MiniDrawer() {
          
              
                     <Routes>
-                    <Route path="/create" element={< CreateCL />} />
-                    <Route path="/table" element={<PromotionalActivity />} />
+                    <Route path="/dashboard/table/create" element={< CreateCL />} />
+                    <Route path="/dashboard/table" element={<PromotionalActivity />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/update" element={<Update />} />
+                    <Route path="/dashboard/table/update" element={<Update />} />
                     </Routes>
               
 
