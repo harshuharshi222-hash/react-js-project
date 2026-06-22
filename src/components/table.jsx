@@ -270,19 +270,6 @@ const filteredData = tableData.filter((row) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  // const adornmentId = React.useId();
-  // const textFieldId = React.useId();
-  // const sxId = React.useId();
-
   
 
   const allColumns = [
