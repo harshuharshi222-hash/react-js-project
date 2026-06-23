@@ -1,5 +1,4 @@
 // 
-import React from "react";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import {  Button ,
    Box ,
@@ -9,10 +8,14 @@ import {  Button ,
     InputLabel , 
     Select , 
     MenuItem } from "@mui/material";
+    import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import React, { useState } from "react";
 
 import { Autocomplete, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
+
 import * as Yup from "yup";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Margin, WidthFull } from "@mui/icons-material";
@@ -38,6 +41,17 @@ console.log("Row Data:", rowData);
 
 const [updateConstructionLinkPayment] =
   useUpdateConstructionLinkPaymentMutation();
+
+const statusOptions = [
+  { label: "Active" },
+  { label: "InActive" },
+];
+
+const [openSnackbar, setOpenSnackbar] = useState(false);
+
+const handleCloseSnackbar = () => {
+  setOpenSnackbar(false);
+};
 
   if (!location?.state) {
     return (
@@ -73,11 +87,39 @@ console.log("Received CLP ID:", location.state?.clpID);
     }),
 
    
-    onSubmit: async (values) => {
+//     onSubmit: async (values) => {
+//   try {
+//     const payload = {
+//       userID: "171903551052335600",
+//       clpID: rowData?.clpID ,
+//       milestoneName: values.milestoneName,
+//       percentage: values.percentage,
+//       displayOrder: values.displayOrder,
+//       description: values.description,
+//       status: values.status,
+//     };
+
+//     console.log("Update Payload:", payload);
+
+//     const response =
+//       await updateConstructionLinkPayment(payload).unwrap();
+
+//     console.log("Update Response:", response);
+
+//     alert("Updated Successfully");
+
+//     navigate("/dashboard/table");
+//   } catch (error) {
+//     console.error("Update Error:", error);
+//     alert("Update Failed");
+//   }
+// },
+
+onSubmit: async (values) => {
   try {
     const payload = {
       userID: "171903551052335600",
-      clpID: rowData?.clpID ,
+      clpID: rowData?.clpID,
       milestoneName: values.milestoneName,
       percentage: values.percentage,
       displayOrder: values.displayOrder,
@@ -85,21 +127,19 @@ console.log("Received CLP ID:", location.state?.clpID);
       status: values.status,
     };
 
-    console.log("Update Payload:", payload);
+    await updateConstructionLinkPayment(payload).unwrap();
 
-    const response =
-      await updateConstructionLinkPayment(payload).unwrap();
+    setOpenSnackbar(true);
 
-    console.log("Update Response:", response);
+    setTimeout(() => {
+      navigate("/dashboard/table");
+    }, 2000);
 
-    alert("Updated Successfully");
-
-    navigate("/dashboard/table");
   } catch (error) {
     console.error("Update Error:", error);
     alert("Update Failed");
   }
-},
+}
   });
 
   const handlegototable = () => {
@@ -211,29 +251,47 @@ console.log("Received CLP ID:", location.state?.clpID);
           <MenuItem value="Active">Active</MenuItem>
           <MenuItem value="inActive">In-Active</MenuItem>
         </Select> */}
-        <Autocomplete
-  options={[
-    { label: "Active", value: "Active" },
-    { label: "Inactive", value: "Inactive" },
-  ]}
+        <Snackbar
+  open={openSnackbar}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity="success"
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    Updated Successfully
+  </Alert>
+</Snackbar>
+<Autocomplete
+  options={statusOptions}
+  getOptionLabel={(option) => option.label}
   value={
-    [
-      { label: "Active", value: "Active" },
-      { label: "Inactive", value: "Inactive" },
-    ].find((option) => option.value === formik.values.status) || null
+    statusOptions.find(
+      (item) => item.label === formik.values.status
+    ) || null
   }
   onChange={(event, newValue) => {
-    formik.setFieldValue("status", newValue?.value || "");
+    formik.setFieldValue(
+      "status",
+      newValue ? newValue.label : ""
+    );
   }}
   renderInput={(params) => (
     <TextField
       {...params}
       label="Status"
-      error={formik.touched.status && Boolean(formik.errors.status)}
-      helperText={formik.touched.status && formik.errors.status}
+      fullWidth
     />
   )}
 />
+   
       </FormControl>
     </Paper>
 
