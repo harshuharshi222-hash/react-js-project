@@ -10,6 +10,11 @@ import {
   useCreateConstructionLinkPaymentMutation,
 } from "../api/constructionApi";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { useState } from "react";
+
+
 export default function CreateCL() {
   const navigate = useNavigate();
 
@@ -19,6 +24,12 @@ export default function CreateCL() {
    
 const [createConstructionLinkPayment] =
   useCreateConstructionLinkPaymentMutation();
+
+const [openSnackbar, setOpenSnackbar] = useState(false);
+
+const handleCloseSnackbar = () => {
+  setOpenSnackbar(false);
+};
 
   const formik = useFormik({
     initialValues: {
@@ -39,14 +50,6 @@ const [createConstructionLinkPayment] =
     )
     .required("Required*"),
 
-  // percentage: Yup.number().test(
-  //   "Invalid len",
-  //   "must be less than or equal to 3 digits",
-   
-  //   (val) => !val || val.toString().length <= 3
-    
-  // )
-  //  .required("Required*"),
   percentage: Yup.number()
   .test(
     "Invalid len",
@@ -64,13 +67,7 @@ const [createConstructionLinkPayment] =
     .required("Required*"),
 
 
-  // description : Yup.string()
-  //   .matches(
-  //     /^[a-z A-Z 0-9 ]+$/,
-  //     "only letters and numbers are allowed"
-  //   )
-  //   .required("Required*"),
-  //   }),
+  
 
   displayOrder: Yup.number()
   .typeError("Only numbers are allowed")
@@ -79,6 +76,22 @@ const [createConstructionLinkPayment] =
   .required("Required*"),
   }),
 
+// onSubmit: async (values) => {
+//   try {
+//     await createConstructionLinkPayment({
+//       userID: "171903551052335600",
+//       milestoneName: values.milestoneName,
+//       percentage: values.percentage,
+//       displayOrder: values.displayOrder,
+//       description: values.description,
+//     }).unwrap();
+// //mui
+//     alert("Created Successfully");
+//     navigate("/dashboard/table");
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 onSubmit: async (values) => {
   try {
     await createConstructionLinkPayment({
@@ -88,9 +101,13 @@ onSubmit: async (values) => {
       displayOrder: values.displayOrder,
       description: values.description,
     }).unwrap();
-//mui
-    alert("Created Successfully");
-    navigate("/dashboard/table");
+
+    setOpenSnackbar(true);
+
+    setTimeout(() => {
+      navigate("/dashboard/table");
+    }, 2000);
+
   } catch (err) {
     console.log(err);
   }
@@ -210,6 +227,22 @@ return (
               }
             />
           </div>
+
+          <Snackbar
+  open={openSnackbar}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity="success"
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    Created Successfully
+  </Alert>
+</Snackbar>
       
           <div className="buttonsAlignment">
             {/* RESET BUTTON */}
