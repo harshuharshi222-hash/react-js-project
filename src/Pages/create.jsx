@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import React from "react";
 import { useFormik } from "formik";
-import './create.css';
+import './create.scss';
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import {
