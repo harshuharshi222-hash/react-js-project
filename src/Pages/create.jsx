@@ -76,22 +76,7 @@ const handleCloseSnackbar = () => {
   .required("Required*"),
   }),
 
-// onSubmit: async (values) => {
-//   try {
-//     await createConstructionLinkPayment({
-//       userID: "171903551052335600",
-//       milestoneName: values.milestoneName,
-//       percentage: values.percentage,
-//       displayOrder: values.displayOrder,
-//       description: values.description,
-//     }).unwrap();
-// //mui
-//     alert("Created Successfully");
-//     navigate("/dashboard/table");
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
+
 onSubmit: async (values) => {
   try {
     await createConstructionLinkPayment({

@@ -190,12 +190,20 @@ export default function MiniDrawer() {
                         sx={[
                             {
                                 marginRight: 5,
+                                
 
                             },
                             open && { display: 'block' },
                         ]}
                     >
-                        <MenuIcon />
+                        <MenuIcon 
+                        sx={{
+                            fontSize:40,
+                            color:"#717070"
+
+
+                        }}
+                        />
                     </IconButton>
                     <img src='/public/kns.png' alt='' width={40} className='logoStyling' />
                     <Typography variant="h6" noWrap component="div">
