@@ -3,6 +3,7 @@ import { TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import React from "react";
 import { useFormik } from "formik";
+import './create.css';
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import {
@@ -87,7 +88,7 @@ onSubmit: async (values) => {
       displayOrder: values.displayOrder,
       description: values.description,
     }).unwrap();
-//mui alert
+//mui
     alert("Created Successfully");
     navigate("/dashboard/table");
   } catch (err) {

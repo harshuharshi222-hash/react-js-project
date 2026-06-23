@@ -1,6 +1,6 @@
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { TextField } from '@mui/material';
-import './create';
+import './create.css';
 import Button from '@mui/material/Button';
 import { Height, Maximize } from '@mui/icons-material';
 import { useFormik } from 'formik';

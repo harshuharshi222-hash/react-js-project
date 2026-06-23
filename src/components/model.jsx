@@ -197,7 +197,7 @@ export default function MiniDrawer() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <img src='..\public\kns.png' alt='' width={40} className='logoStyling' />
+                    <img src='/public/kns.png' alt='' width={40} className='logoStyling' />
                     <Typography variant="h6" noWrap component="div">
                         KNS
                     </Typography>
