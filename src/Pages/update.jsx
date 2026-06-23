@@ -1,7 +1,7 @@
 // 
 import React from "react";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { TextField, Button ,
+import {  Button ,
    Box ,
    Typography ,
    Paper , 
@@ -9,6 +9,8 @@ import { TextField, Button ,
     InputLabel , 
     Select , 
     MenuItem } from "@mui/material";
+
+import { Autocomplete, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -198,9 +200,9 @@ console.log("Received CLP ID:", location.state?.clpID);
                   />
 
       <FormControl fullWidth sx={{ mb: 3 }}>
-        <InputLabel>Status</InputLabel>
+        {/* <InputLabel>Status</InputLabel> */}
 
-        <Select
+        {/* <Select
           name="status"
           value={formik.values.status}
           label="Status"
@@ -208,7 +210,30 @@ console.log("Received CLP ID:", location.state?.clpID);
         >
           <MenuItem value="Active">Active</MenuItem>
           <MenuItem value="inActive">In-Active</MenuItem>
-        </Select>
+        </Select> */}
+        <Autocomplete
+  options={[
+    { label: "Active", value: "Active" },
+    { label: "Inactive", value: "Inactive" },
+  ]}
+  value={
+    [
+      { label: "Active", value: "Active" },
+      { label: "Inactive", value: "Inactive" },
+    ].find((option) => option.value === formik.values.status) || null
+  }
+  onChange={(event, newValue) => {
+    formik.setFieldValue("status", newValue?.value || "");
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Status"
+      error={formik.touched.status && Boolean(formik.errors.status)}
+      helperText={formik.touched.status && formik.errors.status}
+    />
+  )}
+/>
       </FormControl>
     </Paper>
 
