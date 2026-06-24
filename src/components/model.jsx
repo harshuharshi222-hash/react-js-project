@@ -59,6 +59,10 @@ import { Outlet } from "react-router-dom";
 
 
 
+import AppraisalQuestion from '../AppraisalQuestion/index.jsx';
+
+
+
 
 
 const drawerWidth = 240;
@@ -147,6 +151,11 @@ export default function MiniDrawer() {
  const handlegotopromotionalt = () => {
     navigate('/dashboard/table')
  }
+
+ const handlegotoAppraisalQuestion = () => {
+    navigate('/AppraisalQuestion/index')
+ }
+
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -271,21 +280,35 @@ export default function MiniDrawer() {
                     <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             <ListItemButton sx={{ pl: 4 }}>
-                                  
-
-
-                                <ListItemIcon sx={{ color: 'white' }}>
-                                 
-                                   
+                                <ListItemIcon sx={{ color: 'white' }}>   
                                 </ListItemIcon>
                                <div sx={{size:'1px',}}>
                                 <CircleIcon  sx={{fontSize:10,mr:1,}}></CircleIcon>
                                </div>
                                 <ListItemText primary="CLP Milestone"  sx={{size:'small'}} onClick={handlegotopromotionalt} />
-
                             </ListItemButton>
                         </List>
                     </Collapse>
+
+
+
+                    <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemIcon sx={{ color: 'white' }}>   
+                                </ListItemIcon>
+                               <div sx={{size:'1px',}}>
+                                <CircleIcon  sx={{fontSize:10,mr:1,}}></CircleIcon>
+                               </div>
+                                <ListItemText primary="Appraisal Question"  sx={{size:'small'}}  onClick={handlegotoAppraisalQuestion} />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+
+
+
+                    
+                    
                 </List>
 
             </Drawer>
@@ -298,6 +321,7 @@ export default function MiniDrawer() {
                     <Route path="/dashboard/table" element={<PromotionalActivity />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/dashboard/table/update" element={<Update />} />
+                    <Route path="AppraisalQuestion/index" element={<AppraisalQuestion/>} />
                     </Routes>
               
 
