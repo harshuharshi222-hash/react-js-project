@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from "react";
+import Tooltip from '@mui/material/Tooltip';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import {
   Box,
   Button,
@@ -149,37 +151,7 @@ export default function AppraisalQuestion() {
           flexWrap: "wrap",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-          }}
-        >
-          <MenuOpenIcon sx={{ color: "#1976d2" }} />
 
-          <Typography
-            sx={{
-              fontWeight: 700,
-              fontSize: 28,
-              fontFamily: "Times New Roman",
-            }}
-          >
-            Appraisal Question
-          </Typography>
-
-          <IconButton>
-            <AddCircleIcon sx={{ color: "#7a5af8" }} />
-          </IconButton>
-
-          <IconButton>
-            <FileUploadOutlinedIcon sx={{ color: "#7a5af8" }} />
-          </IconButton>
-
-          <IconButton>
-            <PictureAsPdfIcon sx={{ color: "#1976d2" }} />
-          </IconButton>
-        </Box>
 
         <Box
           sx={{
@@ -255,14 +227,63 @@ export default function AppraisalQuestion() {
 
           <Button
             variant="contained"
-            sx={{
-              height: 40,
-              px: 4,
-            }}
+            size="small"
+            // sx={{
+            //   height: 40,
+            //   px: 4,
+            //   size: "small",
+            // }}
           >
             Search
           </Button>
         </Box>
+
+
+
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+          }}
+        >
+          <MenuOpenIcon sx={{ color: "#1976d2" }} />
+
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: 28,
+              fontFamily: "Times New Roman",
+            }}
+          >
+            Appraisal Question
+          </Typography>
+              <Tooltip title="Add">
+          <IconButton>
+            <AddCircleIcon sx={{ color: "#7a5af8" }} />
+          </IconButton>
+          </Tooltip>
+
+            <Tooltip title="Export">
+              <IconButton >
+            <SystemUpdateAltIcon
+              sx={{
+                color: "#6C63FF",
+                fontSize: 30,
+                 ml: -2,
+              }}
+            />
+            </IconButton>
+                  </Tooltip>
+              <Tooltip title="print">
+          <IconButton>
+            <PictureAsPdfIcon sx={{ color: "#1976d2" }} />
+          </IconButton>
+          </Tooltip>
+        </Box>
+
+        
       </Paper>
 
       {/* TABLE */}
