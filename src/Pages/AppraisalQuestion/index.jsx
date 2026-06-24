@@ -185,6 +185,11 @@ export default function AppraisalQuestion() {
         navigate('/AppraisalQuestion/index/Form')
      }
 
+       const AppraisalQuestion = () => {
+        navigate('/AppraisalQuestion/index')
+     }
+
+
   return (
     <Box
       sx={{

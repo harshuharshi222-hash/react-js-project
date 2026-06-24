@@ -34,8 +34,8 @@ const AddAppraisalQuestion = () => {
   };
 
    const navigate = useNavigate();
-       const AddAppraisalQuestion = () => {
-          navigate('/AppraisalQuestion/index/Form')
+       const AppraisalQuestion = () => {
+          navigate('/AppraisalQuestion/index')
        }
 
   return (
@@ -49,11 +49,11 @@ const AddAppraisalQuestion = () => {
           color: "#3392df",
           fontSize: "28px",
           fontWeight: 500,
-          onClick:{AddAppraisalQuestion},
+          onClick:{AppraisalQuestion},
         }}
       >
         <MenuOpenIcon sx={{ mr: 1 , fontSize:30,}}
-        onClick={AddAppraisalQuestion} 
+        onClick={AppraisalQuestion} 
         />
         ADD APPRAISAL QUESTION
         
