@@ -520,7 +520,7 @@ const totalPages = Math.ceil(
   value={status}
   label="Status"
   onChange={(e) => setStatus(e.target.value)}
-  // onChange={handleStatusChange}
+  
 >
   <MenuItem value="Active">Active</MenuItem>
   <MenuItem value="inActive">In-Active</MenuItem>

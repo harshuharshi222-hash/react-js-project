@@ -59,7 +59,8 @@ import { Outlet } from "react-router-dom";
 
 
 
-import AppraisalQuestion from '../AppraisalQuestion/index.jsx';
+import AppraisalQuestion from '../Pages/AppraisalQuestion/index.jsx';
+import AddAppraisalQuestion from '../Pages/AppraisalQuestion/Form.jsx';
 
 
 
@@ -321,7 +322,9 @@ export default function MiniDrawer() {
                     <Route path="/dashboard/table" element={<PromotionalActivity />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/dashboard/table/update" element={<Update />} />
-                    <Route path="AppraisalQuestion/index" element={<AppraisalQuestion/>} />
+                    <Route path="/AppraisalQuestion/index" element={<AppraisalQuestion/>} />
+                    <Route path="/AppraisalQuestion/index/Form" element={<AddAppraisalQuestion/>} />
+
                     </Routes>
               
 

@@ -1,12 +1,17 @@
 import React, { useMemo, useState } from "react";
 import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import { useNavigate } from "react-router-dom";
+import AddAppraisalQuestion from '../AppraisalQuestion/Form';
 import {
   Box,
   Button,
   Chip,
+  Checkbox,
+  ListItemText ,
   FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Paper,
   Select,
@@ -57,6 +62,52 @@ export default function AppraisalQuestion() {
       })),
     []
   );
+
+  const allColumns = [
+    "SL/No",
+    "Category Name",
+    "Title",
+    "Description",
+    "Designation",
+    "Option",
+    "Added By",
+    "Added On",
+    "Status",
+  ];
+  
+  const [selected, setSelected] = useState(allColumns);
+  
+  
+  const visibleColumns = [
+    selected.includes("SL/No") && "S.No",
+    selected.includes("Category Name") && "Category Name",
+    selected.includes("Title") && "Title",
+    selected.includes("Description") && "Description",
+    selected.includes("Designation") && "Designation",
+    selected.includes("Option") && "Option",
+    selected.includes("Added By") && "Added By",
+    selected.includes("Added On") && "Added On",
+    selected.includes("Status") && "Status",
+  ].filter(Boolean);
+  
+    const handleChange = (event) => {
+      const value = event.target.value;
+   
+      setSelected(typeof value === "string" ? value.split(",") : value);
+   };
+  
+  const [columnWidths, setColumnWidths] = useState({
+    "SL/No": 80,
+    "Category Name": 220,
+    "Title":200,
+    "Description":120,
+    "Designation":170,
+    "Option":100,
+    "Added By": 180,
+    "Added On": 180,
+    "Status": 140,
+  });
+  
 
   const columns = useMemo(
     () => [
@@ -129,6 +180,11 @@ export default function AppraisalQuestion() {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+    const navigate = useNavigate();
+     const AddAppraisalQuestion = () => {
+        navigate('/AppraisalQuestion/index/Form')
+     }
+
   return (
     <Box
       sx={{
@@ -143,10 +199,10 @@ export default function AppraisalQuestion() {
         elevation={0}
         sx={{
           p: 2,
-          mb: 2,
+          mb: -2,
           borderRadius: 3,
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "end",
           alignItems: "center",
           flexWrap: "wrap",
         }}
@@ -159,9 +215,10 @@ export default function AppraisalQuestion() {
             gap: 2,
             alignItems: "center",
             flexWrap: "wrap",
+            
           }}
         >
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{
               minWidth: 70,
@@ -169,9 +226,100 @@ export default function AppraisalQuestion() {
             }}
           >
             <FilterListIcon />
-          </Button>
+          </Button> */}
 
-          <FormControl size="small" sx={{ width: 180 }}>
+            <div>
+            <FormControl size="small">
+              <Select
+                multiple
+                value={selected}
+                onChange={handleChange}
+                displayEmpty
+                IconComponent={() => null}
+          
+                renderValue={() => (
+                  <FilterListIcon
+                    sx={{
+                      color: "#6c6868",
+                      fontSize: 26,
+                    }}
+                  />
+                )}
+          
+                sx={{
+                  width: 45,
+                  height: 40,
+                  border: "1px solid #a5a8ad",
+                  borderRadius: "3px",
+                
+          
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+          
+                  "& .MuiSelect-select": {
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0px !important",
+                  },
+          
+                  "&:hover": {
+                   
+                  },
+                }}
+              >
+                <MenuItem value="SL/No">
+                  <Checkbox checked={selected.indexOf("SL/No") > -1} />
+                  <ListItemText primary="SL/No" />
+                </MenuItem>
+          
+                <MenuItem value="Category Name">
+                  <Checkbox checked={selected.indexOf("Category Name") > -1} />
+                  <ListItemText primary="Category Name" />
+                </MenuItem>
+          
+                <MenuItem value="Title">
+                  <Checkbox checked={selected.indexOf("Title") > -1} />
+                  <ListItemText primary="Title" />
+                </MenuItem>
+          
+                <MenuItem value="Description">
+                  <Checkbox checked={selected.indexOf("Description") > -1} />
+                  <ListItemText primary="Description" />
+                </MenuItem>
+
+                 <MenuItem value="Designation">
+                  <Checkbox checked={selected.indexOf("Designation") > -1} />
+                  <ListItemText primary="Designation" />
+                </MenuItem>
+
+                 <MenuItem value="Option">
+                  <Checkbox checked={selected.indexOf("Option") > -1} />
+                  <ListItemText primary="Option" />
+                </MenuItem>
+          
+                <MenuItem value="Added By">
+                  <Checkbox checked={selected.indexOf("Added By") > -1} />
+                  <ListItemText primary="Added By" />
+                </MenuItem>
+                
+                <MenuItem value="Added On">
+                  <Checkbox checked={selected.indexOf("Added On") > -1} />
+                  <ListItemText primary="Added On" />
+                </MenuItem>
+                
+                 <MenuItem value="Status">
+                  <Checkbox checked={selected.indexOf("Status") > -1} />
+                  <ListItemText primary="Status" />
+                </MenuItem>
+          
+                
+              </Select>
+            </FormControl>
+          </div>
+
+          <FormControl size="small" sx={{ width: 150 }}>
             <Select
               value={department}
               displayEmpty
@@ -181,7 +329,7 @@ export default function AppraisalQuestion() {
             </Select>
           </FormControl>
 
-          <FormControl size="small" sx={{ width: 180 }}>
+          <FormControl size="small" sx={{ width: 150 }}>
             <Select
               value={designation}
               displayEmpty
@@ -191,7 +339,7 @@ export default function AppraisalQuestion() {
             </Select>
           </FormControl>
 
-          <FormControl size="small" sx={{ width: 180 }}>
+          <FormControl size="small" sx={{ width: 150 }}>
             <Select
               value={category}
               displayEmpty
@@ -200,13 +348,18 @@ export default function AppraisalQuestion() {
               <MenuItem value="">Category</MenuItem>
             </Select>
           </FormControl>
+                
+                    {/* status */}
 
           <FormControl size="small" sx={{ width: 180 }}>
+            <InputLabel>Status</InputLabel>
             <Select
               value={status}
+              label="status"
               onChange={(e) => setStatus(e.target.value)}
             >
               <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="inActive">In-Active</MenuItem>
             </Select>
           </FormControl>
 
@@ -237,10 +390,22 @@ export default function AppraisalQuestion() {
             Search
           </Button>
         </Box>
+            </Paper>
 
 
 
-
+              <Paper
+        elevation={0}
+        sx={{
+          p: 2,
+          mb: 2,
+          borderRadius: 3,
+          display: "flex",
+          justifyContent: "start",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -248,12 +413,12 @@ export default function AppraisalQuestion() {
             gap: 1.5,
           }}
         >
-          <MenuOpenIcon sx={{ color: "#1976d2" }} />
+          <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} />
 
           <Typography
             sx={{
               fontWeight: 700,
-              fontSize: 28,
+              fontSize: 20,
               fontFamily: "Times New Roman",
             }}
           >
@@ -261,7 +426,9 @@ export default function AppraisalQuestion() {
           </Typography>
               <Tooltip title="Add">
           <IconButton>
-            <AddCircleIcon sx={{ color: "#7a5af8" }} />
+            <AddCircleIcon sx={{ color: "#7a5af8" ,  fontSize:30,}} 
+            onClick={AddAppraisalQuestion}
+            />
           </IconButton>
           </Tooltip>
 
@@ -271,7 +438,7 @@ export default function AppraisalQuestion() {
               sx={{
                 color: "#6C63FF",
                 fontSize: 30,
-                 ml: -2,
+                 ml: -1,
               }}
             />
             </IconButton>
@@ -282,9 +449,10 @@ export default function AppraisalQuestion() {
           </IconButton>
           </Tooltip>
         </Box>
+        </Paper>
 
         
-      </Paper>
+      
 
       {/* TABLE */}
 
@@ -375,7 +543,7 @@ export default function AppraisalQuestion() {
               fontFamily: "Times New Roman",
             }}
           >
-            Page 1 of 12
+            Page 1 
           </Typography>
 
           <Select size="small" value={10}>
