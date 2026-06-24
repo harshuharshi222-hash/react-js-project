@@ -25,6 +25,7 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoIcon from "@mui/icons-material/Info";
+import InputAdornment from '@mui/material/InputAdornment';
 
 import {
   flexRender,
@@ -43,7 +44,7 @@ export default function AppraisalQuestion() {
     () =>
       Array.from({ length: 10 }, (_, i) => ({
         slNo: i + 1,
-        categoryName: "WORK EFFIC...",
+        categoryName: "",
         title: "",
         description: "",
         designation: "",
@@ -63,7 +64,7 @@ export default function AppraisalQuestion() {
       },
       {
         accessorKey: "categoryName",
-        header: "Categ...\nName",
+        header: "Category Name",
       },
       {
         accessorKey: "title",
@@ -239,9 +240,16 @@ export default function AppraisalQuestion() {
 
           <TextField
             size="small"
-            placeholder="Search"
-            InputProps={{
-              endAdornment: <SearchIcon />,
+            label="Search"
+            variant="standard"
+            slotProps={{
+                     input: {
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon />
+                            </InputAdornment>
+                          ),
+                        },
             }}
           />
 
