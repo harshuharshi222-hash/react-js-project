@@ -236,12 +236,25 @@ const columns = useMemo(
 
   console.log("Table Data", data);
 
+const [pagination, setPagination] = useState({
+  pageIndex: 0,
+  pageSize: 10,
+});
 
-
+// const table = useReactTable({
+//   data,
+//   columns,
+//   columnResizeMode: "onChange",
+//   getCoreRowModel: getCoreRowModel(),
+//   getPaginationRowModel: getPaginationRowModel(),
+// });
 const table = useReactTable({
   data,
   columns,
-  columnResizeMode: "onChange",
+  state: {
+    pagination,
+  },
+  onPaginationChange: setPagination,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
 });
@@ -610,7 +623,8 @@ const table = useReactTable({
       </TableCell>
     </TableRow>
   ) : table.getRowModel().rows.length > 0 ? (
-    table.getRowModel().rows.map((row) => (
+    // table.getRowModel().rows.map((row) => (
+      table.getPaginationRowModel().rows.map((row) => (
       <StyledTableRow key={row.id}>
         {row.getVisibleCells().map((cell) => (
           <StyledTableCell
@@ -645,7 +659,7 @@ const table = useReactTable({
 
         {/* FOOTER */}
 
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -674,8 +688,9 @@ const table = useReactTable({
             Page 1 
           </Typography>
 
-          <Select size="small" value={10}>
+          <Select size="small" value={50}>
             <MenuItem value={10}>10 rows</MenuItem>
+            <MenuItem value={20}>20 rows</MenuItem>
           </Select>
 
           <Button
@@ -686,7 +701,50 @@ const table = useReactTable({
           >
             Next
           </Button>
-        </Box>
+        </Box> */}
+
+        <Box
+  sx={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    p: 2,
+    borderTop: "1px solid #ddd",
+    bgcolor: "#fff",
+    flexWrap: "wrap",
+    gap: 2,
+  }}
+>
+  {/* Left Side */}
+  <Typography variant="body2">
+    Showing{" "}
+    {pagination.pageIndex * pagination.pageSize + 1}
+    {" - "}
+    {Math.min(
+      (pagination.pageIndex + 1) * pagination.pageSize,
+      data.length
+    )}
+    {" of "}
+    {data.length} records
+  </Typography>
+
+  {/* Center */}
+  
+
+  {/* Right Side */}
+  <FormControl size="small">
+    <Select
+      value={pagination.pageSize}
+      onChange={(e) => table.setPageSize(Number(e.target.value))}
+    >
+      <MenuItem value={10}>10 Rows</MenuItem>
+      <MenuItem value={20}>20 Rows</MenuItem>
+      <MenuItem value={30}>30 Rows</MenuItem>
+      <MenuItem value={40}>40 Rows</MenuItem>
+      <MenuItem value={50}>50 Rows</MenuItem>
+    </Select>
+  </FormControl>
+</Box>
       </Paper>
     </Box>
   );

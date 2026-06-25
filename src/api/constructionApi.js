@@ -5,7 +5,7 @@ export const constructionApi = createApi({
   reducerPath: "constructionApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/test/RestAPI_V1/crm/v2/",
+    // baseUrl: "/api/test/RestAPI_V1/crm/v2/",
      baseUrl: "http://192.168.0.201",
      
     prepareHeaders: (headers) => {
@@ -49,6 +49,22 @@ export const constructionApi = createApi({
 }), 
 
 
+    // createAppraisalQuestionOption: builder.mutation({
+    //   query: (payload) => ({
+    //     url: "createAppraisalQuestionOption",
+    //     method: "POST",
+    //     body: payload,
+    //   }),
+    // }),
+
+    createAppraisalQuestionOption: builder.mutation({
+  query: (payload) => ({
+    url: "/dev/RestAPI_V1/v2/createAppraisalQuestionOption",
+    method: "POST",
+    body: payload,
+  }),
+}),
+
 
 
   }),
@@ -59,4 +75,5 @@ export const {
   useCreateConstructionLinkPaymentMutation,
   useUpdateConstructionLinkPaymentMutation,
   useGetAppraisalQuestionMutation,
+   useCreateAppraisalQuestionOptionMutation,
 } = constructionApi;

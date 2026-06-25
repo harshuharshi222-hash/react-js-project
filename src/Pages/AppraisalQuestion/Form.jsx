@@ -11,7 +11,15 @@ import * as Yup from "yup";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
 
-const AddAppraisalQuestion = () => {
+import { useCreateAppraisalQuestionOptionMutation } from "../../api/constructionApi";
+
+
+
+export default function AddAppraisalQuestion() {
+
+  const [createAppraisalQuestionOption, { isLoading }] =
+    useCreateAppraisalQuestionOptionMutation();
+
   const formik = useFormik({
     initialValues: {
       categoryName: "",
@@ -19,13 +27,31 @@ const AddAppraisalQuestion = () => {
       description: "",
       displayOrder: "",
     },
+
     validationSchema: Yup.object({
       categoryName: Yup.string().required("Required"),
       questionTitle: Yup.string().required("Required"),
       description: Yup.string().required("Required"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+
+    onSubmit: async (values) => {
+      try {
+        const payload = {
+          userID: "171464700312440400",
+          displayOrder: values.displayOrder,
+          appraisalQuestionID: "120",
+          rateID: "5",
+          description: values.description,
+        };
+
+        const response = await createAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
+
+     
+      } catch (error) {
+  console.log("Full Error:", error);
+  console.log("Error Data:", error?.data);
+  console.log("Error Status:", error?.status);
+}
     },
   });
 
@@ -33,25 +59,29 @@ const AddAppraisalQuestion = () => {
     formik.resetForm();
   };
 
-   const navigate = useNavigate();
-       const AppraisalQuestion = () => {
-          navigate('/AppraisalQuestion/index')
-       }
+  const navigate = useNavigate();
+
+  const AppraisalQuestion = () => {
+    navigate("/AppraisalQuestion/index");
+  };
+
+ 
 
   return (
     <Box sx={{ p: 3, background: "#f4f4f4", minHeight: "100vh" }}>
       {/* Header */}
       <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 3,
-          color: "#3392df",
-          fontSize: "28px",
-          fontWeight: 500,
-          onClick:{AppraisalQuestion},
-        }}
-      >
+  onClick={AppraisalQuestion}
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    mb: 3,
+    color: "#3392df",
+    fontSize: "28px",
+    fontWeight: 500,
+    cursor: "pointer",
+  }}
+>
         <MenuOpenIcon sx={{ mr: 1 , fontSize:30,}}
         onClick={AppraisalQuestion} 
         />
@@ -71,18 +101,18 @@ const AddAppraisalQuestion = () => {
         <form onSubmit={formik.handleSubmit}>
           {/* Category */}
           <TextField
-            select
-            fullWidth
-            name="categoryName"
-            value={formik.values.categoryName}
-            onChange={formik.handleChange}
-            margin="normal"
-            label="Category Name*"
-          >
-            {/* <MenuItem value="Technical">Technical</MenuItem>
-            <MenuItem value="Behavioural">Behavioural</MenuItem>
-            <MenuItem value="Management">Management</MenuItem> */}
-          </TextField>
+  select
+  fullWidth
+  name="categoryName"
+  value={formik.values.categoryName}
+  onChange={formik.handleChange}
+  margin="normal"
+  label="Category Name*"
+>
+ 
+  <MenuItem value="WORK EFFICIENCY">WORK EFFICIENCY</MenuItem>
+  <MenuItem value="WORK FACTORS">WORK FACTORS</MenuItem>
+</TextField>
 
           {/* Question Title */}
           <TextField
@@ -142,7 +172,7 @@ const AddAppraisalQuestion = () => {
               RESET
             </Button>
 
-            <Button
+            {/* <Button
               type="submit"
               variant="contained"
               sx={{
@@ -152,12 +182,22 @@ const AddAppraisalQuestion = () => {
               }}
             >
               ADD
-            </Button>
+            </Button> */}
+            <Button
+  type="submit"
+  variant="contained"
+  disabled={isLoading}
+  sx={{
+    px: 5,
+    py: 1.5,
+    fontSize: "20px",
+  }}
+>
+  {isLoading ? "Saving..." : "ADD"}
+</Button>
           </Box>
         </form>
       </Paper>
     </Box>
   );
 };
-
-export default AddAppraisalQuestion;

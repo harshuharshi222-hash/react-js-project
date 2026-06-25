@@ -71,10 +71,6 @@ console.log("Received CLP ID:", location.state?.clpID);
     enableReinitialize: true,
 
     initialValues: {
-      
-    
-      
-
       milestoneName: rowData.milestone_name || "",
       percentage: rowData.percentage || "",
       displayOrder: rowData.display_order || "",
