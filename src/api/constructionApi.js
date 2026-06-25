@@ -5,7 +5,7 @@ export const constructionApi = createApi({
   reducerPath: "constructionApi",
 
   baseQuery: fetchBaseQuery({
-    // baseUrl: "/api/test/RestAPI_V1/crm/v2/",
+    baseUrl: "/api/test/RestAPI_V1/crm/v2/",
      baseUrl: "http://192.168.0.201",
      
     prepareHeaders: (headers) => {
@@ -40,7 +40,7 @@ export const constructionApi = createApi({
       }),
     }),
 
-    getAppraisalQuestion: builder.mutation({
+  getAppraisalQuestion: builder.mutation({
   query: (payload) => ({
     url: "/dev/RestAPI_V1/v2/getAppraisalQuestion",
     method: "POST",

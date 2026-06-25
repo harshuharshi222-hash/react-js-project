@@ -17,13 +17,17 @@ import {
   Select,
   Table,
   TableBody,
-  TableCell,
+
   TableContainer,
   TableHead,
   TableRow,
   TextField,
   Typography,
 } from "@mui/material";
+
+import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+
 
 import axios from "axios";
 import { useEffect } from "react";
@@ -106,6 +110,30 @@ useEffect(() => {
   ];
   
   const [selected, setSelected] = useState(allColumns);
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#f8f9fb",
+    color: "#080808",
+    fontWeight: 700,
+    fontSize: 14,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#fafafa",
+  },
+  "&:hover": {
+    backgroundColor: "#f5f5f5",
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
   
   
   const visibleColumns = [
@@ -143,40 +171,54 @@ useEffect(() => {
 const columns = useMemo(
   () => [
     {
-      accessorKey: "slNo",
+      // accessorKey: "slNo",
+      // header: "SL/No",
+      id: "slNo",
       header: "SL/No",
+         size: 70,
+      cell: ({ row }) => row.index + 1,
     },
     {
       accessorKey: "category_name",
       header: "Category Name",
+      size: 200,
+      width: 10,
     },
     {
       accessorKey: "question_title",
       header: "Title",
+       size: 200,
+       
     },
     {
       accessorKey: "description",
       header: "Description",
+       size: 200,
     },
     {
       accessorKey: "designation",
       header: "Designation",
+      size: 200,
     },
     {
       accessorKey: "option",
       header: "Option",
+         size: 200,
     },
     {
       accessorKey: "added_by",
       header: "Added By",
+      size: 200,
     },
     {
       accessorKey: "added_on",
       header: "Added On",
+       size: 180,
     },
     {
       accessorKey: "status",
       header: "Status",
+      size: 120,
       cell: ({ row }) => (
         <Chip
           label={row.original.status}
@@ -194,12 +236,15 @@ const columns = useMemo(
 
   console.log("Table Data", data);
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+
+
+const table = useReactTable({
+  data,
+  columns,
+  columnResizeMode: "onChange",
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+});
 
     const navigate = useNavigate();
      const AddAppraisalQuestion = () => {
@@ -244,15 +289,7 @@ const columns = useMemo(
             
           }}
         >
-          {/* <Button
-            variant="outlined"
-            sx={{
-              minWidth: 70,
-              height: 42,
-            }}
-          >
-            <FilterListIcon />
-          </Button> */}
+          
 
             <div>
             <FormControl size="small">
@@ -486,63 +523,118 @@ const columns = useMemo(
         }}
       >
         <TableContainer
+        component={Paper}
           sx={{
-            maxHeight: 620,
+            border: "1px solid #dcdcdc",
+    display:"flex",
+     maxHeight: "500px", 
+       overflowY: "auto",
+    overflowX: "auto",
+
+    "&::-webkit-scrollbar": {
+      height: "8px",
+      width: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#bdbdbd",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "#f1f1f1",
+    },
+
           }}
         >
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                {table.getHeaderGroups()[0].headers.map((header) => (
-                  <TableCell
-                    key={header.id}
-                    sx={{
-                      fontWeight: 700,
-                      background: "#fff",
-                      color: "#1c1c1c",
-                      borderBottom: "1px solid #ddd",
-                      whiteSpace: "nowrap",
-                      fontFamily: "Times New Roman",
-                    }}
-                  >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
 
-            <TableBody>
+
+<Table
+  stickyHeader
+  sx={{
+    width: table.getTotalSize(),
+    tableLayout: "fixed",
+    borderCollapse: "collapse",
+  }}
+>
+         
+
+            <TableHead>
+  {table.getHeaderGroups().map((headerGroup) => (
+    <TableRow key={headerGroup.id}>
+      {headerGroup.headers.map((header) => (
+        <StyledTableCell
+          key={header.id}
+          sx={{
+            width: header.getSize(),
+            minWidth: header.getSize(),
+            maxWidth: header.getSize(),
+            position: "relative",
+            borderRight: "1px solid #e0e0e0",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {flexRender(
+            header.column.columnDef.header,
+            header.getContext()
+          )}
+
+          <Box
+            onMouseDown={header.getResizeHandler()}
+            onTouchStart={header.getResizeHandler()}
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              height: "100%",
+              width: "5px",
+              cursor: "col-resize",
+              userSelect: "none",
+              touchAction: "none",
+              "&:hover": {
+                backgroundColor: "#fefef7",
+              },
+            }}
+          />
+        </StyledTableCell>
+      ))}
+    </TableRow>
+  ))}
+</TableHead>
+
+
+
+<TableBody>
   {loading ? (
     <TableRow>
-      <TableCell
-        colSpan={columns.length}
-        align="center"
-      >
+      <TableCell colSpan={columns.length} align="center">
         Loading...
       </TableCell>
     </TableRow>
   ) : table.getRowModel().rows.length > 0 ? (
     table.getRowModel().rows.map((row) => (
-      <TableRow key={row.id} hover>
+      <StyledTableRow key={row.id}>
         {row.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id}>
+          <StyledTableCell
+            key={cell.id}
+            sx={{
+              width: cell.column.getSize(),
+              minWidth: cell.column.getSize(),
+              maxWidth: cell.column.getSize(),
+              borderRight: "1px solid #f0f0f0",
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+            }}
+          >
             {flexRender(
               cell.column.columnDef.cell,
               cell.getContext()
             )}
-          </TableCell>
+          </StyledTableCell>
         ))}
-      </TableRow>
+      </StyledTableRow>
     ))
   ) : (
     <TableRow>
-      <TableCell
-        colSpan={columns.length}
-        align="center"
-      >
+      <TableCell colSpan={columns.length} align="center">
         No Data Found
       </TableCell>
     </TableRow>
