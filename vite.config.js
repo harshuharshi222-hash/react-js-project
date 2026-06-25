@@ -7,10 +7,11 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://knsonline.in",
+        // target: "https://knsonline.in",
+         target: "http://192.168.0.201",
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        // rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

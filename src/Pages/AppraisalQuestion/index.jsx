@@ -25,6 +25,9 @@ import {
   Typography,
 } from "@mui/material";
 
+import axios from "axios";
+import { useEffect } from "react";
+
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
@@ -33,6 +36,8 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import InfoIcon from "@mui/icons-material/Info";
 import InputAdornment from '@mui/material/InputAdornment';
+
+import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 
 import {
   flexRender,
@@ -47,21 +52,46 @@ export default function AppraisalQuestion() {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Active");
 
-  const data = useMemo(
-    () =>
-      Array.from({ length: 10 }, (_, i) => ({
-        slNo: i + 1,
-        categoryName: "",
-        title: "",
-        description: "",
-        designation: "",
-        option: "",
-        addedBy: "",
-        addedOn: "",
-        status: "Active",
-      })),
-    []
-  );
+const [data, setData] = useState([]);
+const [loading, setLoading] = useState(false);
+
+const [getAppraisalQuestionApi] = useGetAppraisalQuestionMutation();
+
+
+const getAppraisalQuestion = async () => {
+  try {
+   const payload = {
+  userID: "169548080048036100",
+  status:"Active",
+  generalSearch: "",
+  sortOrder: "",
+  iDisplayStart: 0,
+  iDisplayLength: 10,
+  processID: "",
+  authorityID: "",
+  departmentID: "",
+  designationID: "",
+  categoryID: "",
+};
+
+const response = await getAppraisalQuestionApi(JSON.stringify(payload)).unwrap();
+
+    console.log("API Response", response);
+    console.log(response);
+console.log(response.data);
+
+    setData(response.data || []);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+useEffect(() => {
+  getAppraisalQuestion();
+}, []);
 
   const allColumns = [
     "SL/No",
@@ -95,6 +125,7 @@ export default function AppraisalQuestion() {
    
       setSelected(typeof value === "string" ? value.split(",") : value);
    };
+   
   
   const [columnWidths, setColumnWidths] = useState({
     "SL/No": 80,
@@ -109,69 +140,59 @@ export default function AppraisalQuestion() {
   });
   
 
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "slNo",
-        header: "SL/No",
-      },
-      {
-        accessorKey: "categoryName",
-        header: "Category Name",
-      },
-      {
-        accessorKey: "title",
-        header: "Title",
-      },
-      {
-        accessorKey: "description",
-        header: "Description",
-      },
-      {
-        accessorKey: "designation",
-        header: "Designation",
-        cell: () => (
-          <InfoIcon
-            sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
-          />
-        ),
-      },
-      {
-        accessorKey: "option",
-        header: "Option",
-        cell: () => (
-          <InfoIcon
-            sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
-          />
-        ),
-      },
-      {
-        accessorKey: "addedBy",
-        header: "Added By",
-      },
-      {
-        accessorKey: "addedOn",
-        header: "Added On",
-      },
-      {
-        accessorKey: "status",
-        header: "Status",
-        cell: () => (
-          <Chip
-            label="Active"
-            sx={{
-              background: "#6fb7c4",
-              color: "#fff",
-              width: 115,
-              fontWeight: 600,
-              borderRadius: "25px",
-            }}
-          />
-        ),
-      },
-    ],
-    []
-  );
+const columns = useMemo(
+  () => [
+    {
+      accessorKey: "slNo",
+      header: "SL/No",
+    },
+    {
+      accessorKey: "category_name",
+      header: "Category Name",
+    },
+    {
+      accessorKey: "question_title",
+      header: "Title",
+    },
+    {
+      accessorKey: "description",
+      header: "Description",
+    },
+    {
+      accessorKey: "designation",
+      header: "Designation",
+    },
+    {
+      accessorKey: "option",
+      header: "Option",
+    },
+    {
+      accessorKey: "added_by",
+      header: "Added By",
+    },
+    {
+      accessorKey: "added_on",
+      header: "Added On",
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => (
+        <Chip
+          label={row.original.status}
+          color={
+            row.original.status === "Active"
+              ? "success"
+              : "error"
+          }
+        />
+      ),
+    },
+  ],
+  []
+);
+
+  console.log("Table Data", data);
 
   const table = useReactTable({
     data,
@@ -383,17 +404,13 @@ export default function AppraisalQuestion() {
             }}
           />
 
-          <Button
-            variant="contained"
-            size="small"
-            // sx={{
-            //   height: 40,
-            //   px: 4,
-            //   size: "small",
-            // }}
-          >
-            Search
-          </Button>
+      <Button
+  variant="contained"
+  size="small"
+  onClick={getAppraisalQuestion}
+>
+  Search
+</Button>
         </Box>
             </Paper>
 
@@ -498,25 +515,39 @@ export default function AppraisalQuestion() {
             </TableHead>
 
             <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} hover>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      sx={{
-                        borderBottom: "1px solid #eee",
-                        fontFamily: "Times New Roman",
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
+  {loading ? (
+    <TableRow>
+      <TableCell
+        colSpan={columns.length}
+        align="center"
+      >
+        Loading...
+      </TableCell>
+    </TableRow>
+  ) : table.getRowModel().rows.length > 0 ? (
+    table.getRowModel().rows.map((row) => (
+      <TableRow key={row.id} hover>
+        {row.getVisibleCells().map((cell) => (
+          <TableCell key={cell.id}>
+            {flexRender(
+              cell.column.columnDef.cell,
+              cell.getContext()
+            )}
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell
+        colSpan={columns.length}
+        align="center"
+      >
+        No Data Found
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody>
           </Table>
         </TableContainer>
 
