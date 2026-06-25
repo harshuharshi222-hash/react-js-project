@@ -68,9 +68,9 @@ const getAppraisalQuestion = async () => {
   userID: "169548080048036100",
   status:"Active",
   generalSearch: "",
-  sortOrder: "",
+  sortOrder: "Desc",
   iDisplayStart: 0,
-  iDisplayLength: 10,
+  iDisplayLength: 150,
   processID: "",
   authorityID: "",
   departmentID: "",
@@ -742,6 +742,7 @@ const table = useReactTable({
       <MenuItem value={30}>30 Rows</MenuItem>
       <MenuItem value={40}>40 Rows</MenuItem>
       <MenuItem value={50}>50 Rows</MenuItem>
+      <MenuItem value={150}>150 Rows</MenuItem>
     </Select>
   </FormControl>
 </Box>
