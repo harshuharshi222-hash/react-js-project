@@ -199,11 +199,21 @@ const columns = useMemo(
       accessorKey: "designation",
       header: "Designation",
       size: 200,
+         cell: () => (
+          <InfoIcon
+            sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
+          />
+        ),
     },
     {
       accessorKey: "option",
       header: "Option",
          size: 200,
+           cell: () => (
+          <InfoIcon
+            sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
+          />
+        ),
     },
     {
       accessorKey: "added_by",
