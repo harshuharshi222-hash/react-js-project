@@ -43,6 +43,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
+import { useGetAppraisalQuestionDesignationFilterMutation } from "../../api/constructionApi";
 
 import {
   flexRender,
@@ -131,6 +132,42 @@ const loadDepartments = async () => {
     setDepartmentList(response.data || response.result || []);
   } catch (error) {
     console.error("Department Error:", error);
+  }
+};
+
+// designation //
+
+const [getDesignation] =
+  useGetAppraisalQuestionDesignationFilterMutation();
+const [designationList, setDesignationList] = useState([]);
+
+useEffect(() => {
+  fetchDesignation();
+}, []);
+
+const fetchDesignation = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      categoryID: "",
+      departmentID: "",
+      designationID: "",
+      status: "Active",
+    };
+
+    const response = await getDesignation(JSON.stringify(payload)).unwrap();
+
+    console.log("Designation Response:", response);
+
+    if (response?.data) {
+      setDesignationList(response.data);
+    } else if (response?.result) {
+      setDesignationList(response.result);
+    } else {
+      setDesignationList([]);
+    }
+  } catch (error) {
+    console.error("Designation API Error:", error);
   }
 };
 
@@ -455,14 +492,24 @@ const table = useReactTable({
 </FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
-            <Select
-              value={designation}
-              displayEmpty
-              onChange={(e) => setDesignation(e.target.value)}
-            >
-              <MenuItem value="">Designation</MenuItem>
-            </Select>
-          </FormControl>
+            <InputLabel>Designation</InputLabel>
+  <Select
+    value={designation}
+    displayEmpty
+    onChange={(e) => setDesignation(e.target.value)}
+  >
+    
+
+    {designationList.map((item) => (
+      <MenuItem
+        key={item.designation_id || item.id}
+        value={item.designation_id || item.id}
+      >
+        {item.designation_name || item.designation}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
             <Select
