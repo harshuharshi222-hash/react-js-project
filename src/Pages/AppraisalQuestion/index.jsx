@@ -218,6 +218,61 @@ useEffect(() => {
     "Added On",
     "Status",
   ];
+
+
+  const handleDownload = () => {
+  if (!data || data.length === 0) {
+    alert("No data available");
+    return;
+  }
+
+  const headers = [
+    "SL/No",
+    "Category Name",
+    "Title",
+    "Description",
+    "Designation",
+    "Option",
+    "Added By",
+    "Added On",
+    "Status",
+  ];
+
+  const rows = data.map((item, index) => [
+    index + 1,
+    item.category_name,
+    item.question_title,
+    item.description,
+    item.designation,
+    item.option,
+    item.added_by,
+    item.added_on,
+    item.status,
+  ]);
+
+  const csvContent = [
+    headers.join(","),
+    ...rows.map((row) =>
+      row.map((value) => `"${value ?? ""}"`).join(",")
+    ),
+  ].join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;",
+  });
+
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "AppraisalQuestion.csv");
+
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+};
   
   const [selected, setSelected] = useState(allColumns);
 
@@ -647,17 +702,19 @@ const table = useReactTable({
           </IconButton>
           </Tooltip>
 
-            <Tooltip title="Export">
-              <IconButton >
-            <SystemUpdateAltIcon
-              sx={{
-                color: "#6C63FF",
-                fontSize: 30,
-                 ml: -1,
-              }}
-            />
-            </IconButton>
-                  </Tooltip>
+
+          <Tooltip title="Export">
+  <IconButton onClick={handleDownload}>
+    <SystemUpdateAltIcon
+      sx={{
+        color: "#6C63FF",
+        fontSize: 30,
+        ml: -1,
+      }}
+    />
+  </IconButton>
+</Tooltip>
+                  
               <Tooltip title="print">
           <IconButton>
             <PictureAsPdfIcon sx={{ color: "#1976d2" }} />
