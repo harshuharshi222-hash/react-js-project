@@ -258,7 +258,7 @@ https://knsonline.in/test/RestAPI_V1/crm/v2/updateConstructionLinkPayment
 
 ## ps - 123456
 
-## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestion
+## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestion  //pass//
 
 payload - {"userID":"171464700312440400","displayOrder":"012","questionTitle":"12","description":"12","categoryID":"2"} - (categoryID mui autoComplete)
 
@@ -281,7 +281,7 @@ Dependency API for Add Designation
 
 ## Add Option
 
-## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestionOption - //pass//
+## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestionOption - 
 
     payload - {"userID":"171464700312440400","displayOrder":"","appraisalQuestionID":"120","rateID":"5","description":"<p>1212</p>"}
 
@@ -302,7 +302,7 @@ Dependency API for update
 
     payload - {"userID":"169548080048036100","status":"Active","generalSearch":"","sortOrder":"","iDisplayStart":0,"iDisplayLength":10,"processID":"","authorityID":"","departmentID":"","designationID":"","categoryID":""}
 
-## Filters
+## Filters  // pass//
 
 1. Depatement - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalQuestionDepartmentFilter - {"userID":"169548080048036100","categoryID":"","departmentID":"","designationID":"","status":"Active"}
 2. Desgination - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalQuestionDesignationFilter - {"userID":"169548080048036100","categoryID":"","departmentID":"","designationID":"","status":"Active"}

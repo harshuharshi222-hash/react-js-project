@@ -40,6 +40,9 @@ export const constructionApi = createApi({
       }),
     }),
 
+
+
+
   getAppraisalQuestion: builder.mutation({
   query: (payload) => ({
     url: "/dev/RestAPI_V1/v2/getAppraisalQuestion",
@@ -48,12 +51,11 @@ export const constructionApi = createApi({
   }),
 }), 
 
-
-    createAppraisalQuestionOption: builder.mutation({
-  query: (payload) => ({
-    url: "/dev/RestAPI_V1/v2/createAppraisalQuestionOption",
+  createAppraisalQuestion: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/createAppraisalQuestion",
     method: "POST",
-    body: payload,
+    body,
   }),
 }),
 
@@ -90,7 +92,7 @@ export const {
   useCreateConstructionLinkPaymentMutation,
   useUpdateConstructionLinkPaymentMutation,
   useGetAppraisalQuestionMutation,
-  useCreateAppraisalQuestionOptionMutation,
+  useCreateAppraisalQuestionMutation,
   useGetAppraisalQuestionDepartmentFilterMutation,
   useGetAppraisalQuestionDesignationFilterMutation,
   useGetAppraisalQuestionCategoryFilterMutation,

@@ -11,14 +11,15 @@ import * as Yup from "yup";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
 
-import { useCreateAppraisalQuestionOptionMutation } from "../../api/constructionApi";
+import { useCreateAppraisalQuestionMutation } from "../../api/constructionApi";
 
 
 
 export default function AddAppraisalQuestion() {
 
-  const [createAppraisalQuestionOption, { isLoading }] =
-    useCreateAppraisalQuestionOptionMutation();
+    const [createAppraisalQuestion, { isLoading }] =
+  useCreateAppraisalQuestionMutation();
+
 
   const formik = useFormik({
     initialValues: {
@@ -34,25 +35,29 @@ export default function AddAppraisalQuestion() {
       description: Yup.string().required("Required"),
     }),
 
-    onSubmit: async (values) => {
-      try {
-        const payload = {
-          userID: "171464700312440400",
-          displayOrder: values.displayOrder,
-          appraisalQuestionID: "120",
-          rateID: "5",
-          description: values.description,
-        };
+    onSubmit: async (values, { resetForm }) => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      displayOrder: values.displayOrder,
+      questionTitle: values.questionTitle,
+      description: values.description,
+      categoryID: values.categoryName,
+    };
 
-        const response = await createAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
+    const response = await createAppraisalQuestion(JSON.stringify(payload)).unwrap();
 
-     
-      } catch (error) {
-  console.log("Full Error:", error);
-  console.log("Error Data:", error?.data);
-  console.log("Error Status:", error?.status);
-}
-    },
+    console.log("Success:", response);
+
+    alert("Appraisal Question Added Successfully");
+
+    resetForm();
+  } catch (error) {
+    console.log("Full Error:", error);
+    console.log("Error Data:", error?.data);
+    console.log("Error Status:", error?.status);
+  }
+  },
   });
 
   const handleReset = () => {
@@ -100,7 +105,7 @@ export default function AddAppraisalQuestion() {
       >
         <form onSubmit={formik.handleSubmit}>
           {/* Category */}
-          <TextField
+          {/* <TextField
   select
   fullWidth
   name="categoryName"
@@ -112,6 +117,19 @@ export default function AddAppraisalQuestion() {
  
   <MenuItem value="WORK EFFICIENCY">WORK EFFICIENCY</MenuItem>
   <MenuItem value="WORK FACTORS">WORK FACTORS</MenuItem>
+</TextField> */}
+
+            <TextField
+  select
+  fullWidth
+  name="categoryName"
+  label="Category Name*"
+  value={formik.values.categoryName}
+  onChange={formik.handleChange}
+  margin="normal"
+>
+  <MenuItem value="1">WORK EFFICIENCY</MenuItem>
+  <MenuItem value="2">WORK FACTORS</MenuItem>
 </TextField>
 
           {/* Question Title */}
@@ -172,17 +190,6 @@ export default function AddAppraisalQuestion() {
               RESET
             </Button>
 
-            {/* <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                px: 5,
-                py: 1.5,
-                fontSize: "20px",
-              }}
-            >
-              ADD
-            </Button> */}
             <Button
   type="submit"
   variant="contained"
