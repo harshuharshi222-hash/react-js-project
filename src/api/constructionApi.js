@@ -73,6 +73,13 @@ export const constructionApi = createApi({
   }),
 }),
 
+  getAppraisalQuestionCategoryFilter: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getAppraisalQuestionCategoryFilter",
+    method: "POST",
+    body,
+  }),
+}),
 
 
   }),
@@ -86,4 +93,5 @@ export const {
   useCreateAppraisalQuestionOptionMutation,
   useGetAppraisalQuestionDepartmentFilterMutation,
   useGetAppraisalQuestionDesignationFilterMutation,
+  useGetAppraisalQuestionCategoryFilterMutation,
 } = constructionApi;

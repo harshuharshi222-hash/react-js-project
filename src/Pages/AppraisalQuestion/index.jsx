@@ -44,6 +44,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDesignationFilterMutation } from "../../api/constructionApi";
+import { useGetAppraisalQuestionCategoryFilterMutation } from "../../api/constructionApi";
 
 import {
   flexRender,
@@ -170,6 +171,41 @@ const fetchDesignation = async () => {
     console.error("Designation API Error:", error);
   }
 };
+
+
+
+  // category//
+const [getCategoryFilter] =
+  useGetAppraisalQuestionCategoryFilterMutation();
+const [categoryList, setCategoryList] = useState([]);
+
+useEffect(() => {
+  const fetchCategory = async () => {
+    try {
+      const payload = {
+        userID: "169548080048036100",
+        categoryID: "",
+        departmentID: "",
+        designationID: "",
+        status: "Active",
+      };
+
+      const response = await getCategoryFilter(JSON.stringify(payload)).unwrap();
+
+      console.log("Category Response:", response);
+
+      if (response?.data) {
+        setCategoryList(response.data);
+      } else {
+        setCategoryList([]);
+      }
+    } catch (error) {
+      console.error("Category API Error:", error);
+    }
+  };
+
+  fetchCategory();
+}, []);
 
   const allColumns = [
     "SL/No",
@@ -512,14 +548,24 @@ const table = useReactTable({
 </FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
-            <Select
-              value={category}
-              displayEmpty
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <MenuItem value="">Category</MenuItem>
-            </Select>
-          </FormControl>
+            <InputLabel>Category</InputLabel>
+  <Select
+    value={category}
+    displayEmpty
+    onChange={(e) => setCategory(e.target.value)}
+  >
+    
+
+    {categoryList.map((item) => (
+      <MenuItem
+        key={item.category_id}
+        value={item.category_id}
+      >
+        {item.category_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
                 
                     {/* status */}
 
@@ -757,49 +803,6 @@ const table = useReactTable({
 
         {/* FOOTER */}
 
-        {/* <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            p: 1,
-            borderTop: "1px solid #ddd",
-            background: "#fff",
-          }}
-        >
-          <Button
-            variant="contained"
-            disabled
-            sx={{
-              width: 250,
-            }}
-          >
-            Previous
-          </Button>
-
-          <Typography
-            sx={{
-              fontSize: 30,
-              fontFamily: "Times New Roman",
-            }}
-          >
-            Page 1 
-          </Typography>
-
-          <Select size="small" value={50}>
-            <MenuItem value={10}>10 rows</MenuItem>
-            <MenuItem value={20}>20 rows</MenuItem>
-          </Select>
-
-          <Button
-            variant="contained"
-            sx={{
-              width: 250,
-            }}
-          >
-            Next
-          </Button>
-        </Box> */}
 
         <Box
   sx={{
