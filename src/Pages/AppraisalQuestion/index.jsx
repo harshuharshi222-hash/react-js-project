@@ -42,8 +42,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
-
-import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
+import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
 
 import {
   flexRender,
@@ -101,42 +100,39 @@ useEffect(() => {
 
 
 
-// {department }//
+//department//
 
-const [departmentList, setDepartmentList] = useState([]);
+const [getDepartmentFilter] =
+  useGetAppraisalQuestionDepartmentFilterMutation();
 
-const [getDepartmentMaster] = useGetDepartmentMasterMutation();
+  const [departmentList, setDepartmentList] = useState([]);
 
 
 useEffect(() => {
-  fetchDepartments();
+  loadDepartments();
 }, []);
 
-const fetchDepartments = async () => {
+const loadDepartments = async () => {
   try {
     const payload = {
-      userID: "171464700312440400",
-      status: "1",
-      generalSearch: "",
-      sortOrder: "",
-      iDisplayStart: 0,
-      iDisplayLength: "-1",
+      userID: "169548080048036100",
+      categoryID: "",
+      departmentID: "",
+      designationID: "",
+      status: "Active",
     };
 
-    const response = await getDepartmentMaster(JSON.stringify(payload)).unwrap();
+    const response = await getDepartmentFilter(JSON.stringify(payload)).unwrap();
 
+    console.log("Department Response", response);
     console.log(response);
 
-    if (response?.data) {
-      setDepartmentList(response.data);
-    }
+    // Adjust according to your API response
+    setDepartmentList(response.data || response.result || []);
   } catch (error) {
-    console.log("Department API Error:", error);
+    console.error("Department Error:", error);
   }
 };
-
-
-
 
   const allColumns = [
     "SL/No",
@@ -439,34 +435,32 @@ const table = useReactTable({
             </FormControl>
           </div>
 
-         <FormControl size="small" sx={{ width: 150 }}>
-           <InputLabel >Department</InputLabel>
+    <FormControl size="small" sx={{ width: 150 }}>
+  <InputLabel>Department</InputLabel>
+
   <Select
     value={department}
-    displayEmpty
+    label="Department"
     onChange={(e) => setDepartment(e.target.value)}
   >
-   
-
-    {departmentList.map((dept) => (
+    {departmentList.map((item) => (
       <MenuItem
-        key={dept.general_task_department_id}
-        value={dept.general_task_department_id}
+        key={item.department_id}
+        value={item.department_id}
       >
-        {dept.general_task_department_name}
+        {item.department_name}
       </MenuItem>
     ))}
   </Select>
 </FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
-            
-              <InputLabel >Designation</InputLabel>
             <Select
               value={designation}
               displayEmpty
               onChange={(e) => setDesignation(e.target.value)}
             >
+              <MenuItem value="">Designation</MenuItem>
             </Select>
           </FormControl>
 
@@ -716,6 +710,49 @@ const table = useReactTable({
 
         {/* FOOTER */}
 
+        {/* <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            p: 1,
+            borderTop: "1px solid #ddd",
+            background: "#fff",
+          }}
+        >
+          <Button
+            variant="contained"
+            disabled
+            sx={{
+              width: 250,
+            }}
+          >
+            Previous
+          </Button>
+
+          <Typography
+            sx={{
+              fontSize: 30,
+              fontFamily: "Times New Roman",
+            }}
+          >
+            Page 1 
+          </Typography>
+
+          <Select size="small" value={50}>
+            <MenuItem value={10}>10 rows</MenuItem>
+            <MenuItem value={20}>20 rows</MenuItem>
+          </Select>
+
+          <Button
+            variant="contained"
+            sx={{
+              width: 250,
+            }}
+          >
+            Next
+          </Button>
+        </Box> */}
 
         <Box
   sx={{

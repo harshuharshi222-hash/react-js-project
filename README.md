@@ -281,7 +281,7 @@ Dependency API for Add Designation
 
 ## Add Option
 
-## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestionOption -
+## Create - http://192.168.0.201/dev/RestAPI_V1/v2/createAppraisalQuestionOption - //pass//
 
     payload - {"userID":"171464700312440400","displayOrder":"","appraisalQuestionID":"120","rateID":"5","description":"<p>1212</p>"}
 
@@ -298,7 +298,7 @@ Dependency API for update
 1. Category - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalCategory
    payload - {"userID":"171464700312440400","status":"Active","generalSearch":"","sortOrder":"","iDisplayStart":0,"iDisplayLength":"-1"}
 
-## List Main Table - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalQuestion
+## List Main Table - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalQuestion //pass//
 
     payload - {"userID":"169548080048036100","status":"Active","generalSearch":"","sortOrder":"","iDisplayStart":0,"iDisplayLength":10,"processID":"","authorityID":"","departmentID":"","designationID":"","categoryID":""}
 
