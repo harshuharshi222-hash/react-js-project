@@ -220,6 +220,58 @@ useEffect(() => {
   ];
 
 
+
+
+
+  const handlePrint = () => {
+  const printContents = document.getElementById("printTable").innerHTML;
+  const printWindow = window.open("", "", "width=1200,height=800");
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Appraisal Question</title>
+        <style>
+          body{
+            font-family: Arial, sans-serif;
+            padding:20px;
+          }
+
+          table{
+            width:100%;
+            border-collapse:collapse;
+          }
+
+          th,td{
+            border:1px solid #000;
+            padding:8px;
+            text-align:left;
+          }
+
+          th{
+            background:#f2f2f2;
+          }
+        </style>
+      </head>
+      <body>
+        ${printContents}
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  printWindow.close();
+};
+
+
+
+
+
+
+
+
   const handleDownload = () => {
   if (!data || data.length === 0) {
     alert("No data available");
@@ -715,11 +767,16 @@ const table = useReactTable({
   </IconButton>
 </Tooltip>
                   
-              <Tooltip title="print">
-          <IconButton>
-            <PictureAsPdfIcon sx={{ color: "#1976d2" }} />
-          </IconButton>
-          </Tooltip>
+             <Tooltip title="Print">
+  <IconButton onClick={handlePrint}>
+    <PictureAsPdfIcon
+      sx={{
+        color: "#1976d2",
+        fontSize: 30,
+      }}
+    />
+  </IconButton>
+</Tooltip>
         </Box>
         </Paper>
 
@@ -736,6 +793,7 @@ const table = useReactTable({
            overflowY: "auto",
         }}
       >
+        <div id="printTable">
         <TableContainer
         component={Paper}
           sx={{
@@ -857,6 +915,7 @@ const table = useReactTable({
 </TableBody>
           </Table>
         </TableContainer>
+        </div>
 
         {/* FOOTER */}
 
