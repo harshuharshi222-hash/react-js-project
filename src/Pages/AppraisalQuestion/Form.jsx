@@ -5,6 +5,9 @@ import {
   TextField,
   Button,
   MenuItem,
+ Autocomplete,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -17,9 +20,27 @@ import { useCreateAppraisalQuestionMutation } from "../../api/constructionApi";
 
 export default function AddAppraisalQuestion() {
 
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+const handleCloseSnackbar = () => {
+  setOpenSnackbar(false);
+};
+
     const [createAppraisalQuestion, { isLoading }] =
   useCreateAppraisalQuestionMutation();
 
+
+  const categoryOptions = [
+  {
+    id: "1",
+    label: "WORK EFFICIENCY",
+  },
+  {
+    id: "2",
+    label: "WORK FACTORS",
+  },
+];
 
   const formik = useFormik({
     initialValues: {
@@ -49,9 +70,9 @@ export default function AddAppraisalQuestion() {
 
     console.log("Success:", response);
 
-    alert("Appraisal Question Added Successfully");
+  setOpenSnackbar(true);
+  resetForm();
 
-    resetForm();
   } catch (error) {
     console.log("Full Error:", error);
     console.log("Error Data:", error?.data);
@@ -104,33 +125,55 @@ export default function AddAppraisalQuestion() {
         }}
       >
         <form onSubmit={formik.handleSubmit}>
-          {/* Category */}
-          {/* <TextField
-  select
-  fullWidth
-  name="categoryName"
-  value={formik.values.categoryName}
-  onChange={formik.handleChange}
-  margin="normal"
-  label="Category Name*"
->
- 
-  <MenuItem value="WORK EFFICIENCY">WORK EFFICIENCY</MenuItem>
-  <MenuItem value="WORK FACTORS">WORK FACTORS</MenuItem>
-</TextField> */}
 
-            <TextField
-  select
-  fullWidth
-  name="categoryName"
-  label="Category Name*"
-  value={formik.values.categoryName}
-  onChange={formik.handleChange}
-  margin="normal"
+          <Snackbar
+  open={openSnackbar}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{ vertical: "top", horizontal: "right" }}
 >
-  <MenuItem value="1">WORK EFFICIENCY</MenuItem>
-  <MenuItem value="2">WORK FACTORS</MenuItem>
-</TextField>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity="success"
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    Created Successfully
+  </Alert>
+</Snackbar>
+         
+
+              <Autocomplete
+  fullWidth
+  options={categoryOptions}
+  getOptionLabel={(option) => option.label}
+  value={
+    categoryOptions.find(
+      (option) => option.id === formik.values.categoryName
+    ) || null
+  }
+  onChange={(event, newValue) => {
+    formik.setFieldValue(
+      "categoryName",
+      newValue ? newValue.id : ""
+    );
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Category Name*"
+      margin="normal"
+      error={
+        formik.touched.categoryName &&
+        Boolean(formik.errors.categoryName)
+      }
+      helperText={
+        formik.touched.categoryName &&
+        formik.errors.categoryName
+      }
+    />
+  )}
+/>
 
           {/* Question Title */}
           <TextField
