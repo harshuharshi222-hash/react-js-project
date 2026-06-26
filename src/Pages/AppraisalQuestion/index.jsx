@@ -460,12 +460,13 @@ const table = useReactTable({
 </FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
+            
+              <InputLabel >Designation</InputLabel>
             <Select
               value={designation}
               displayEmpty
               onChange={(e) => setDesignation(e.target.value)}
             >
-              <MenuItem value="">Designation</MenuItem>
             </Select>
           </FormControl>
 
