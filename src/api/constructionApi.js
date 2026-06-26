@@ -49,14 +49,6 @@ export const constructionApi = createApi({
 }), 
 
 
-    // createAppraisalQuestionOption: builder.mutation({
-    //   query: (payload) => ({
-    //     url: "createAppraisalQuestionOption",
-    //     method: "POST",
-    //     body: payload,
-    //   }),
-    // }),
-
     createAppraisalQuestionOption: builder.mutation({
   query: (payload) => ({
     url: "/dev/RestAPI_V1/v2/createAppraisalQuestionOption",
@@ -64,6 +56,14 @@ export const constructionApi = createApi({
     body: payload,
   }),
 }),
+
+  getDepartmentMaster: builder.mutation({
+      query: (body) => ({
+       url: "/dev/RestAPI_V1/v2/getDepartmentMaster",
+        method: "POST",
+        body: body,
+      }),
+    }),
 
 
 
@@ -75,5 +75,6 @@ export const {
   useCreateConstructionLinkPaymentMutation,
   useUpdateConstructionLinkPaymentMutation,
   useGetAppraisalQuestionMutation,
-   useCreateAppraisalQuestionOptionMutation,
+  useCreateAppraisalQuestionOptionMutation,
+  useGetDepartmentMasterMutation,
 } = constructionApi;

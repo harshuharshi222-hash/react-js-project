@@ -43,6 +43,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 
+import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -96,6 +98,45 @@ console.log(response.data);
 useEffect(() => {
   getAppraisalQuestion();
 }, []);
+
+
+
+// {department }//
+
+const [departmentList, setDepartmentList] = useState([]);
+
+const [getDepartmentMaster] = useGetDepartmentMasterMutation();
+
+
+useEffect(() => {
+  fetchDepartments();
+}, []);
+
+const fetchDepartments = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      status: "1",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: "-1",
+    };
+
+    const response = await getDepartmentMaster(JSON.stringify(payload)).unwrap();
+
+    console.log(response);
+
+    if (response?.data) {
+      setDepartmentList(response.data);
+    }
+  } catch (error) {
+    console.log("Department API Error:", error);
+  }
+};
+
+
+
 
   const allColumns = [
     "SL/No",
@@ -251,13 +292,6 @@ const [pagination, setPagination] = useState({
   pageSize: 10,
 });
 
-// const table = useReactTable({
-//   data,
-//   columns,
-//   columnResizeMode: "onChange",
-//   getCoreRowModel: getCoreRowModel(),
-//   getPaginationRowModel: getPaginationRowModel(),
-// });
 const table = useReactTable({
   data,
   columns,
@@ -405,15 +439,24 @@ const table = useReactTable({
             </FormControl>
           </div>
 
-          <FormControl size="small" sx={{ width: 150 }}>
-            <Select
-              value={department}
-              displayEmpty
-              onChange={(e) => setDepartment(e.target.value)}
-            >
-              <MenuItem value="">Department</MenuItem>
-            </Select>
-          </FormControl>
+         <FormControl size="small" sx={{ width: 150 }}>
+  <Select
+    value={department}
+    displayEmpty
+    onChange={(e) => setDepartment(e.target.value)}
+  >
+    <MenuItem value="">Department</MenuItem>
+
+    {departmentList.map((dept) => (
+      <MenuItem
+        key={dept.general_task_department_id}
+        value={dept.general_task_department_id}
+      >
+        {dept.general_task_department_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
           <FormControl size="small" sx={{ width: 150 }}>
             <Select
@@ -452,6 +495,7 @@ const table = useReactTable({
           <TextField
             size="small"
             label="Search"
+      
             variant="standard"
             slotProps={{
                      input: {
@@ -467,7 +511,7 @@ const table = useReactTable({
       <Button
   variant="contained"
   size="small"
-  onClick={getAppraisalQuestion}
+  onClick={getAppraisalQuestion }
 >
   Search
 </Button>
@@ -543,6 +587,7 @@ const table = useReactTable({
           borderRadius: 3,
           overflow: "hidden",
           border: "1px solid #dcdcdc",
+           overflowY: "auto",
         }}
       >
         <TableContainer
@@ -669,49 +714,6 @@ const table = useReactTable({
 
         {/* FOOTER */}
 
-        {/* <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            p: 1,
-            borderTop: "1px solid #ddd",
-            background: "#fff",
-          }}
-        >
-          <Button
-            variant="contained"
-            disabled
-            sx={{
-              width: 250,
-            }}
-          >
-            Previous
-          </Button>
-
-          <Typography
-            sx={{
-              fontSize: 30,
-              fontFamily: "Times New Roman",
-            }}
-          >
-            Page 1 
-          </Typography>
-
-          <Select size="small" value={50}>
-            <MenuItem value={10}>10 rows</MenuItem>
-            <MenuItem value={20}>20 rows</MenuItem>
-          </Select>
-
-          <Button
-            variant="contained"
-            sx={{
-              width: 250,
-            }}
-          >
-            Next
-          </Button>
-        </Box> */}
 
         <Box
   sx={{
