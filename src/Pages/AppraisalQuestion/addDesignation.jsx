@@ -15,19 +15,42 @@ import {
   Checkbox,
   Button,
 } from "@mui/material";
-
+import { useLocation } from "react-router-dom";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { useNavigate } from "react-router-dom";
 
 
 const historyData = [];
 
 export default function AddDesignation() {
+
+  const navigate = useNavigate();
+  
+    const AppraisalQuestion = () => {
+      navigate("/AppraisalQuestion/index");
+    };
+
+  const { state } = useLocation();
+
+  console.log(state);
+
+  const question = state?.question;
+
+  console.log(question);
+
+
   const [department, setDepartment] = useState("PLANNING");
   const [rows, setRows] = useState(
-    designationData.map((item) => ({
-      ...item,
-      checked: true,
-    }))
-  );
+  question
+    ? [
+        {
+          id: 1,
+          designation: question.designation,
+          checked: true,
+        },
+      ]
+    : []
+);
 
   const handleSelectAll = (event) => {
     const checked = event.target.checked;
@@ -59,7 +82,7 @@ export default function AddDesignation() {
   };
 
   return (
-    <Box sx={{ p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
+    <Box sx={{ p: 3, bgcolor: "#f5f5f5", minHeight: "100vh", }}>
       {/* Top Card */}
       <Paper
         elevation={0}
@@ -73,10 +96,17 @@ export default function AddDesignation() {
           fontWeight={600}
           mb={3}
         >
+          <MenuOpenIcon sx={{ mr: 1 , fontSize:30,}}
+        onClick={AppraisalQuestion} 
+        />
+
           Add Designation
+          
         </Typography>
+        <br></br>
 
         <FormControl fullWidth>
+
           <InputLabel>Department</InputLabel>
 
           <Select
@@ -84,9 +114,7 @@ export default function AddDesignation() {
             label="Department"
             onChange={(e) => setDepartment(e.target.value)}
           >
-            <MenuItem value="PLANNING">PLANNING</MenuItem>
-            <MenuItem value="HR">HR</MenuItem>
-            <MenuItem value="SALES">SALES</MenuItem>
+           
           </Select>
         </FormControl>
 
@@ -135,6 +163,7 @@ export default function AddDesignation() {
             ))}
           </TableBody>
         </Table>
+        <br></br>
 
         <Box textAlign="center" mt={4}>
           <Button
@@ -145,6 +174,7 @@ export default function AddDesignation() {
               height: 50,
               borderRadius: 2,
               fontWeight: 600,
+              alignItems:"center",
             }}
           >
             SUBMIT
@@ -168,8 +198,10 @@ export default function AddDesignation() {
           mb={3}
         >
           Designation History
+         
         </Typography>
-
+        
+        <br></br>
         <Table
           sx={{
             border: "1px solid #ddd",
