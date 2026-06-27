@@ -196,9 +196,16 @@ const [rows, setRows] = useState(
     return;
   }
 
+   const selectedDepartment = departmentList.find(
+    (dept) => dept.general_task_department_id === department
+  );
+
   const newHistory = selectedRows.map((item) => ({
     department_id: department,
+    department_name:selectedDepartment?.general_task_department_name || "",
     designation_name: item.designation,
+    designation_name: item.designation,
+    
     added_by: "Admin",
     added_on: new Date().toLocaleString(),
   }));
