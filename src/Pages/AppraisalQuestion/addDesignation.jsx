@@ -148,20 +148,8 @@ const fetchHistory = async () => {
   console.log(question);
 
 
-const [rows, setRows] = useState(
-  question
-    ? [
-        {
-          id: 1,
-          designation:
-            typeof question.designation === "object"
-              ? question.designation.designation_name
-              : question.designation,
-          checked: true,
-        },
-      ]
-    : []
-);
+
+const [rows, setRows] = useState([]);
 
   const handleSelectAll = (event) => {
     const checked = event.target.checked;
@@ -325,20 +313,27 @@ console.log(historyData[0]);
 </Table>
         <br></br>
 
-        <Box textAlign="center" mt={4}>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-              width: 150,
-              height: 50,
-              borderRadius: 2,
-              fontWeight: 600,
-              alignItems:"center",
-            }}
-          >
-            SUBMIT
-          </Button>
+     <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    mt: 4,
+  }}
+>
+  <Button
+    variant="contained"
+    onClick={handleSubmit}
+    sx={{
+      width: 150,
+      height: 50,
+      borderRadius: 2,
+      fontWeight: 600,
+    }}
+  >
+    SUBMIT
+  </Button>
+
         </Box>
       </Paper>
 
