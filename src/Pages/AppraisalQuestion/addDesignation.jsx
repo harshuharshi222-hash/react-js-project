@@ -91,8 +91,8 @@ console.log("Rows:", response.data?.length);
 
     if (response.data) {
       const formattedRows = response.data.map((item) => ({
-        id: item.designationID,
-        designation: item.designationName,
+        id: item.designation_id,
+        designation: item.designation_name,
         checked: item.isSelected === "1",
       }));
 
@@ -219,7 +219,7 @@ console.log("Rows:", response.data?.length);
   </Select>
 </FormControl>
 
-        <Box textAlign="center" mt={4}>
+        
         <Table
   sx={{
     mt: 3,
@@ -247,7 +247,7 @@ console.log("Rows:", response.data?.length);
   <TableBody>
     {rows.map((row, index) => (
       <TableRow key={row.id}>
-        <TableCell>{index.department_id}</TableCell>
+        <TableCell>{index + 1}</TableCell>
 
         <TableCell>{row.designation}</TableCell>
 
@@ -262,7 +262,6 @@ console.log("Rows:", response.data?.length);
     ))}
   </TableBody>
 </Table>
-</Box>
         <br></br>
 
         <Box textAlign="center" mt={4}>
