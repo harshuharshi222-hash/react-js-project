@@ -182,7 +182,10 @@ const fetchHistory = async () => {
   const allSelected =
     rows.length > 0 && rows.every((item) => item.checked);
 
-  
+  // const handleSubmit = () => {
+  //   const selected = rows.filter((item) => item.checked);
+  //   console.log(selected);
+  // };
 
   const handleSubmit = () => {
   const selectedRows = rows.filter((row) => row.checked);
