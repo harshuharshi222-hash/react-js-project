@@ -18,11 +18,44 @@ import {
 import { useLocation } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
+import  { useEffect } from "react";
+import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
 
 
 const historyData = [];
 
 export default function AddDesignation() {
+
+
+  const [department, setDepartment] = useState("");
+const [departmentList, setDepartmentList] = useState([]);
+
+const [getDepartmentMaster] = useGetDepartmentMasterMutation();
+
+useEffect(() => {
+  fetchDepartments();
+}, []);
+
+const fetchDepartments = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      status: "1",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: "-1",
+    };
+
+    const response = await getDepartmentMaster(JSON.stringify(payload)).unwrap();
+
+    console.log("Department Response:", response);
+
+    setDepartmentList(response.data || []);
+  } catch (error) {
+    console.error("Department API Error:", error);
+  }
+};
 
   const navigate = useNavigate();
   
@@ -39,7 +72,7 @@ export default function AddDesignation() {
   console.log(question);
 
 
-  const [department, setDepartment] = useState("PLANNING");
+ 
   const [rows, setRows] = useState(
   question
     ? [
@@ -91,11 +124,6 @@ export default function AddDesignation() {
           borderRadius: 3,
         }}
       >
-        {/* <Typography
-          variant="h5"
-          fontWeight={600}
-          mb={3}
-        > */}
               <Box
           onClick={AppraisalQuestion}
           sx={{
@@ -127,19 +155,24 @@ export default function AddDesignation() {
           </Box>
         
         
+<FormControl fullWidth>
+  <InputLabel>Department</InputLabel>
 
-        <FormControl fullWidth>
-
-          <InputLabel>Department</InputLabel>
-
-          <Select
-            value={department}
-            label="Department"
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-           
-          </Select>
-        </FormControl>
+  <Select
+    value={department}
+    label="Department"
+    onChange={(e) => setDepartment(e.target.value)}
+  >
+    {departmentList.map((item) => (
+      <MenuItem
+        key={item.general_task_department_id}
+        value={item.general_task_department_id}
+      >
+        {item.general_task_department_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
         <Table
           sx={{

@@ -83,6 +83,14 @@ export const constructionApi = createApi({
   }),
 }),
 
+getDepartmentMaster: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getDepartmentMaster",
+    method: "POST",
+    body,
+  }),
+}),
+
 
   }),
 });
@@ -96,4 +104,5 @@ export const {
   useGetAppraisalQuestionDepartmentFilterMutation,
   useGetAppraisalQuestionDesignationFilterMutation,
   useGetAppraisalQuestionCategoryFilterMutation,
+  useGetDepartmentMasterMutation,
 } = constructionApi;
