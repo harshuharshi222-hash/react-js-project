@@ -24,10 +24,10 @@ import { useGetHrAppraisalQuestionDesignationForUpdateMutation } from "../../api
 import { useGetHrAppraisalQuestionDesignationMutation } from "../../api/constructionApi";
 
 
-const historyData = [];
 
 export default function AddDesignation() {
 
+  const [historyData, setHistoryData] = useState([]);
 
   
 
@@ -66,39 +66,34 @@ const fetchDepartments = async () => {
 const [getDesignationForUpdate] =
   useGetHrAppraisalQuestionDesignationForUpdateMutation();
 
+const handleDepartmentChange = async (e) => {
+  const deptID = e.target.value;
 
-useEffect(() => {
-  fetchDesignationData();
-}, []);
+  setDepartment(deptID);
 
-
-const fetchDesignationData = async () => {
   try {
     const payload = {
       userID: "171464700312440400",
       appraisalQuestionID: "120",
-      departmentID: "9",
+      departmentID: deptID,
     };
 
-    const response = await getDesignationForUpdate(JSON.stringify(payload)).unwrap();
+    const response = await getDesignationForUpdate(
+      JSON.stringify(payload)
+    ).unwrap();
 
-    
-    console.log("Designation Response:", response);
-    console.log("Full Response:", response);
-console.log("Data:", response.data);
-console.log("Rows:", response.data?.length);
+    console.log(response);
 
-    if (response.data) {
-      const formattedRows = response.data.map((item) => ({
-        id: item.designation_id,
-        designation: item.designation_name,
-        checked: item.isSelected === "1",
-      }));
+    const formattedRows = (response.data || []).map((item) => ({
+      id: item.designation_id,
+      designation: item.designation_name,
+      checked: item.isSelected === "1",
+    }));
 
-      setRows(formattedRows);
-    }
+    setRows(formattedRows);
   } catch (error) {
-    console.log("Designation API Error:", error);
+    console.log(error);
+    setRows([]);
   }
 };
 
@@ -187,10 +182,30 @@ const fetchHistory = async () => {
   const allSelected =
     rows.length > 0 && rows.every((item) => item.checked);
 
+  // const handleSubmit = () => {
+  //   const selected = rows.filter((item) => item.checked);
+  //   console.log(selected);
+  // };
+
   const handleSubmit = () => {
-    const selected = rows.filter((item) => item.checked);
-    console.log(selected);
-  };
+  const selectedRows = rows.filter((row) => row.checked);
+
+  if (selectedRows.length === 0) {
+    alert("Please select at least one designation.");
+    return;
+  }
+
+  const newHistory = selectedRows.map((item) => ({
+    department_id: department,
+    designation_name: item.designation,
+    added_by: "Admin",
+    added_on: new Date().toLocaleString(),
+  }));
+
+  setHistoryData((prev) => [...newHistory, ...prev]);
+
+  console.log(newHistory);
+};
 
   return (
     <Box sx={{ p: 3, bgcolor: "#f5f5f5", minHeight: "100vh", }}>
@@ -236,20 +251,22 @@ const fetchHistory = async () => {
 <FormControl fullWidth>
   <InputLabel>Department</InputLabel>
 
+
+
   <Select
-    value={department}
-    label="Department"
-    onChange={(e) => setDepartment(e.target.value)}
-  >
-    {departmentList.map((item) => (
-      <MenuItem
-        key={item.general_task_department_id}
-        value={item.general_task_department_id}
-      >
-        {item.general_task_department_name}
-      </MenuItem>
-    ))}
-  </Select>
+  value={department}
+  label="Department"
+  onChange={handleDepartmentChange}
+>
+  {departmentList.map((item) => (
+    <MenuItem
+      key={item.general_task_department_id}
+      value={item.general_task_department_id}
+    >
+      {item.general_task_department_name}
+    </MenuItem>
+  ))}
+</Select>
 </FormControl>
 
         
