@@ -106,6 +106,7 @@ export default function AddDesignation() {
             fontSize: "28px",
             fontWeight: 500,
             cursor: "pointer",
+            gap: 1.5,
           }}
         >
 
@@ -113,8 +114,16 @@ export default function AddDesignation() {
         onClick={AppraisalQuestion} 
         />
           
-          Add Designation
-          <br></br>
+         <Typography
+                     sx={{
+                       fontWeight: 700,
+                       fontSize: 20,
+                       fontFamily: "Times New Roman",
+                     }}
+                   >
+                     Add Designation
+                   </Typography>
+     
           </Box>
         
         
