@@ -99,6 +99,14 @@ getHrAppraisalQuestionDesignationForUpdate: builder.mutation({
   }),
 }),
 
+getHrAppraisalQuestionDesignation: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getHrAppraisalQuestionDesignation",
+    method: "POST",
+    body,
+  }),
+}),
+
 
   }),
 });
@@ -114,4 +122,5 @@ export const {
   useGetAppraisalQuestionCategoryFilterMutation,
   useGetDepartmentMasterMutation,
   useGetHrAppraisalQuestionDesignationForUpdateMutation,
+  useGetHrAppraisalQuestionDesignationMutation,
 } = constructionApi;

@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import  { useEffect } from "react";
 import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
 import { useGetHrAppraisalQuestionDesignationForUpdateMutation } from "../../api/constructionApi";
+import { useGetHrAppraisalQuestionDesignationMutation } from "../../api/constructionApi";
 
 
 const historyData = [];
@@ -32,7 +33,7 @@ export default function AddDesignation() {
 
   const [department, setDepartment] = useState("");
 const [departmentList, setDepartmentList] = useState([]);
-
+// department dependacy//
 const [getDepartmentMaster] = useGetDepartmentMasterMutation();
 
 
@@ -61,7 +62,7 @@ const fetchDepartments = async () => {
   }
 };
 
-
+// designation table dependancy//
 const [getDesignationForUpdate] =
   useGetHrAppraisalQuestionDesignationForUpdateMutation();
 
@@ -79,9 +80,7 @@ const fetchDesignationData = async () => {
       departmentID: "9",
     };
 
-    const response = await getDesignationForUpdate(
-      JSON.stringify(payload)
-    ).unwrap();
+    const response = await getDesignationForUpdate(JSON.stringify(payload)).unwrap();
 
     
     console.log("Designation Response:", response);
@@ -102,6 +101,40 @@ console.log("Rows:", response.data?.length);
     console.log("Designation API Error:", error);
   }
 };
+
+
+// history designation///
+
+
+const [getHrAppraisalQuestionDesignation, { isLoading }] =
+  useGetHrAppraisalQuestionDesignationMutation();
+
+useEffect(() => {
+  fetchHistory();
+}, []);
+
+const fetchHistory = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      appraisalQuestionID: "120",
+    };
+
+    const response = await getHrAppraisalQuestionDesignation(JSON.stringify(payload)).unwrap();
+
+    console.log(response);
+
+    // Replace "data" with the actual key returned by your API
+    setHistoryData(response.data || []);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+
+
+
+
   const navigate = useNavigate();
   
     const AppraisalQuestion = () => {
@@ -330,32 +363,37 @@ console.log("Rows:", response.data?.length);
             </TableRow>
           </TableHead>
 
+        
+
           <TableBody>
-            {historyData.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={5}
-                  align="center"
-                >
-                  No Records Found
-                </TableCell>
-              </TableRow>
-            ) : (
-              historyData.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
+  {isLoading ? (
+    <TableRow>
+      <TableCell colSpan={5} align="center">
+        Loading...
+      </TableCell>
+    </TableRow>
+  ) : historyData.length === 0 ? (
+    <TableRow>
+      <TableCell colSpan={5} align="center">
+        No Records Found
+      </TableCell>
+    </TableRow>
+  ) : (
+    historyData.map((item, index) => (
+      <TableRow key={index}>
+        <TableCell>{index + 1}</TableCell>
 
-                  <TableCell>{item.department}</TableCell>
+        <TableCell>{item.department_id}</TableCell>
 
-                  <TableCell>{item.designation}</TableCell>
+        <TableCell>{item.designation_name}</TableCell>
 
-                  <TableCell>{item.addedBy}</TableCell>
+        <TableCell>{item.added_by}</TableCell>
 
-                  <TableCell>{item.addedOn}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
+        <TableCell>{item.added_on}</TableCell>
+      </TableRow>
+    ))
+  )}
+</TableBody>
         </Table>
       </Paper>
     </Box>
