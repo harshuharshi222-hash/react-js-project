@@ -20,6 +20,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
 import  { useEffect } from "react";
 import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
+import { useGetHrAppraisalQuestionDesignationForUpdateMutation } from "../../api/constructionApi";
 
 
 const historyData = [];
@@ -27,10 +28,13 @@ const historyData = [];
 export default function AddDesignation() {
 
 
+  
+
   const [department, setDepartment] = useState("");
 const [departmentList, setDepartmentList] = useState([]);
 
 const [getDepartmentMaster] = useGetDepartmentMasterMutation();
+
 
 useEffect(() => {
   fetchDepartments();
@@ -57,6 +61,47 @@ const fetchDepartments = async () => {
   }
 };
 
+
+const [getDesignationForUpdate] =
+  useGetHrAppraisalQuestionDesignationForUpdateMutation();
+
+
+useEffect(() => {
+  fetchDesignationData();
+}, []);
+
+
+const fetchDesignationData = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      appraisalQuestionID: "120",
+      departmentID: "9",
+    };
+
+    const response = await getDesignationForUpdate(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    
+    console.log("Designation Response:", response);
+    console.log("Full Response:", response);
+console.log("Data:", response.data);
+console.log("Rows:", response.data?.length);
+
+    if (response.data) {
+      const formattedRows = response.data.map((item) => ({
+        id: item.designationID,
+        designation: item.designationName,
+        checked: item.isSelected === "1",
+      }));
+
+      setRows(formattedRows);
+    }
+  } catch (error) {
+    console.log("Designation API Error:", error);
+  }
+};
   const navigate = useNavigate();
   
     const AppraisalQuestion = () => {
@@ -174,51 +219,50 @@ const fetchDepartments = async () => {
   </Select>
 </FormControl>
 
+        <Box textAlign="center" mt={4}>
         <Table
-          sx={{
-            mt: 3,
-            border: "1px solid #ddd",
-          }}
-        >
-          <TableHead sx={{ background: "#eef5fc" }}>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>
-                Sl No
-              </TableCell>
+  sx={{
+    mt: 3,
+    border: "1px solid #ddd",
+  }}
+>
+  <TableHead sx={{ background: "#eef5fc" }}>
+    <TableRow>
+      <TableCell sx={{ fontWeight: "bold" }}>Sl No</TableCell>
 
-              <TableCell sx={{ fontWeight: "bold" }}>
-                Designation
-              </TableCell>
+      <TableCell sx={{ fontWeight: "bold" }}>
+        Designation
+      </TableCell>
 
-              <TableCell sx={{ fontWeight: "bold" }}>
-                <Checkbox
-                  checked={allSelected}
-                  onChange={handleSelectAll}
-                />
-                Select All
-              </TableCell>
-            </TableRow>
-          </TableHead>
+      <TableCell sx={{ fontWeight: "bold" }}>
+        <Checkbox
+          checked={allSelected}
+          onChange={handleSelectAll}
+        />
+        Select All
+      </TableCell>
+    </TableRow>
+  </TableHead>
 
-          <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={row.id}>
-                <TableCell>{index + 1}</TableCell>
+  <TableBody>
+    {rows.map((row, index) => (
+      <TableRow key={row.id}>
+        <TableCell>{index.department_id}</TableCell>
 
-                <TableCell>{row.designation}</TableCell>
+        <TableCell>{row.designation}</TableCell>
 
-                <TableCell>
-                  <Checkbox
-                    checked={row.checked}
-                    onChange={() =>
-                      handleRowCheck(row.id)
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <TableCell>
+          <Checkbox
+            checked={row.checked}
+            onChange={() => handleRowCheck(row.id)}
+        
+          />
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+</Box>
         <br></br>
 
         <Box textAlign="center" mt={4}>
