@@ -29,6 +29,7 @@ export default function AddDesignation() {
 
   const [historyData, setHistoryData] = useState([]);
 
+
   
 
   const [department, setDepartment] = useState("");
@@ -65,6 +66,8 @@ const fetchDepartments = async () => {
 // designation table dependancy//
 const [getDesignationForUpdate] =
   useGetHrAppraisalQuestionDesignationForUpdateMutation();
+
+
 
 const handleDepartmentChange = async (e) => {
   const deptID = e.target.value;
@@ -145,13 +148,15 @@ const fetchHistory = async () => {
   console.log(question);
 
 
- 
-  const [rows, setRows] = useState(
+const [rows, setRows] = useState(
   question
     ? [
         {
           id: 1,
-          designation: question.designation,
+          designation:
+            typeof question.designation === "object"
+              ? question.designation.designation_name
+              : question.designation,
           checked: true,
         },
       ]
@@ -182,11 +187,7 @@ const fetchHistory = async () => {
   const allSelected =
     rows.length > 0 && rows.every((item) => item.checked);
 
-  // const handleSubmit = () => {
-  //   const selected = rows.filter((item) => item.checked);
-  //   console.log(selected);
-  // };
-
+ 
   const handleSubmit = () => {
   const selectedRows = rows.filter((row) => row.checked);
 
@@ -206,6 +207,9 @@ const fetchHistory = async () => {
 
   console.log(newHistory);
 };
+
+console.log(historyData);
+console.log(historyData[0]);
 
   return (
     <Box sx={{ p: 3, bgcolor: "#f5f5f5", minHeight: "100vh", }}>
@@ -251,7 +255,7 @@ const fetchHistory = async () => {
 <FormControl fullWidth>
   <InputLabel>Department</InputLabel>
 
-
+ 
 
   <Select
   value={department}
@@ -382,7 +386,12 @@ const fetchHistory = async () => {
 
         
 
-          <TableBody>
+     
+
+<TableBody>
+  {historyData.length > 0 &&
+    console.log("History Data:", historyData)}
+
   {isLoading ? (
     <TableRow>
       <TableCell colSpan={5} align="center">
@@ -397,16 +406,16 @@ const fetchHistory = async () => {
     </TableRow>
   ) : (
     historyData.map((item, index) => (
-      <TableRow key={index}>
+      <TableRow key={item.id || index}>
         <TableCell>{index + 1}</TableCell>
 
-        <TableCell>{item.department_id}</TableCell>
+        <TableCell>{String(item.department_name || "")}</TableCell>
 
-        <TableCell>{item.designation_name}</TableCell>
+        <TableCell>{String(item.designation_name || "")}</TableCell>
 
-        <TableCell>{item.added_by}</TableCell>
+        <TableCell>{String(item.added_user_name || item.added_by || "")}</TableCell>
 
-        <TableCell>{item.added_on}</TableCell>
+        <TableCell>{String(item.added_on || "")}</TableCell>
       </TableRow>
     ))
   )}
