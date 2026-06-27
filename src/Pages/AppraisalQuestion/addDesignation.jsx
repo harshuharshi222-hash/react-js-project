@@ -91,19 +91,33 @@ export default function AddDesignation() {
           borderRadius: 3,
         }}
       >
-        <Typography
+        {/* <Typography
           variant="h5"
           fontWeight={600}
           mb={3}
+        > */}
+              <Box
+          onClick={AppraisalQuestion}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mb: 5,
+            color: "#0f0f0f",
+            fontSize: "28px",
+            fontWeight: 500,
+            cursor: "pointer",
+          }}
         >
-          <MenuOpenIcon sx={{ mr: 1 , fontSize:30,}}
+
+       <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} 
         onClick={AppraisalQuestion} 
         />
-
-          Add Designation
           
-        </Typography>
-        <br></br>
+          Add Designation
+          <br></br>
+          </Box>
+        
+        
 
         <FormControl fullWidth>
 
