@@ -441,11 +441,16 @@ const columns = useMemo(
       accessorKey: "option",
       header: "Option",
          size: 200,
-           cell: () => (
-          <InfoIcon
-            sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
-          />
-        ),
+       cell: ({ row }) => (
+    <InfoIcon
+      sx={{
+        color: "#1976d2",
+        fontSize: 18,
+        cursor: "pointer",
+      }}
+      onClick={() => handleOptionInfo(row)}
+    />
+  ),
     },
     {
       accessorKey: "added_by",
@@ -510,6 +515,15 @@ const table = useReactTable({
     },
   });
 };  
+
+     const handleOptionInfo = (row) => {
+  navigate("/AppraisalQuestion/index/AddOption", {
+    state: {
+      question: row.original,
+    },
+  });
+};  
+
 
 
 
