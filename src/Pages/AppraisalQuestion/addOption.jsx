@@ -63,14 +63,22 @@ const loadRatings = async () => {
 
 //table option //
 
+const [description, setDescription] = useState("");
 const [getHrAppraisalQuestionOption] =
   useGetHrAppraisalQuestionOptionMutation();
 
 const [rows, setRows] = useState([]);
 
+
 useEffect(() => {
-  loadQuestionOptions();
-}, []);
+  if (open) {
+    setRows([]);
+    setRate("");
+    if (editorRef.current) {
+      editorRef.current.innerHTML = "";
+    }
+  }
+}, [open]);
 
 const loadQuestionOptions = async () => {
   try {
@@ -112,9 +120,40 @@ const addLink = () => {
           navigate("/AppraisalQuestion/index");
         };
     
+const handleSubmit = () => {
+  if (!rate) {
+    alert("Please select Rate");
+    return;
+  }
+
+  if (!description.trim()) {
+    alert("Please enter Description");
+    return;
+  }
+
+  const selectedRate = ratings.find((item) => item.rate === rate);
+
+  const newRow = {
+    rate_name: selectedRate?.rate_name || "",
+    rate: selectedRate?.rate || "",
+    rate_description: description,
+    added_by: "Admin",
+    added_on: new Date().toLocaleDateString(),
+    status: "Active",
+  };
+
+  setRows((prev) => [...prev, newRow]);
+
+  // Clear controls
+  setRate("");
+  setDescription("");
+
+  if (editorRef.current) {
+    editorRef.current.innerHTML = "";
+  }
+};
 
 
-//  const rows=[{id:1,rateName:"",rate:"",description:"",addedBy:"",addedOn:"",status:""}];
 
 const Tool = ({ children, onClick }) => (
   <IconButton
@@ -234,15 +273,16 @@ return(
   </Tool>
 </Box>
  
-   <Box
+
+<Box
   ref={editorRef}
   contentEditable
   suppressContentEditableWarning
+  onInput={(e) => setDescription(e.currentTarget.innerHTML)}
   sx={{
     minHeight: 250,
     p: 2,
     fontSize: 15,
-    overflow: "hidden",
     outline: "none",
   }}
 />
@@ -252,9 +292,23 @@ return(
 
 
    </Paper>
-   <Box sx={{display:"flex",justifyContent:"flex-end",my:3}}>
-    <Button variant="contained" sx={{px:4}}>SUBMIT</Button>
-   </Box>
+   
+
+   <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    my: 3,
+  }}
+>
+  <Button
+    variant="contained"
+    sx={{ px: 5 }}
+    onClick={handleSubmit}
+  >
+    Submit
+  </Button>
+</Box>
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
 
    <Paper variant="outlined">
@@ -279,7 +333,15 @@ return(
             <TableCell>{index + 1}</TableCell>
             <TableCell>{r.rate_name}</TableCell>
             <TableCell>{r.rate}</TableCell>
-            <TableCell>{r.rate_description}</TableCell>
+          
+
+            <TableCell>
+  <div
+    dangerouslySetInnerHTML={{
+      __html: r.rate_description,
+    }}
+  />
+</TableCell>
             <TableCell>{r.added_by}</TableCell>
             <TableCell>{r.added_on}</TableCell>
             <TableCell>{r.status}</TableCell>
