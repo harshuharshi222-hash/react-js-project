@@ -1,5 +1,3 @@
-
-import React from "react";
 import {
   Dialog,DialogTitle,DialogContent,Box,Typography,IconButton,
   FormControl,Select,MenuItem,Paper,Button,
@@ -20,7 +18,46 @@ import RedoIcon from "@mui/icons-material/Redo";
 
 import { useNavigate } from "react-router-dom";
 
+import React, { useEffect, useRef, useState } from "react";
+import { useGetAppraisalRatingMutation } from "../../api/constructionApi"; // Change the path
+
 export default function AddOption({open=true,onClose=()=>{}}){
+
+    const [rate, setRate] = useState("");
+const [ratings, setRatings] = useState([]);
+const [text, setText] = useState("");
+
+
+const [getAppraisalRating, { isLoading }] =
+  useGetAppraisalRatingMutation();
+
+ useEffect(() => {
+  loadRatings();
+}, []);
+
+const loadRatings = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      status: "Active",
+      sortOrder: "",
+      generalSearch: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
+    };
+
+    const response = await getAppraisalRating(JSON.stringify(payload)).unwrap();
+
+    console.log("Rating Response:", response);
+
+    // Change according to your API response
+    setRatings(response.data || []);
+  } catch (error) {
+    console.error("Error fetching ratings:", error);
+  }
+};
+
+
 
 
 const editorRef = React.useRef(null);
@@ -41,8 +78,8 @@ const addLink = () => {
           navigate("/AppraisalQuestion/index");
         };
     
- const [rate,setRate]=React.useState("");
- const [text,setText]=React.useState("");
+
+
  const rows=[{id:1,rateName:"",rate:"",description:"",addedBy:"",addedOn:"",status:""}];
 
 const Tool = ({ children, onClick }) => (
@@ -93,12 +130,27 @@ return(
   }}
 >
    <Typography sx={{mb:3,fontSize:18}}><b style={{color:"#10b510"}}>Question:</b> 120 . rr</Typography>
-   <FormControl fullWidth sx={{mb:3}}>
-    <Select displayEmpty value={rate} onChange={e=>setRate(e.target.value)}>
-      <InputLabel value="" disabled>Rate *</InputLabel>
+  
+    <FormControl fullWidth sx={{ mb: 3 }}>
+      <InputLabel id="rating-label">Rate *</InputLabel>
+
+      <Select
+        labelId="rating-label"
+        value={rate}
+        label="Rate *"
+        onChange={(e) => setRate(e.target.value)}
+      >
+        {ratings.map((item) => (
+          <MenuItem
+            key={item.id}
+            value={item.rate}
+          >
+            {item.rate_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
    
-    </Select>
-   </FormControl>
    <Paper variant="outlined">
 
 
@@ -190,4 +242,4 @@ return(
    </Paper>
   </DialogContent>
  </Dialog>);
-}
+};
