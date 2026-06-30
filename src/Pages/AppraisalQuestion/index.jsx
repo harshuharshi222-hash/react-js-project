@@ -412,16 +412,7 @@ const columns = useMemo(
       header: "Description",
        size: 200,
     },
-    // {
-    //   accessorKey: "designation",
-    //   header: "Designation",
-    //   size: 200,
-    //      cell: () => (
-    //       <InfoIcon
-    //         sx={{ color: "#1976d2", fontSize: 18, cursor: "pointer" }}
-    //       />
-    //     ),
-    // },
+   
   {
   accessorKey: "designation",
   header: "Designation",

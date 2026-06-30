@@ -203,7 +203,7 @@ return(
     maxHeight: "75vh",
   }}
 >
-   <Typography sx={{mb:3,fontSize:18}}><b style={{color:"#10b510"}}>Question:</b> 120 . rr</Typography>
+   <Typography sx={{mb:3,fontSize:18}}><b style={{color:"#10b510"}}>Question:</b> 121 . 12</Typography>
   
     <FormControl fullWidth sx={{ mb: 3 }}>
       <InputLabel id="rating-label">Rate *</InputLabel>
