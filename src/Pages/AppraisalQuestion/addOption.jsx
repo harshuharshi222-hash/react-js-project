@@ -1,7 +1,7 @@
 import {
   Dialog,DialogTitle,DialogContent,Box,Typography,IconButton,
   FormControl,Select,MenuItem,Paper,Button,
-  Table,TableHead,TableRow,TableCell,TableBody,TextField,
+  Table,TableHead,TableRow,TableCell,TableBody,TextField, TableContainer,
   InputLabel
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +19,10 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useNavigate } from "react-router-dom";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useGetAppraisalRatingMutation } from "../../api/constructionApi"; // Change the path
+import {
+  useGetAppraisalRatingMutation,
+  useGetHrAppraisalQuestionOptionMutation,
+} from "../../api/constructionApi";
 
 export default function AddOption({open=true,onClose=()=>{}}){
 
@@ -58,6 +61,37 @@ const loadRatings = async () => {
 };
 
 
+//table option //
+
+const [getHrAppraisalQuestionOption] =
+  useGetHrAppraisalQuestionOptionMutation();
+
+const [rows, setRows] = useState([]);
+
+useEffect(() => {
+  loadQuestionOptions();
+}, []);
+
+const loadQuestionOptions = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      appraisalQuestionID: "120",
+    };
+
+    const response = await getHrAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
+
+    console.log("Question Option Response:", response);
+
+    // Update according to your API response
+    setRows(response.data || []);
+  } catch (error) {
+    console.error("Error fetching question options:", error);
+  }
+};
+
+
+
 
 
 const editorRef = React.useRef(null);
@@ -80,7 +114,7 @@ const addLink = () => {
     
 
 
- const rows=[{id:1,rateName:"",rate:"",description:"",addedBy:"",addedOn:"",status:""}];
+//  const rows=[{id:1,rateName:"",rate:"",description:"",addedBy:"",addedOn:"",status:""}];
 
 const Tool = ({ children, onClick }) => (
   <IconButton
@@ -123,10 +157,11 @@ return(
    <IconButton onClick={AppraisalQuestion}><CloseIcon sx={{color:"red"}}/></IconButton>
   </DialogTitle>
   
-  <DialogContent
+ <DialogContent
   sx={{
     p: 3,
-    overflow: "hidden",
+    overflowY: "auto",
+    maxHeight: "75vh",
   }}
 >
    <Typography sx={{mb:3,fontSize:18}}><b style={{color:"#10b510"}}>Question:</b> 120 . rr</Typography>
@@ -221,25 +256,42 @@ return(
     <Button variant="contained" sx={{px:4}}>SUBMIT</Button>
    </Box>
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
+
    <Paper variant="outlined">
-   <Table>
-    <TableHead>
-      <TableRow sx={{background:"#eaf2fb"}}>
-       <TableCell><b>Sl No</b></TableCell><TableCell><b>Rate Name</b></TableCell>
-       <TableCell><b>Rate</b></TableCell><TableCell><b>Description</b></TableCell>
-       <TableCell><b>Added By</b></TableCell><TableCell><b>Added On</b></TableCell>
-       <TableCell><b>Status</b></TableCell><TableCell><b>Edit</b></TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-    {rows.map(r=><TableRow key={r.id}>
-      <TableCell>{r.id}</TableCell><TableCell>{r.rateName}</TableCell><TableCell>{r.rate}</TableCell>
-      <TableCell>{r.description}</TableCell><TableCell>{r.addedBy}</TableCell><TableCell>{r.addedOn}</TableCell>
-      <TableCell>{r.status}</TableCell><TableCell><EditIcon color="primary"/></TableCell>
-    </TableRow>)}
-    </TableBody>
-   </Table>
-   </Paper>
+  <TableContainer sx={{ maxHeight: 300 }}>
+    <Table stickyHeader>
+      <TableHead>
+        <TableRow sx={{ background: "#eaf2fb" }}>
+          <TableCell><b>Sl No</b></TableCell>
+          <TableCell><b>Rate Name</b></TableCell>
+          <TableCell><b>Rate</b></TableCell>
+          <TableCell><b>Description</b></TableCell>
+          <TableCell><b>Added By</b></TableCell>
+          <TableCell><b>Added On</b></TableCell>
+          <TableCell><b>Status</b></TableCell>
+          <TableCell><b>Edit</b></TableCell>
+        </TableRow>
+      </TableHead>
+
+      <TableBody>
+        {rows.map((r, index) => (
+          <TableRow key={index}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{r.rate_name}</TableCell>
+            <TableCell>{r.rate}</TableCell>
+            <TableCell>{r.rate_description}</TableCell>
+            <TableCell>{r.added_by}</TableCell>
+            <TableCell>{r.added_on}</TableCell>
+            <TableCell>{r.status}</TableCell>
+            <TableCell>
+              <EditIcon color="primary" />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+</Paper>
   </DialogContent>
  </Dialog>);
 };
