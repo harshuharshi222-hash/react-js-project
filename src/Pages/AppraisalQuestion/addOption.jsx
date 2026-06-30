@@ -63,7 +63,19 @@ const Tool = ({ children, onClick }) => (
 
 return(
 
- <Dialog open={open} maxWidth={false} PaperProps={{sx:{width:"100%",maxWidth:2000,borderRadius:2}}}>
+
+<Dialog
+  open={open}
+  maxWidth={false}
+  fullWidth
+  PaperProps={{
+    sx: {
+      width: "120vw",
+      maxHeight: "110vh",
+      overflow: "hidden",
+    },
+  }}
+>
   <DialogTitle sx={{display:"flex",justifyContent:"space-between",fontWeight:700,borderBottom:"1px solid #f9f2f2"}}>
    Add Option
    <IconButton onClick={AppraisalQuestion}><CloseIcon sx={{color:"red"}}/></IconButton>
@@ -116,7 +128,7 @@ return(
   </Tool>
 
   <Tool onClick={() => executeCommand("undo")}>
-    <UndoIcon fontSize="small" />
+    <UndoIcon fontSize="small"  />
   </Tool>
 
   <Tool onClick={() => executeCommand("redo")}>
@@ -124,22 +136,23 @@ return(
   </Tool>
 </Box>
  
-      <Box
+   <Box
   ref={editorRef}
   contentEditable
   suppressContentEditableWarning
   sx={{
     minHeight: 250,
     p: 2,
-    outline: "none",
     fontSize: 15,
-    overflowY: "auto",
-    "&:focus": {
-      outline: "none",
-    },
+    overflow: "hidden",
+    outline: "none",
   }}
->
-</Box>
+/>
+
+
+
+
+
    </Paper>
    <Box sx={{display:"flex",justifyContent:"flex-end",my:3}}>
     <Button variant="contained" sx={{px:4}}>SUBMIT</Button>
