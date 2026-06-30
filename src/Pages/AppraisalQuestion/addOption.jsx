@@ -68,11 +68,16 @@ return(
   open={open}
   maxWidth={false}
   fullWidth
+    scroll="paper"
   PaperProps={{
     sx: {
-      width: "120vw",
-      maxHeight: "110vh",
+          width:" 1200px", 
+       width: "80vw",
+      maxWidth: "95vw",
+      height: "90vh",
+      maxHeight: "95vh",
       overflow: "hidden",
+      m: 0,
     },
   }}
 >
@@ -80,7 +85,13 @@ return(
    Add Option
    <IconButton onClick={AppraisalQuestion}><CloseIcon sx={{color:"red"}}/></IconButton>
   </DialogTitle>
-  <DialogContent sx={{p:3}}>
+  
+  <DialogContent
+  sx={{
+    p: 3,
+    overflow: "hidden",
+  }}
+>
    <Typography sx={{mb:3,fontSize:18}}><b style={{color:"#10b510"}}>Question:</b> 120 . rr</Typography>
    <FormControl fullWidth sx={{mb:3}}>
     <Select displayEmpty value={rate} onChange={e=>setRate(e.target.value)}>
