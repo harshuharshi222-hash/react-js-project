@@ -311,19 +311,36 @@ return(
 </Box>
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
 
-   <Paper variant="outlined">
+<Paper variant="outlined">
   <TableContainer sx={{ maxHeight: 300 }}>
     <Table stickyHeader>
       <TableHead>
-        <TableRow sx={{ background: "#eaf2fb" }}>
-          <TableCell><b>Sl No</b></TableCell>
-          <TableCell><b>Rate Name</b></TableCell>
-          <TableCell><b>Rate</b></TableCell>
-          <TableCell><b>Description</b></TableCell>
-          <TableCell><b>Added By</b></TableCell>
-          <TableCell><b>Added On</b></TableCell>
-          <TableCell><b>Status</b></TableCell>
-          <TableCell><b>Edit</b></TableCell>
+        <TableRow>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Sl No
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Rate Name
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Rate
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Description
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Added By
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Added On
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Status
+          </TableCell>
+          <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
+            Edit
+          </TableCell>
+          
         </TableRow>
       </TableHead>
 
@@ -333,21 +350,23 @@ return(
             <TableCell>{index + 1}</TableCell>
             <TableCell>{r.rate_name}</TableCell>
             <TableCell>{r.rate}</TableCell>
-          
 
             <TableCell>
-  <div
-    dangerouslySetInnerHTML={{
-      __html: r.rate_description,
-    }}
-  />
-</TableCell>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: r.rate_description,
+                }}
+              />
+            </TableCell>
+
             <TableCell>{r.added_by}</TableCell>
             <TableCell>{r.added_on}</TableCell>
             <TableCell>{r.status}</TableCell>
+
             <TableCell>
-              <EditIcon color="primary" />
+              <EditIcon color="primary" sx={{ cursor: "pointer" }} />
             </TableCell>
+
           </TableRow>
         ))}
       </TableBody>
