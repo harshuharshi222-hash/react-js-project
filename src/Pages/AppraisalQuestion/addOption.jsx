@@ -23,7 +23,18 @@ import { useNavigate } from "react-router-dom";
 export default function AddOption({open=true,onClose=()=>{}}){
 
 
+const editorRef = React.useRef(null);
+const executeCommand = (command, value = null) => {
+  editorRef.current.focus();
+  document.execCommand(command, false, value);
+};
 
+const addLink = () => {
+  const url = window.prompt("Enter URL");
+  if (url) {
+    executeCommand("createLink", url);
+  }
+};
       const navigate = useNavigate();
       
         const AppraisalQuestion = () => {
@@ -32,9 +43,26 @@ export default function AddOption({open=true,onClose=()=>{}}){
     
  const [rate,setRate]=React.useState("");
  const [text,setText]=React.useState("");
- const rows=[{id:1,rateName:"Unsatisfactory",rate:"1",description:"king is",addedBy:"Admin",addedOn:"25-06-2026 03:41:44 pm",status:"Active"}];
- const Tool=({children})=><IconButton size="small" sx={{border:"1px solid #ccc",borderRadius:0,width:36,height:36}}>{children}</IconButton>;
- return(
+ const rows=[{id:1,rateName:"",rate:"",description:"",addedBy:"",addedOn:"",status:""}];
+
+const Tool = ({ children, onClick }) => (
+  <IconButton
+    size="small"
+    onClick={onClick}
+    sx={{
+      border: "1px solid #ccc",
+      borderRadius: 0,
+      width: 36,
+      height: 36,
+    }}
+  >
+    {children}
+  </IconButton>
+);
+
+
+return(
+
  <Dialog open={open} maxWidth={false} PaperProps={{sx:{width:"100%",maxWidth:2000,borderRadius:2}}}>
   <DialogTitle sx={{display:"flex",justifyContent:"space-between",fontWeight:700,borderBottom:"1px solid #f9f2f2"}}>
    Add Option
@@ -49,14 +77,69 @@ export default function AddOption({open=true,onClose=()=>{}}){
     </Select>
    </FormControl>
    <Paper variant="outlined">
-    <Box sx={{display:"flex",gap:.5,p:1,borderBottom:"1px solid #ddd"}}>
-      <Tool><FormatBoldIcon fontSize="small"/></Tool><Tool><FormatItalicIcon fontSize="small"/></Tool>
-      <Tool><FormatUnderlinedIcon fontSize="small"/></Tool><Tool><FormatListBulletedIcon fontSize="small"/></Tool>
-      <Tool><FormatListNumberedIcon fontSize="small"/></Tool><Tool><LinkIcon fontSize="small"/></Tool>
-      <Tool><LinkOffIcon fontSize="small"/></Tool><Tool><UndoIcon fontSize="small"/></Tool><Tool><RedoIcon fontSize="small"/></Tool>
-    </Box>
-    <TextField multiline rows={10} fullWidth variant="standard" value={text} onChange={e=>setText(e.target.value)}
-      InputProps={{disableUnderline:true,sx:{p:2}}}/>
+
+
+    <Box
+  sx={{
+    display: "flex",
+    gap: 0.5,
+    p: 1,
+    borderBottom: "1px solid #ddd",
+  }}
+>
+  <Tool onClick={() => executeCommand("bold")}>
+    <FormatBoldIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("italic")}>
+    <FormatItalicIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("underline")}>
+    <FormatUnderlinedIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("insertUnorderedList")}>
+    <FormatListBulletedIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("insertOrderedList")}>
+    <FormatListNumberedIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={addLink}>
+    <LinkIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("unlink")}>
+    <LinkOffIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("undo")}>
+    <UndoIcon fontSize="small" />
+  </Tool>
+
+  <Tool onClick={() => executeCommand("redo")}>
+    <RedoIcon fontSize="small" />
+  </Tool>
+</Box>
+ 
+      <Box
+  ref={editorRef}
+  contentEditable
+  suppressContentEditableWarning
+  sx={{
+    minHeight: 250,
+    p: 2,
+    outline: "none",
+    fontSize: 15,
+    overflowY: "auto",
+    "&:focus": {
+      outline: "none",
+    },
+  }}
+>
+</Box>
    </Paper>
    <Box sx={{display:"flex",justifyContent:"flex-end",my:3}}>
     <Button variant="contained" sx={{px:4}}>SUBMIT</Button>
