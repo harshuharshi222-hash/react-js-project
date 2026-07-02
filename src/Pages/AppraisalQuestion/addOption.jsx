@@ -190,19 +190,16 @@ return(
 
 <Dialog
   open={open}
-  maxWidth={false}
-  maxWidth="lg"
+  onClose={onClose}
   fullWidth
-    scroll="paper"
+  maxWidth="lg"
+  scroll="paper"
   PaperProps={{
     sx: {
-          width: "80vw",
-      //  width: "80vw",
+      width: "80vw",
       maxWidth: "800px",
       height: "90vh",
-      // maxHeight: "95vh",
       overflow: "hidden",
-      // m: 0,
     },
   }}
 >

@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
@@ -46,13 +46,20 @@ useEffect(() => {
 }, [option]);
 
   
+    const navigate = useNavigate();
+    
+      const AppraisalQuestion = () => {
+        navigate("/AppraisalQuestion/index");
+      };
 
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
       <Toolbar sx={{ pl: 0 }}>
         <IconButton>
-          <MenuIcon color="primary" />
+           <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} 
+        onClick={AppraisalQuestion} 
+        />
         </IconButton>
 
         <Typography
