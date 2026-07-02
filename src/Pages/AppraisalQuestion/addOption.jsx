@@ -74,15 +74,45 @@ const [getHrAppraisalQuestionOption] =
 const [rows, setRows] = useState([]);
 
 
+// useEffect(() => {
+//   if (open) {
+//     setRows([]);
+//     setRate("");
+//     if (editorRef.current) {
+//       editorRef.current.innerHTML = "";
+//     }
+//   }
+// }, [open]);
+
 useEffect(() => {
   if (open) {
-    setRows([]);
     setRate("");
+
     if (editorRef.current) {
       editorRef.current.innerHTML = "";
     }
+
+    loadQuestionOptions();
   }
 }, [open]);
+
+// const loadQuestionOptions = async () => {
+//   try {
+//     const payload = {
+//       userID: "171464700312440400",
+//       appraisalQuestionID: "120",
+//     };
+
+//     const response = await getHrAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
+
+//     console.log("Question Option Response:", response);
+
+//     // Update according to your API response
+//     setRows(response.data || []);
+//   } catch (error) {
+//     console.error("Error fetching question options:", error);
+//   }
+// };
 
 const loadQuestionOptions = async () => {
   try {
@@ -91,18 +121,17 @@ const loadQuestionOptions = async () => {
       appraisalQuestionID: "120",
     };
 
-    const response = await getHrAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
+    const response = await getHrAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
 
-    console.log("Question Option Response:", response);
+    console.log(response);
 
-    // Update according to your API response
     setRows(response.data || []);
-  } catch (error) {
-    console.error("Error fetching question options:", error);
+  } catch (err) {
+    console.log(err);
   }
 };
-
-
 
 
 
@@ -324,8 +353,8 @@ return(
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
 
 <Paper variant="outlined">
-  <TableContainer sx={{ maxHeight: 300 }}>
-    <Table stickyHeader>
+  <TableContainer >
+    <Table >
       <TableHead>
         <TableRow>
           <TableCell sx={{ backgroundColor: "#E3F2FD", fontWeight: "bold" }}>
