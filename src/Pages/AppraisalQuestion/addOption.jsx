@@ -15,6 +15,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
+import UpdateOption from "../AppraisalQuestion/optionfiles/optionEdit"
 
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +26,9 @@ import {
 } from "../../api/constructionApi";
 
 export default function AddOption({open=true,onClose=()=>{}}){
+
+
+  
 
     const [rate, setRate] = useState("");
 const [ratings, setRatings] = useState([]);
@@ -119,6 +123,16 @@ const addLink = () => {
         const AppraisalQuestion = () => {
           navigate("/AppraisalQuestion/index");
         };
+
+      
+     const handleEdit = (row) => {
+  navigate("/AppraisalQuestion/index/addOption/optionEdit", {
+    state: {
+      option: row,
+    },
+  });
+};
+   
     
 const handleSubmit = () => {
   if (!rate) {
@@ -177,17 +191,18 @@ return(
 <Dialog
   open={open}
   maxWidth={false}
+  maxWidth="lg"
   fullWidth
     scroll="paper"
   PaperProps={{
     sx: {
-          width:" 1200px", 
-       width: "80vw",
-      maxWidth: "95vw",
+          width: "80vw",
+      //  width: "80vw",
+      maxWidth: "800px",
       height: "90vh",
-      maxHeight: "95vh",
+      // maxHeight: "95vh",
       overflow: "hidden",
-      m: 0,
+      // m: 0,
     },
   }}
 >
@@ -364,7 +379,11 @@ return(
             <TableCell>{r.status}</TableCell>
 
             <TableCell>
-              <EditIcon color="primary" sx={{ cursor: "pointer" }} />
+              <EditIcon
+  color="primary"
+  sx={{ cursor: "pointer" }}
+  onClick={() => handleEdit(r)}
+/>
             </TableCell>
 
           </TableRow>

@@ -513,7 +513,8 @@ const table = useReactTable({
       question: row.original,
     },
   });
-};  
+}; 
+
 
 
 

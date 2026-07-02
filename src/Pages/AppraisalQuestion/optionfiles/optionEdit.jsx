@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,11 +25,27 @@ import LinkIcon from "@mui/icons-material/Link";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function UpdateOption() {
   const [rate, setRate] = useState("Unsatisfactory (1)");
   const [status, setStatus] = useState("Active");
   const [description, setDescription] = useState("hi");
+
+const location = useLocation();
+
+const option = location.state?.option;
+
+useEffect(() => {
+  if (option) {
+    setRate(option.rate);
+    setStatus(option.status);
+    setDescription(option.rate_description);
+  }
+}, [option]);
+
+  
 
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
