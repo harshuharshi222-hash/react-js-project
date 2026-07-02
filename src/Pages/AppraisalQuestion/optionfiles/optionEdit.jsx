@@ -28,10 +28,49 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+
+import {
+  useGetAppraisalRatingMutation,
+  useGetHrAppraisalQuestionOptionMutation,
+} from "../../../api/constructionApi";
+
 export default function UpdateOption() {
   const [rate, setRate] = useState("Unsatisfactory (1)");
   const [status, setStatus] = useState("Active");
   const [description, setDescription] = useState("hi");
+
+  const [ratings, setRatings] = useState([]);
+
+
+  const [getAppraisalRating, { isLoading }] =
+    useGetAppraisalRatingMutation();
+  
+   useEffect(() => {
+    loadRatings();
+  }, []);
+  
+  const loadRatings = async () => {
+    try {
+      const payload = {
+        userID: "171464700312440400",
+        status: "Active",
+        sortOrder: "",
+        generalSearch: "",
+        iDisplayStart: 0,
+        iDisplayLength: -1,
+      };
+  
+      const response = await getAppraisalRating(JSON.stringify(payload)).unwrap();
+  
+      console.log("Rating Response:", response);
+  
+      // Change according to your API response
+      setRatings(response.data || []);
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
+    }
+  };
+  
 
 const location = useLocation();
 
@@ -93,34 +132,24 @@ useEffect(() => {
 
         {/* Rate */}
         <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel>Rate *</InputLabel>
-
-          <Select
-            value={rate}
-            label="Rate *"
-            onChange={(e) => setRate(e.target.value)}
-          >
-            <MenuItem value="Unsatisfactory (1)">
-              Unsatisfactory (1)
-            </MenuItem>
-
-            <MenuItem value="Needs Improvement (2)">
-              Needs Improvement (2)
-            </MenuItem>
-
-            <MenuItem value="Average (3)">
-              Average (3)
-            </MenuItem>
-
-            <MenuItem value="Good (4)">
-              Good (4)
-            </MenuItem>
-
-            <MenuItem value="Excellent (5)">
-              Excellent (5)
-            </MenuItem>
-          </Select>
-        </FormControl>
+              <InputLabel id="rating-label">Rate *</InputLabel>
+        
+              <Select
+                labelId="rating-label"
+                value={rate}
+                label="Rate *"
+                onChange={(e) => setRate(e.target.value)}
+              >
+                {ratings.map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    value={item.rate}
+                  >
+                    {item.rate_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
         {/* Editor */}
         <Box
