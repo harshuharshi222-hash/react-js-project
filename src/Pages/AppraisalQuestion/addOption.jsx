@@ -74,15 +74,7 @@ const [getHrAppraisalQuestionOption] =
 const [rows, setRows] = useState([]);
 
 
-// useEffect(() => {
-//   if (open) {
-//     setRows([]);
-//     setRate("");
-//     if (editorRef.current) {
-//       editorRef.current.innerHTML = "";
-//     }
-//   }
-// }, [open]);
+
 
 useEffect(() => {
   if (open) {

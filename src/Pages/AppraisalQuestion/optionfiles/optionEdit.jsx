@@ -39,9 +39,7 @@ export default function UpdateOption() {
   const [status, setStatus] = useState("Active");
   const [description, setDescription] = useState("hi");
 
-  const [ratings, setRatings] = useState([]);
-
-
+const [ratings, setRatings] = useState([]);
   const [getAppraisalRating, { isLoading }] =
     useGetAppraisalRatingMutation();
   
