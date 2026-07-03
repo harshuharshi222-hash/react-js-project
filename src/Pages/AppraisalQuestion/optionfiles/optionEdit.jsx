@@ -103,18 +103,19 @@ const handleSave = async () => {
   try {
     const payload = {
       userID: "171464700312440400",
-       appraisalID: option?.appraisalID, 
-      questionTitle: option?.questionTitle,
+       appraisalID: option?.AppraisalQuestionID ||"" , 
+      questionTitle: option?.questionTitle || "",
       description: description,
-      displayOrder: option?.displayOrder,
+      displayOrder: option?.displayOrder || "",
       status: status,
-      categoryID: option?.categoryID,
+      categoryID: option?.categoryID || "",
     };
      console.log("Payload:", payload);
     console.log("Update Payload", payload);
 
+
     const response = await updateAppraisalQuestion(
-  payload)
+  JSON.stringify(payload))
     .unwrap();
 
     console.log(response);
