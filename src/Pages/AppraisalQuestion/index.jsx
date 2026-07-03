@@ -507,14 +507,23 @@ const table = useReactTable({
   });
 };  
 
-     const handleOptionInfo = (row) => {
+
+//      const handleOptionInfo = (row) => {
+//   navigate("/AppraisalQuestion/index/AddOption", {
+//     state: {
+//       question: row.original,
+//     },
+//   });
+// }; 
+const handleOptionInfo = (row) => {
+  console.log("ROW ORIGINAL:", row.original);
+
   navigate("/AppraisalQuestion/index/AddOption", {
     state: {
       question: row.original,
     },
   });
-}; 
-
+};
 
 
 

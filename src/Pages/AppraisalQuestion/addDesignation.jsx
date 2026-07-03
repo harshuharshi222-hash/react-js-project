@@ -145,7 +145,7 @@ const fetchHistory = async () => {
 
   const question = state?.question;
 
-  console.log(question);
+  console.log(question,"question");
 
 
 

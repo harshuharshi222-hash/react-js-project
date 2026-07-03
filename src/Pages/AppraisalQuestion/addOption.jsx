@@ -135,6 +135,7 @@ const addLink = () => {
 
       
      const handleEdit = (row) => {
+        console.log("Selected Row:", row);
   navigate("/AppraisalQuestion/index/addOption/optionEdit", {
     state: {
       option: row,

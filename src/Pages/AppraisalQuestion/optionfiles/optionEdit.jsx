@@ -29,15 +29,9 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 
-// import {
-//   useGetAppraisalRatingMutation,
-//   useGetHrAppraisalQuestionOptionMutation,
-// } from "../../../api/constructionApi";
-
 import {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionMutation,
-  useUpdateAppraisalQuestionMutation,
 } from "../../../api/constructionApi";
 
 export default function UpdateOption() {
@@ -48,9 +42,6 @@ export default function UpdateOption() {
 const [ratings, setRatings] = useState([]);
   const [getAppraisalRating, { isLoading }] =
     useGetAppraisalRatingMutation();
-
-    const [updateAppraisalQuestion, { isLoading: updating }] =
-  useUpdateAppraisalQuestionMutation();
   
    useEffect(() => {
     loadRatings();
@@ -77,52 +68,33 @@ const [ratings, setRatings] = useState([]);
       console.error("Error fetching ratings:", error);
     }
   };
-
-
- const handleSave = async () => {
-  const payload = {
-    userID: "171464700312440400",
-    appraisalID: option?.appraisalID || option?.appraisal_id,
-    questionTitle: option?.questionTitle || option?.question_title,
-    description: description,
-    displayOrder: option?.displayOrder || option?.display_order,
-    status: status,
-    categoryID: option?.categoryID || option?.category_id,
-  };
-  console.log("OPTION =", option);
-  console.log("OPTION DATA:", option);
-  console.log("PAYLOAD:", payload);
-
-  try {
-    const response = await updateAppraisalQuestion(JSON.stringify(payload)).unwrap();
-
-    console.log(response);
-  } catch (err) {
-    console.log(err);
-  }
-};
   
 
 const location = useLocation();
 
 const option = location.state?.option;
-console.log("Option Data:", option);
 
+// useEffect(() => {
+//   if (option) {
+//     setRate(option.rate);
+//     setStatus(option.status);
+//     setDescription(option.rate_description);
+//   }
+// }, [option]);
 useEffect(() => {
-  if (option) {
+     if (option) {
     setRate(option.rate);
     setStatus(option.status);
     setDescription(option.rate_description);
   }
-}, [option]);
-
+    console.log(option);
+}, []);
   
     const navigate = useNavigate();
     
       const AppraisalQuestion = () => {
         navigate("/AppraisalQuestion/index");
       };
-      
 
   return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
@@ -288,7 +260,7 @@ useEffect(() => {
             justifyContent: "center",
           }}
         >
-          {/* <Button
+          <Button
             variant="contained"
             sx={{
               width: 85,
@@ -298,21 +270,7 @@ useEffect(() => {
             }}
           >
             Save
-          </Button> */}
-
-          <Button
-  variant="contained"
-  onClick={handleSave}
-  disabled={updating}
-  sx={{
-    width: 85,
-    height: 42,
-    textTransform: "uppercase",
-    borderRadius: 1,
-  }}
->
-  {updating ? "Saving..." : "Save"}
-</Button>
+          </Button>
         </Box>
       </Card>
     </Box>
