@@ -32,6 +32,7 @@ import { useLocation } from "react-router-dom";
 import {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionMutation,
+  useUpdateAppraisalQuestionMutation,
 } from "../../../api/constructionApi";
 
 export default function UpdateOption() {
@@ -42,6 +43,9 @@ export default function UpdateOption() {
 const [ratings, setRatings] = useState([]);
   const [getAppraisalRating, { isLoading }] =
     useGetAppraisalRatingMutation();
+
+  const [updateAppraisalQuestion, { isLoading: saving }] =
+  useUpdateAppraisalQuestionMutation();
   
    useEffect(() => {
     loadRatings();
@@ -89,6 +93,43 @@ useEffect(() => {
   }
     console.log(option);
 }, []);
+
+console.log("OPTION OBJECT");
+console.log(option);
+console.table(option);
+
+
+const handleSave = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+       appraisalID: option?.appraisalID, 
+      questionTitle: option?.questionTitle,
+      description: description,
+      displayOrder: option?.displayOrder,
+      status: status,
+      categoryID: option?.categoryID,
+    };
+     console.log("Payload:", payload);
+    console.log("Update Payload", payload);
+
+    const response = await updateAppraisalQuestion(
+  payload)
+    .unwrap();
+
+    console.log(response);
+console.log(JSON.stringify(option, null, 2));
+    if (!response.error) {
+      alert("Question Updated Successfully");
+      navigate("/AppraisalQuestion/index");
+    } else {
+      alert(response.message);
+    }
+  } catch (err) {
+    console.log(err);
+    alert("Update Failed");
+  }
+};
   
     const navigate = useNavigate();
     
@@ -260,7 +301,7 @@ useEffect(() => {
             justifyContent: "center",
           }}
         >
-          <Button
+          {/* <Button
             variant="contained"
             sx={{
               width: 85,
@@ -270,7 +311,20 @@ useEffect(() => {
             }}
           >
             Save
-          </Button>
+          </Button> */}
+          <Button
+  variant="contained"
+  onClick={handleSave}
+  disabled={saving}
+  sx={{
+    width: 85,
+    height: 42,
+    textTransform: "uppercase",
+    borderRadius: 1,
+  }}
+>
+  {saving ? "Saving..." : "Save"}
+</Button>
         </Box>
       </Card>
     </Box>
