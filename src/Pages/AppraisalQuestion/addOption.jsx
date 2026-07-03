@@ -20,9 +20,12 @@ import UpdateOption from "../AppraisalQuestion/optionfiles/optionEdit"
 import { useNavigate } from "react-router-dom";
 
 import React, { useEffect, useRef, useState } from "react";
+
+
 import {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionMutation,
+  useCreateAppraisalQuestionOptionMutation,
 } from "../../api/constructionApi";
 
 export default function AddOption({open=true,onClose=()=>{}}){
@@ -70,6 +73,8 @@ const loadRatings = async () => {
 const [description, setDescription] = useState("");
 const [getHrAppraisalQuestionOption] =
   useGetHrAppraisalQuestionOptionMutation();
+  const [createAppraisalQuestionOption, { isLoading: isSaving }] =
+  useCreateAppraisalQuestionOptionMutation();
 
 const [rows, setRows] = useState([]);
 
@@ -88,23 +93,6 @@ useEffect(() => {
   }
 }, [open]);
 
-// const loadQuestionOptions = async () => {
-//   try {
-//     const payload = {
-//       userID: "171464700312440400",
-//       appraisalQuestionID: "120",
-//     };
-
-//     const response = await getHrAppraisalQuestionOption(JSON.stringify(payload)).unwrap();
-
-//     console.log("Question Option Response:", response);
-
-//     // Update according to your API response
-//     setRows(response.data || []);
-//   } catch (error) {
-//     console.error("Error fetching question options:", error);
-//   }
-// };
 
 const loadQuestionOptions = async () => {
   try {
@@ -155,7 +143,8 @@ const addLink = () => {
 };
    
     
-const handleSubmit = () => {
+
+const handleSubmit = async () => {
   if (!rate) {
     alert("Please select Rate");
     return;
@@ -166,29 +155,47 @@ const handleSubmit = () => {
     return;
   }
 
-  const selectedRate = ratings.find((item) => item.rate === rate);
+  try {
+    // Find selected rating object
+    const selectedRate = ratings.find((item) => item.rate === rate);
 
-  const newRow = {
-    rate_name: selectedRate?.rate_name || "",
-    rate: selectedRate?.rate || "",
-    rate_description: description,
-    added_by: "Admin",
-    added_on: new Date().toLocaleDateString(),
-    status: "Active",
-  };
+    const payload = {
+      userID: "171464700312440400",
+      displayOrder: "",
+      appraisalQuestionID: "120",
+      rateID: String(selectedRate.id), // Rating ID from API
+      description: description, // HTML from editor
+    };
 
-  setRows((prev) => [...prev, newRow]);
+    console.log("Create Payload:", payload);
 
-  // Clear controls
-  setRate("");
-  setDescription("");
+    const response = await createAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
 
-  if (editorRef.current) {
-    editorRef.current.innerHTML = "";
+    console.log("Create Response:", response);
+
+    if (response.status === true || response.success === true) {
+      alert("Option Added Successfully");
+
+      // Clear form
+      setRate("");
+      setDescription("");
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML = "";
+      }
+
+      // Refresh table
+      loadQuestionOptions();
+    } else {
+      alert(response.message || "Failed to add option");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
   }
 };
-
-
 
 const Tool = ({ children, onClick }) => (
   <IconButton
@@ -334,13 +341,16 @@ return(
     my: 3,
   }}
 >
+ 
+
   <Button
-    variant="contained"
-    sx={{ px: 5 }}
-    onClick={handleSubmit}
-  >
-    Submit
-  </Button>
+  variant="contained"
+  sx={{ px: 5 }}
+  onClick={handleSubmit}
+  disabled={isSaving}
+>
+  {isSaving ? "Saving..." : "Submit"}
+</Button>
 </Box>
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
 
@@ -402,6 +412,7 @@ return(
   sx={{ cursor: "pointer" }}
   onClick={() => handleEdit(r)}
 />
+
             </TableCell>
 
           </TableRow>
