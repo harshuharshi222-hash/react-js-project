@@ -57,7 +57,7 @@ export default function AppraisalQuestion() {
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
   const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("Active");
+  const [status, setStatus] = useState("Active","Inactive");
 
 const [data, setData] = useState([]);
 const [loading, setLoading] = useState(false);
@@ -507,23 +507,14 @@ const table = useReactTable({
   });
 };  
 
-
-//      const handleOptionInfo = (row) => {
-//   navigate("/AppraisalQuestion/index/AddOption", {
-//     state: {
-//       question: row.original,
-//     },
-//   });
-// }; 
-const handleOptionInfo = (row) => {
-  console.log("ROW ORIGINAL:", row.original);
-
+     const handleOptionInfo = (row) => {
   navigate("/AppraisalQuestion/index/AddOption", {
     state: {
       question: row.original,
     },
   });
-};
+}; 
+
 
 
 
