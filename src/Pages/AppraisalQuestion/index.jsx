@@ -327,26 +327,44 @@ useEffect(() => {
 };
   
   const [selected, setSelected] = useState(allColumns);
+//table important//
 
-//   const StyledTableCell = styled(TableCell)(({ theme }) => ({
+
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
 //   [`&.${tableCellClasses.head}`]: {
 //     backgroundColor: "#f8f9fb",
 //     color: "#080808",
 //     fontWeight: 700,
-//     fontSize: 14,
+//     fontSize: 13,
+//     padding: "10px 12px",
+//     whiteSpace: "nowrap",
 //   },
+
 //   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
+//     fontSize: 13,
+//     padding: "8px 12px",
+//     height: 42,
+//     maxHeight: 42,
+//     overflow: "hidden",
+//     textOverflow: "ellipsis",
+//     whiteSpace: "nowrap",
 //   },
 // }));
+
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
+    position: "sticky",
+    top: 0,
+    zIndex: 100,
     backgroundColor: "#f8f9fb",
     color: "#080808",
     fontWeight: 700,
     fontSize: 13,
     padding: "10px 12px",
     whiteSpace: "nowrap",
+    borderBottom: "1px solid #ddd",
   },
 
   [`&.${tableCellClasses.body}`]: {
@@ -359,17 +377,17 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     whiteSpace: "nowrap",
   },
 }));
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: "#fafafa",
-//   },
-//   "&:hover": {
-//     backgroundColor: "#f5f5f5",
-//   },
-//   "&:last-child td, &:last-child th": {
-//     border: 0,
-//   },
-// }));
+
+
+
+
+
+
+
+
+
+
+
 
 const StyledTableRow = styled(TableRow)(() => ({
   height: 42,
@@ -867,10 +885,10 @@ const table = useReactTable({
   component={Paper}
   sx={{
     height: "500px",        // Fixed height
-    maxHeight: "500px",
+ 
     overflowY: "auto",
     overflowX: "auto",
-    border: "1px solid #dcdcdc",
+    // border: "1px solid #dcdcdc",
 
     "&::-webkit-scrollbar": {
       width: "8px",
@@ -907,6 +925,7 @@ const table = useReactTable({
     whiteSpace: "nowrap",
     padding: "8px 10px",
     height: 42,
+    tableLayout:"fixed",
   }}
 >
   {header.isPlaceholder
