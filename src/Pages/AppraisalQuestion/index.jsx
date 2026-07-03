@@ -577,6 +577,10 @@ const table = useReactTable({
   });
 }; 
 
+const handlegotodashboard = () => {
+      navigate('/dashboard')
+   }
+
 const filteredData = useMemo(() => {
   return tableData.filter(
     (item) => item.status?.toLowerCase() === status.toLowerCase()
@@ -845,8 +849,8 @@ const filteredData = useMemo(() => {
             gap: 1.5,
           }}
         >
-          <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} />
-
+          <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} onClick={handlegotodashboard} />
+          
           <Typography
             sx={{
               fontWeight: 700,
