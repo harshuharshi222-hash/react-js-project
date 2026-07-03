@@ -58,6 +58,12 @@ export default function AppraisalQuestion() {
   const [designation, setDesignation] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Active","Inactive");
+  const [tableData, setTableData] = useState([]);
+//   const filteredData = useMemo(() => {
+//   return tableData.filter(
+//     (item) => item.status?.toLowerCase() === status.toLowerCase()
+//   );
+// }, [tableData, status]);
 
 const [data, setData] = useState([]);
 const [loading, setLoading] = useState(false);
@@ -571,6 +577,11 @@ const table = useReactTable({
   });
 }; 
 
+const filteredData = useMemo(() => {
+  return tableData.filter(
+    (item) => item.status?.toLowerCase() === status.toLowerCase()
+  );
+}, [tableData, status]);
 
 
 
@@ -762,7 +773,7 @@ const table = useReactTable({
                 
                     {/* status */}
 
-          <FormControl size="small" sx={{ width: 180 }}>
+          {/* <FormControl size="small" sx={{ width: 180 }}>
             <InputLabel>Status</InputLabel>
             <Select
               value={status}
@@ -772,7 +783,20 @@ const table = useReactTable({
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="inActive">In-Active</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
+
+
+          <FormControl size="small" sx={{ width: 180 }}>
+  <InputLabel>Status</InputLabel>
+  <Select
+    value={status}
+    label="Status"
+    onChange={(e) => setStatus(e.target.value)}
+  >
+    <MenuItem value="Active">Active</MenuItem>
+    <MenuItem value="inActive">In-Active</MenuItem>
+  </Select>
+</FormControl>
 
           <TextField
             size="small"
