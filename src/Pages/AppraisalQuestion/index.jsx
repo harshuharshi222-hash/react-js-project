@@ -328,31 +328,69 @@ useEffect(() => {
   
   const [selected, setSelected] = useState(allColumns);
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: "#f8f9fb",
+//     color: "#080808",
+//     fontWeight: 700,
+//     fontSize: 14,
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#f8f9fb",
     color: "#080808",
     fontWeight: 700,
-    fontSize: 14,
+    fontSize: 13,
+    padding: "10px 12px",
+    whiteSpace: "nowrap",
   },
+
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 13,
+    padding: "8px 12px",
+    height: 42,
+    maxHeight: 42,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
 }));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(odd)": {
+//     backgroundColor: "#fafafa",
+//   },
+//   "&:hover": {
+//     backgroundColor: "#f5f5f5",
+//   },
+//   "&:last-child td, &:last-child th": {
+//     border: 0,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
+  height: 42,
+
+  "& td": {
+    height: 42,
+    paddingTop: 8,
+    paddingBottom: 8,
+  },
+
   "&:nth-of-type(odd)": {
     backgroundColor: "#fafafa",
   },
+
   "&:hover": {
     backgroundColor: "#f5f5f5",
   },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
 }));
   
-  
+
+
   const visibleColumns = [
     selected.includes("SL/No") && "S.No",
     selected.includes("Category Name") && "Category Name",
@@ -824,79 +862,78 @@ const table = useReactTable({
         }}
       >
         <div id="printTable">
-        <TableContainer
-        component={Paper}
-          sx={{
-            border: "1px solid #dcdcdc",
-    display:"flex",
-     maxHeight: "500px", 
-       overflowY: "auto",
+        
+ <TableContainer
+  component={Paper}
+  sx={{
+    height: "500px",        // Fixed height
+    maxHeight: "500px",
+    overflowY: "auto",
     overflowX: "auto",
+    border: "1px solid #dcdcdc",
 
     "&::-webkit-scrollbar": {
-      height: "8px",
       width: "8px",
+      height: "8px",
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#bdbdbd",
+      background: "#bdbdbd",
       borderRadius: "10px",
     },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: "#f1f1f1",
-    },
-
-          }}
-        >
-
-
-<Table
-  stickyHeader
-  sx={{
-    width: table.getTotalSize(),
-    tableLayout: "fixed",
-    borderCollapse: "collapse",
   }}
 >
-         
+      <Table
+  stickyHeader
+  sx={{
+    tableLayout: "fixed",
+    width: "100%",
+  }}
+>
+
 
             <TableHead>
   {table.getHeaderGroups().map((headerGroup) => (
     <TableRow key={headerGroup.id}>
       {headerGroup.headers.map((header) => (
-        <StyledTableCell
-          key={header.id}
-          sx={{
-            width: header.getSize(),
-            minWidth: header.getSize(),
-            maxWidth: header.getSize(),
-            position: "relative",
-            borderRight: "1px solid #e0e0e0",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {flexRender(
-            header.column.columnDef.header,
-            header.getContext()
-          )}
 
-          <Box
-            onMouseDown={header.getResizeHandler()}
-            onTouchStart={header.getResizeHandler()}
-            sx={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              height: "100%",
-              width: "5px",
-              cursor: "col-resize",
-              userSelect: "none",
-              touchAction: "none",
-              "&:hover": {
-                backgroundColor: "#fefef7",
-              },
-            }}
-          />
-        </StyledTableCell>
+<StyledTableCell
+ key={header.id}
+  sx={{
+    width: header.getSize(),
+    minWidth: header.getSize(),
+    maxWidth: header.getSize(),
+    position: "relative",
+    borderRight: "1px solid #e0e0e0",
+    whiteSpace: "nowrap",
+    padding: "8px 10px",
+    height: 42,
+  }}
+>
+  {header.isPlaceholder
+    ? null
+    : flexRender(
+        header.column.columnDef.header,
+        header.getContext()
+      )}
+
+  <Box
+    onMouseDown={header.getResizeHandler()}
+    onTouchStart={header.getResizeHandler()}
+    sx={{
+      position: "absolute",
+      right: 0,
+      top: 0,
+      height: "100%",
+      width: "5px",
+      cursor: "col-resize",
+      userSelect: "none",
+      touchAction: "none",
+      "&:hover": {
+        backgroundColor: "#1976d2",
+      },
+    }}
+  />
+</StyledTableCell>
       ))}
     </TableRow>
   ))}
@@ -944,7 +981,9 @@ const table = useReactTable({
   )}
 </TableBody>
           </Table>
-        </TableContainer>
+          </TableContainer>
+      
+       
         </div>
 
         {/* FOOTER */}
