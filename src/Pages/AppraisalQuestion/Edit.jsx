@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -13,47 +13,53 @@ import {
   Typography,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { useGetAppraisalCategoryMutation } from "../../api/constructionApi";
 
-// export  default  function UpdateAppraisalQuestion(){
-
-// const UpdateAppraisalQuestion = () => {
-
-
-//   const location = useLocation();
-
-// const question = location.state?.question;
-
-//   // const [formData, setFormData] = useState({
-//   //   categoryID: "1",
-//   //   questionTitle: "12",
-//   //   description: "123",
-//   //   displayOrder: "1",
-//   //   status: "Active",
-//   // });
-// const [formData, setFormData] = useState({
-//   categoryID: question?.category_id || "",
-//   questionTitle: question?.question_title || "",
-//   description: question?.description || "",
-//   displayOrder: question?.display_order || "",
-//   status: question?.status || "",
-// });
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleUpdate = () => {
-//     console.log(formData);
-
-//     // Call your API here
-//   };
 
 
 export default function UpdateAppraisalQuestion() {
+
+  const [categoryList, setCategoryList] = useState([]);
+
+const [getAppraisalCategory] =
+  useGetAppraisalCategoryMutation();
+
+  useEffect(() => {
+  fetchCategory();
+}, []);
+
+const fetchCategory = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      status: "Active",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: "-1",
+    };
+
+    const response = await getAppraisalCategory (JSON.stringify(payload)).unwrap();
+
+    console.log("Category Response:", response);
+
+    if (response?.data) {
+      setCategoryList(response.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+   const navigate = useNavigate();
+  
+    const AppraisalQuestion = () => {
+      navigate("/AppraisalQuestion/index");
+    };
+  
 
   const location = useLocation();
 
@@ -67,12 +73,20 @@ export default function UpdateAppraisalQuestion() {
     status: question?.status || "",
   });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
 
   const handleUpdate = () => {
     console.log(formData);
@@ -81,22 +95,29 @@ export default function UpdateAppraisalQuestion() {
 
 
   return (
-    <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh" }}>
-      {/* Header */}
-      <Toolbar sx={{ bgcolor: "#fff", boxShadow: 1 }}>
-        <IconButton>
-          <MenuOpenIcon color="primary" />
-        </IconButton>
-
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          sx={{ ml: 2 }}
-        >
-          Update Appraisal Question
-        </Typography>
-      </Toolbar>
-
+       <Box sx={{ p: 3, background: "#fffcfc", minHeight: "100vh" }}>
+            {/* Header */}
+            <Box
+        onClick={AppraisalQuestion}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          mb: 3,
+          color: "#3392df",
+          fontSize: "28px",
+          fontWeight: 500,
+          cursor: "pointer",
+        }}
+      >
+              <MenuOpenIcon sx={{ mr:-1 , fontSize:30,}}
+              onClick={AppraisalQuestion} 
+              />
+          <h1 className="title" style={{ color: "black", fontSize:"25px" }}>  
+         Update Appraisal Question
+         </h1>  
+        </Box>
+      
+           
       {/* Form Card */}
       <Card
         sx={{
@@ -106,18 +127,25 @@ export default function UpdateAppraisalQuestion() {
         }}
       >
         {/* Category */}
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Category Name*</InputLabel>
+    <FormControl fullWidth margin="normal">
+  <InputLabel>Category Name*</InputLabel>
 
-          <Select
-            label="Category Name*"
-            name="categoryID"
-            value={formData.categoryID}
-            onChange={handleChange}
-          >
-           
-          </Select>
-        </FormControl>
+  <Select
+    label="Category Name*"
+    name="categoryID"
+    value={formData.categoryID}
+    onChange={handleChange}
+  >
+    {categoryList.map((item) => (
+      <MenuItem
+        key={item.id}
+        value={item.id}
+      >
+        {item.category_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
         {/* Question */}
         <TextField
