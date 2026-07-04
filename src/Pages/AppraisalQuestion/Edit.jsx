@@ -12,18 +12,59 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
-export  default  function UpdateAppraisalQuestion(){
+// export  default  function UpdateAppraisalQuestion(){
 
-const UpdateAppraisalQuestion = () => {
+// const UpdateAppraisalQuestion = () => {
+
+
+//   const location = useLocation();
+
+// const question = location.state?.question;
+
+//   // const [formData, setFormData] = useState({
+//   //   categoryID: "1",
+//   //   questionTitle: "12",
+//   //   description: "123",
+//   //   displayOrder: "1",
+//   //   status: "Active",
+//   // });
+// const [formData, setFormData] = useState({
+//   categoryID: question?.category_id || "",
+//   questionTitle: question?.question_title || "",
+//   description: question?.description || "",
+//   displayOrder: question?.display_order || "",
+//   status: question?.status || "",
+// });
+//   const handleChange = (e) => {
+//     setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value,
+//     });
+//   };
+
+//   const handleUpdate = () => {
+//     console.log(formData);
+
+//     // Call your API here
+//   };
+
+
+export default function UpdateAppraisalQuestion() {
+
+  const location = useLocation();
+
+  const question = location.state?.question;
+
   const [formData, setFormData] = useState({
-    categoryID: "1",
-    questionTitle: "12",
-    description: "123",
-    displayOrder: "1",
-    status: "Active",
+    categoryID: question?.category_id || "",
+    questionTitle: question?.question_title || "",
+    description: question?.description || "",
+    displayOrder: question?.display_order || "",
+    status: question?.status || "",
   });
 
   const handleChange = (e) => {
@@ -35,9 +76,9 @@ const UpdateAppraisalQuestion = () => {
 
   const handleUpdate = () => {
     console.log(formData);
-
-    // Call your API here
   };
+
+
 
   return (
     <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh" }}>
@@ -151,4 +192,3 @@ const UpdateAppraisalQuestion = () => {
   );
 };
 
-}

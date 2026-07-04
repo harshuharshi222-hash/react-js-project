@@ -64,6 +64,7 @@ import AddAppraisalQuestion from '../Pages/AppraisalQuestion/Form.jsx';
 import AddDesignation from "../Pages/AppraisalQuestion/addDesignation.jsx";
 import AddOption from '../Pages/AppraisalQuestion/addOption.jsx';
 import UpdateOption from "../Pages/AppraisalQuestion/optionfiles/optionEdit.jsx";
+import UpdateAppraisalQuestion from "../Pages/AppraisalQuestion/Edit.jsx"
 
 
 
@@ -328,10 +329,8 @@ export default function MiniDrawer() {
                     <Route path="/AppraisalQuestion/index/Form" element={<AddAppraisalQuestion/>} />
                       <Route path="/AppraisalQuestion/index/AddDesignation" element={<AddDesignation />} />
                     <Route path="/AppraisalQuestion/index/AddOption" element={<AddOption />} />
-                    <Route
-  path="/AppraisalQuestion/index/addOption/optionEdit"
-  element={<UpdateOption />}
-/>
+                    <Route path="/AppraisalQuestion/index/addOption/optionEdit" element={<UpdateOption />} />
+                    <Route path="/AppraisalQuestion/index/Edit" element={<UpdateAppraisalQuestion />} />
                     </Routes>
               
 

@@ -3,6 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
 import AddAppraisalQuestion from '../AppraisalQuestion/Form';
+import UpdateAppraisalQuestion from "../AppraisalQuestion/Edit";
 import {
   Box,
   Button,
@@ -525,18 +526,35 @@ const columns = useMemo(
     const rowStatus = row.original.status;
 
     return (
+      // <Chip
+      //   label={rowStatus}
+      //   onClick={UpdateAppraisalQuestion}
+      //   sx={{
+      //     width: 90,
+      //     fontWeight: "bold",
+      //     color: "#fff",
+      //     backgroundColor:
+      //       rowStatus === "Active"
+      //         ? "#74BFD0"
+      //         : "#6C63FF",
+      //   }}
+      // />
+
       <Chip
-        label={rowStatus}
-        sx={{
-          width: 90,
-          fontWeight: "bold",
-          color: "#fff",
-          backgroundColor:
-            rowStatus === "Active"
-              ? "#74BFD0"
-              : "#6C63FF",
-        }}
-      />
+  label={rowStatus}
+  clickable
+  onClick={() => handleEdit(row.original)}
+  sx={{
+    width: 90,
+    fontWeight: "bold",
+    color: "#fff",
+    cursor: "pointer",
+    backgroundColor:
+      rowStatus === "Active"
+        ? "#74BFD0"
+        : "#6C63FF",
+  }}
+/>
     );
   },
 },
@@ -568,6 +586,15 @@ const table = useReactTable({
      const AddAppraisalQuestion = () => {
         navigate('/AppraisalQuestion/index/Form')
      }
+    
+
+     const handleEdit = (rowData) => {
+  navigate("/AppraisalQuestion/index/Edit", {
+    state: {
+      question: rowData,
+    },
+  });
+};
 
        const AppraisalQuestion = () => {
         navigate('/AppraisalQuestion/index')
