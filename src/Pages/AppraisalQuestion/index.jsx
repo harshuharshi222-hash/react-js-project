@@ -1050,8 +1050,7 @@ const filteredData = useMemo(() => {
 
         {/* FOOTER */}
 
-
-        <Box
+  <Box
   sx={{
     display: "flex",
     justifyContent: "space-between",
@@ -1059,41 +1058,76 @@ const filteredData = useMemo(() => {
     p: 2,
     borderTop: "1px solid #ddd",
     bgcolor: "#fff",
-    flexWrap: "wrap",
-    gap: 2,
   }}
 >
-  {/* Left Side */}
-  <Typography variant="body2">
-    Showing{" "}
-    {pagination.pageIndex * pagination.pageSize + 1}
-    {" - "}
-    {Math.min(
-      (pagination.pageIndex + 1) * pagination.pageSize,
-      data.length
-    )}
-    {" of "}
-    {data.length} records
-  </Typography>
+  {/* Previous Button */}
+<Button
+  variant="outlined"
+  size="small"
+  onClick={() => table.previousPage()}
+  disabled={!table.getCanPreviousPage()}
+  sx={{
+    minWidth: 80,
+    width: 250,
+    height: 40,
+    textTransform: "none",
+    fontSize: "13px",
+    px: 1,
+  }}
+>
+  Previous
+</Button>
 
   {/* Center */}
-  
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      gap: 2,
+    }}
+  >
+   
+<Typography variant="body2" sx={{ fontWeight: 600 }}>
+  Page {table.getState().pagination.pageIndex + 1} of{" "}
+  {table.getPageCount()}
+</Typography>
 
-  {/* Right Side */}
-  <FormControl size="small">
-    <Select
-      value={pagination.pageSize}
-      onChange={(e) => table.setPageSize(Number(e.target.value))}
-    >
-      <MenuItem value={10}>10 Rows</MenuItem>
-      <MenuItem value={20}>20 Rows</MenuItem>
-      <MenuItem value={30}>30 Rows</MenuItem>
-      <MenuItem value={40}>40 Rows</MenuItem>
-      <MenuItem value={50}>50 Rows</MenuItem>
-      <MenuItem value={150}>150 Rows</MenuItem>
-    </Select>
-  </FormControl>
+    <FormControl size="small" sx={{ minWidth: 120 }}>
+      <Select
+        value={pagination.pageSize}
+        onChange={(e) =>
+          table.setPageSize(Number(e.target.value))
+        }
+      >
+        <MenuItem value={10}>10 Rows</MenuItem>
+        <MenuItem value={20}>20 Rows</MenuItem>
+        <MenuItem value={30}>30 Rows</MenuItem>
+        <MenuItem value={40}>40 Rows</MenuItem>
+        <MenuItem value={50}>50 Rows</MenuItem>
+        <MenuItem value={150}>150 Rows</MenuItem>
+      </Select>
+    </FormControl>
+  </Box>
+
+  {/* Next Button */}
+ <Button
+  variant="outlined"
+  size="small"
+  onClick={() => table.nextPage()}
+  disabled={!table.getCanNextPage()}
+  sx={{
+    minWidth: 80,
+    width: 250,
+    height: 40,
+    textTransform: "none",
+    fontSize: "13px",
+    px: 1,
+  }}
+>
+  Next
+</Button>
 </Box>
+
       </Paper>
     </Box>
   );
