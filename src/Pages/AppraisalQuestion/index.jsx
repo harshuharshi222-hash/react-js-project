@@ -56,6 +56,10 @@ import {
 } from "@tanstack/react-table";
 
 export default function AppraisalQuestion() {
+
+
+  const [searchText, setSearchText] = useState("");
+
   const [department, setDepartment] = useState("");
   
   const [designation, setDesignation] = useState("");
@@ -76,19 +80,25 @@ const [getAppraisalQuestionApi] = useGetAppraisalQuestionMutation();
 
 const getAppraisalQuestion = async () => {
   try {
-   const payload = {
+
+const payload = {
   userID: "169548080048036100",
-  status:status,
-  generalSearch: "",
+
+  status: status,
+  generalSearch: searchText,
+
   sortOrder: "Desc",
   iDisplayStart: 0,
   iDisplayLength: 150,
+
   processID: "",
   authorityID: "",
-  departmentID: "",
-  designationID: "",
-  categoryID: "",
+
+  departmentID: department,
+  designationID: designation,
+  categoryID: category,
 };
+
 
 const response = await getAppraisalQuestionApi(JSON.stringify(payload)).unwrap();
 
@@ -104,6 +114,9 @@ console.log(response.data);
   }
 };
 
+useEffect(() => {
+  getAppraisalQuestion();
+}, [searchText, department, designation, category, status]);
 
 useEffect(() => {
   getAppraisalQuestion();
@@ -803,22 +816,23 @@ const filteredData = useMemo(() => {
   </Select>
 </FormControl>
 
-          <TextField
-            size="small"
-            label="Search"
-      
-            variant="standard"
-            slotProps={{
-                     input: {
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon />
-                            </InputAdornment>
-                          ),
-                        },
-            }}
-          />
-
+       
+<TextField
+  size="small"
+  label="Search"
+  value={searchText}
+  onChange={(e) => setSearchText(e.target.value)}
+  variant="standard"
+  slotProps={{
+    input: {
+      startAdornment: (
+        <InputAdornment position="start">
+          <SearchIcon />
+        </InputAdornment>
+      ),
+    },
+  }}
+/>
       <Button
   variant="contained"
   size="small"
