@@ -29,6 +29,7 @@ import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 
+
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -57,7 +58,7 @@ export default function AppraisalQuestion() {
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
   const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("Active","Inactive");
+  const [status, setStatus] = useState("Active");
   const [tableData, setTableData] = useState([]);
 //   const filteredData = useMemo(() => {
 //   return tableData.filter(
@@ -75,7 +76,7 @@ const getAppraisalQuestion = async () => {
   try {
    const payload = {
   userID: "169548080048036100",
-  status:"Active",
+  status:status,
   generalSearch: "",
   sortOrder: "Desc",
   iDisplayStart: 0,
@@ -127,7 +128,7 @@ const loadDepartments = async () => {
       categoryID: "",
       departmentID: "",
       designationID: "",
-      status: "Active",
+      status: "status",
     };
 
     const response = await getDepartmentFilter(JSON.stringify(payload)).unwrap();
@@ -193,7 +194,7 @@ useEffect(() => {
         categoryID: "",
         departmentID: "",
         designationID: "",
-        status: "Active",
+        status: "status",
       };
 
       const response = await getCategoryFilter(JSON.stringify(payload)).unwrap();
@@ -515,21 +516,32 @@ const columns = useMemo(
       header: "Added On",
        size: 180,
     },
+
     {
-      accessorKey: "status",
-      header: "Status",
-      size: 120,
-      cell: ({ row }) => (
-        <Chip
-          label={row.original.status}
-          color={
-            row.original.status === "Active"
-              ? "success"
-              : "error"
-          }
-        />
-      ),
-    },
+  accessorKey: "status",
+  header: "Status",
+  size: 120,
+  cell: ({ row }) => {
+    const rowStatus = row.original.status;
+
+    return (
+      <Chip
+        label={rowStatus}
+        sx={{
+          width: 90,
+          fontWeight: "bold",
+          color: "#fff",
+          backgroundColor:
+            rowStatus === "Active"
+              ? "#74BFD0"
+              : "#6C63FF",
+        }}
+      />
+    );
+  },
+},
+
+
   ],
   []
 );
@@ -777,19 +789,6 @@ const filteredData = useMemo(() => {
                 
                     {/* status */}
 
-          {/* <FormControl size="small" sx={{ width: 180 }}>
-            <InputLabel>Status</InputLabel>
-            <Select
-              value={status}
-              label="status"
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <MenuItem value="Active">Active</MenuItem>
-              <MenuItem value="inActive">In-Active</MenuItem>
-            </Select>
-          </FormControl> */}
-
-
           <FormControl size="small" sx={{ width: 180 }}>
   <InputLabel>Status</InputLabel>
   <Select
@@ -912,7 +911,7 @@ const filteredData = useMemo(() => {
  <TableContainer
   component={Paper}
   sx={{
-    height: "500px",        // Fixed height
+    height: "500px",  /////height gixed////
  
     overflowY: "auto",
     overflowX: "auto",

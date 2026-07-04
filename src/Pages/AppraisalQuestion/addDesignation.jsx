@@ -145,7 +145,7 @@ const fetchHistory = async () => {
 
   const question = state?.question;
 
-  console.log(question,"question");
+  console.log(question);
 
 
 
@@ -192,8 +192,7 @@ const [rows, setRows] = useState([]);
     department_id: department,
     department_name:selectedDepartment?.general_task_department_name || "",
     designation_name: item.designation,
-    designation_name: item.designation,
-    
+  
     added_by: "Admin",
     added_on: new Date().toLocaleString(),
   }));
