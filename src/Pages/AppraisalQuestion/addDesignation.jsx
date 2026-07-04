@@ -268,12 +268,23 @@ console.log(historyData[0]);
 </FormControl>
 
         
-        <Table
+
+<Table
   sx={{
     mt: 3,
     border: "1px solid #ddd",
+    "& .MuiTableCell-root": {
+      border: "1px solid #ddd",
+    },
+    "& .MuiTableHead-root .MuiTableCell-root": {
+      fontWeight: "bold",
+      backgroundColor: "#eef5fc",
+    },
   }}
 >
+
+
+
   <TableHead sx={{ background: "#eef5fc" }}>
     <TableRow>
       <TableCell sx={{ fontWeight: "bold" }}>Sl No</TableCell>
@@ -357,10 +368,17 @@ console.log(historyData[0]);
         
         <br></br>
         <Table
-          sx={{
-            border: "1px solid #ddd",
-          }}
-        >
+  sx={{
+    border: "1px solid #ddd",
+    "& .MuiTableCell-root": {
+      border: "1px solid #ddd",
+    },
+    "& .MuiTableHead-root .MuiTableCell-root": {
+      fontWeight: "bold",
+      backgroundColor: "#eef5fc",
+    },
+  }}
+>
           <TableHead sx={{ background: "#eef5fc" }}>
             <TableRow>
               <TableCell sx={{ fontWeight: "bold" }}>
