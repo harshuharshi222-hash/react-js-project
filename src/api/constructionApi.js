@@ -157,6 +157,14 @@ updateAppraisalQuestion: builder.mutation({
   }),
 }),
 
+updateAppraisalQuestionDesignation: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/updateAppraisalQuestionDesignation",
+    method: "POST",
+    body,
+  }),
+}),
+
   }),
 });
 
@@ -175,6 +183,7 @@ export const {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionMutation,
   useCreateAppraisalQuestionOptionMutation,
+  useUpdateAppraisalQuestionDesignationMutation,
   
    useGetAppraisalCategoryMutation,
    useUpdateAppraisalQuestionMutation,

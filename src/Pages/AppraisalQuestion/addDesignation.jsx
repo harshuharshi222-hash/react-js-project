@@ -22,6 +22,8 @@ import  { useEffect } from "react";
 import { useGetDepartmentMasterMutation } from "../../api/constructionApi";
 import { useGetHrAppraisalQuestionDesignationForUpdateMutation } from "../../api/constructionApi";
 import { useGetHrAppraisalQuestionDesignationMutation } from "../../api/constructionApi";
+import { useUpdateAppraisalQuestionDesignationMutation } from "../../api/constructionApi";
+
 
 
 
@@ -30,7 +32,8 @@ export default function AddDesignation() {
   const [historyData, setHistoryData] = useState([]);
 
 
-  
+  const [updateAppraisalQuestionDesignation] =
+  useUpdateAppraisalQuestionDesignationMutation();
 
   const [department, setDepartment] = useState("");
 const [departmentList, setDepartmentList] = useState([]);
@@ -175,8 +178,9 @@ const [rows, setRows] = useState([]);
   const allSelected =
     rows.length > 0 && rows.every((item) => item.checked);
 
- 
-  const handleSubmit = () => {
+
+const handleSubmit = async () => {
+  // Get selected rows
   const selectedRows = rows.filter((row) => row.checked);
 
   if (selectedRows.length === 0) {
@@ -184,24 +188,52 @@ const [rows, setRows] = useState([]);
     return;
   }
 
-   const selectedDepartment = departmentList.find(
-    (dept) => dept.general_task_department_id === department
-  );
+  try {
+    const designationPayload = rows.map((row) => ({
+      designationID: String(row.id),
+      isSelected: row.checked ? "1" : "0",
+    }));
 
-  const newHistory = selectedRows.map((item) => ({
-    department_id: department,
-    department_name:selectedDepartment?.general_task_department_name || "",
-    designation_name: item.designation,
-  
-    added_by: "Admin",
-    added_on: new Date().toLocaleString(),
-  }));
+    const payload = {
+      userID: "171464700312440400",
+      appraisalQuestionID: "120",
+      designationID: designationPayload,
+    };
 
-  setHistoryData((prev) => [...newHistory, ...prev]);
+    console.log("Update Payload:", payload);
 
-  console.log(newHistory);
+    const response = await updateAppraisalQuestionDesignation(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Update Response:", response);
+
+    alert("Designation Updated Successfully");
+
+    // Refresh history
+    fetchHistory();
+
+    // Optional: Update history locally
+    const selectedDepartment = departmentList.find(
+      (dept) => dept.general_task_department_id === department
+    );
+
+    const newHistory = selectedRows.map((item) => ({
+      department_id: department,
+      department_name:
+        selectedDepartment?.general_task_department_name || "",
+      designation_name: item.designation,
+      added_by: "Admin",
+      added_on: new Date().toLocaleString(),
+    }));
+
+    setHistoryData((prev) => [...newHistory, ...prev]);
+
+  } catch (error) {
+    console.error("API Error:", error);
+    alert("Failed to update designation");
+  }
 };
-
 console.log(historyData);
 console.log(historyData[0]);
 
