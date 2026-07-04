@@ -16,7 +16,11 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { useGetAppraisalCategoryMutation } from "../../api/constructionApi";
+
+import {
+  useUpdateAppraisalQuestionMutation,
+  useGetAppraisalCategoryMutation,
+} from "../../api/constructionApi"; // use your actual path
 
 
 
@@ -73,12 +77,6 @@ const fetchCategory = async () => {
     status: question?.status || "",
   });
 
-  // const handleChange = (e) => {
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
 const handleChange = (e) => {
   const { name, value } = e.target;
 
@@ -88,9 +86,39 @@ const handleChange = (e) => {
   }));
 };
 
-  const handleUpdate = () => {
-    console.log(formData);
-  };
+const handleUpdate = async () => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      appraisalID: formData.appraisalID || "", // or location.state.appraisalID
+      questionTitle: formData.questionTitle,
+      description: formData.description,
+      displayOrder: formData.displayOrder,
+      status: formData.status,
+      categoryID: formData.categoryID,
+    };
+
+    console.log("Update Payload:", payload);
+
+    const response = await updateAppraisalQuestion(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Update Response:", response);
+
+    if (response.status === true) {
+      alert("Updated Successfully");
+    } else {
+      alert(response.message);
+    }
+  } catch (error) {
+    console.log(error);
+    alert("Update Failed");
+  }
+};
+  ///update //
+  const [updateAppraisalQuestion] =
+  useUpdateAppraisalQuestionMutation();
 
 
 
@@ -204,17 +232,17 @@ const handleChange = (e) => {
         }}
       >
         <Button
-          variant="contained"
-          onClick={handleUpdate}
-          sx={{
-            px: 5,
-            py: 1,
-            fontWeight: "bold",
-            borderRadius: 1,
-          }}
-        >
-          UPDATE
-        </Button>
+  variant="contained"
+  onClick={handleUpdate}
+  sx={{
+    px: 5,
+    py: 1,
+    fontWeight: "bold",
+    borderRadius: 1,
+  }}
+>
+  UPDATE
+</Button>
       </Box>
     </Box>
   );

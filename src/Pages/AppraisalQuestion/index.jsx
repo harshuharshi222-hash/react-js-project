@@ -57,6 +57,7 @@ import {
 
 export default function AppraisalQuestion() {
   const [department, setDepartment] = useState("");
+  
   const [designation, setDesignation] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Active");
@@ -112,37 +113,41 @@ useEffect(() => {
 
 //department//
 
-const [getDepartmentFilter] =
+
+  const [getAppraisalQuestionDepartmentFilter] =
   useGetAppraisalQuestionDepartmentFilterMutation();
 
-  const [departmentList, setDepartmentList] = useState([]);
-
-
-useEffect(() => {
-  loadDepartments();
+  useEffect(() => {
+  fetchDepartments();
 }, []);
 
-const loadDepartments = async () => {
+const fetchDepartments = async () => {
   try {
     const payload = {
       userID: "169548080048036100",
       categoryID: "",
       departmentID: "",
       designationID: "",
-      status: "status",
+      status: "Active",
     };
 
-    const response = await getDepartmentFilter(JSON.stringify(payload)).unwrap();
+    const response = await getAppraisalQuestionDepartmentFilter(
+      JSON.stringify(payload)
+    ).unwrap();
 
-    console.log("Department Response", response);
-    console.log(response);
+    console.log("Department Response:", response);
 
-    // Adjust according to your API response
-    setDepartmentList(response.data || response.result || []);
+    if (response?.data) {
+      setDepartmentList(response.data);
+    }
   } catch (error) {
-    console.error("Department Error:", error);
+    console.log("Department API Error:", error);
   }
 };
+
+  const [departmentList, setDepartmentList] = useState([]);
+
+
 
 // designation //
 
@@ -337,27 +342,6 @@ useEffect(() => {
   const [selected, setSelected] = useState(allColumns);
 //table important//
 
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: "#f8f9fb",
-//     color: "#080808",
-//     fontWeight: 700,
-//     fontSize: 13,
-//     padding: "10px 12px",
-//     whiteSpace: "nowrap",
-//   },
-
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 13,
-//     padding: "8px 12px",
-//     height: 42,
-//     maxHeight: 42,
-//     overflow: "hidden",
-//     textOverflow: "ellipsis",
-//     whiteSpace: "nowrap",
-//   },
-// }));
 
 
 
@@ -755,7 +739,25 @@ const filteredData = useMemo(() => {
             </FormControl>
           </div>
 
-    <FormControl size="small" sx={{ width: 150 }}>
+    {/* <FormControl size="small" sx={{ width: 150 }}>
+  <InputLabel>Department</InputLabel>
+
+  <Select
+    value={department}
+    label="Department"
+    onChange={(e) => setDepartment(e.target.value)}
+  >
+    {departmentList.map((item) => (
+      <MenuItem
+        key={item.department_id}
+        value={item.department_id}
+      >
+        {item.department_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl> */}
+<FormControl size="small" sx={{ width: 150 }}>
   <InputLabel>Department</InputLabel>
 
   <Select
