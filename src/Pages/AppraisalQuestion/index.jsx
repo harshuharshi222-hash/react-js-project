@@ -188,37 +188,39 @@ const fetchDesignation = async () => {
 
 
   // category//
+
 const [getCategoryFilter] =
   useGetAppraisalQuestionCategoryFilterMutation();
+
 const [categoryList, setCategoryList] = useState([]);
 
 useEffect(() => {
-  const fetchCategory = async () => {
-    try {
-      const payload = {
-        userID: "169548080048036100",
-        categoryID: "",
-        departmentID: "",
-        designationID: "",
-        status: "status",
-      };
-
-      const response = await getCategoryFilter(JSON.stringify(payload)).unwrap();
-
-      console.log("Category Response:", response);
-
-      if (response?.data) {
-        setCategoryList(response.data);
-      } else {
-        setCategoryList([]);
-      }
-    } catch (error) {
-      console.error("Category API Error:", error);
-    }
-  };
-
   fetchCategory();
 }, []);
+
+const fetchCategory = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      categoryID: "",
+      departmentID: "",
+      designationID: "",
+      status: "Active",
+    };
+
+    const response = await getCategoryFilter(JSON.stringify(payload)).unwrap();
+
+    console.log("Category API Response:", response);
+
+    if (response?.data) {
+      setCategoryList(response.data);
+    } else {
+      setCategoryList([]);
+    }
+  } catch (error) {
+    console.log("Category Error:", error);
+  }
+};
 
   const allColumns = [
     "SL/No",
@@ -510,19 +512,7 @@ const columns = useMemo(
     const rowStatus = row.original.status;
 
     return (
-      // <Chip
-      //   label={rowStatus}
-      //   onClick={UpdateAppraisalQuestion}
-      //   sx={{
-      //     width: 90,
-      //     fontWeight: "bold",
-      //     color: "#fff",
-      //     backgroundColor:
-      //       rowStatus === "Active"
-      //         ? "#74BFD0"
-      //         : "#6C63FF",
-      //   }}
-      // />
+    
 
       <Chip
   label={rowStatus}
@@ -739,24 +729,7 @@ const filteredData = useMemo(() => {
             </FormControl>
           </div>
 
-    {/* <FormControl size="small" sx={{ width: 150 }}>
-  <InputLabel>Department</InputLabel>
-
-  <Select
-    value={department}
-    label="Department"
-    onChange={(e) => setDepartment(e.target.value)}
-  >
-    {departmentList.map((item) => (
-      <MenuItem
-        key={item.department_id}
-        value={item.department_id}
-      >
-        {item.department_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl> */}
+   
 <FormControl size="small" sx={{ width: 150 }}>
   <InputLabel>Department</InputLabel>
 
