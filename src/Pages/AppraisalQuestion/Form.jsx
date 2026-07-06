@@ -54,6 +54,7 @@ const handleCloseSnackbar = () => {
       categoryName: Yup.string().required("Required"),
       questionTitle: Yup.string().required("Required"),
       description: Yup.string().required("Required"),
+      displayOrder: Yup.string().required("Required"),
     }),
 
     onSubmit: async (values, { resetForm }) => {
@@ -176,14 +177,33 @@ const handleCloseSnackbar = () => {
 />
 
           {/* Question Title */}
-          <TextField
-            fullWidth
-            name="questionTitle"
-            label="Question Title"
-            value={formik.values.questionTitle}
-            onChange={formik.handleChange}
-            margin="normal"
-          />
+          
+
+          <Autocomplete
+  freeSolo
+  options={[]}
+  value={formik.values.questionTitle}
+  onInputChange={(event, newInputValue) => {
+    formik.setFieldValue("questionTitle", newInputValue);
+  }}
+  onBlur={() => formik.setFieldTouched("questionTitle", true)}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      fullWidth
+      label="Question Title"
+      margin="normal"
+      error={
+        formik.touched.questionTitle &&
+        Boolean(formik.errors.questionTitle)
+      }
+      helperText={
+        formik.touched.questionTitle &&
+        formik.errors.questionTitle
+      }
+    />
+  )}
+/>
 
           {/* Description */}
           <TextField
@@ -198,15 +218,37 @@ const handleCloseSnackbar = () => {
           />
 
           {/* Display Order */}
+          
           <TextField
-            fullWidth
-            type="number"
-            name="displayOrder"
-            label="Display Order"
-            value={formik.values.displayOrder}
-            onChange={formik.handleChange}
-            margin="normal"
-          />
+  fullWidth
+  type="number"
+  name="displayOrder"
+  label="Display Order"
+  value={formik.values.displayOrder}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    // Allow empty value
+    if (value === "" || Number(value) >= 0) {
+      formik.setFieldValue("displayOrder", value);
+    }
+  }}
+  onBlur={formik.handleBlur}
+  margin="normal"
+  inputProps={{
+    min: 0,
+  }}
+  error={
+    formik.touched.displayOrder &&
+    Boolean(formik.errors.displayOrder)
+  }
+  helperText={
+    formik.touched.displayOrder &&
+    formik.errors.displayOrder
+  }
+
+ 
+/>
 
           {/* Buttons */}
           <Box
