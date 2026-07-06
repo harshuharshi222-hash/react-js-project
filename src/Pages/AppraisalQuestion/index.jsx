@@ -507,72 +507,36 @@ const columns = useMemo(
        size: 200,
     },
    
-
-
-{
+  {
   accessorKey: "designation",
   header: "Designation",
   size: 200,
   cell: ({ row }) => (
-    <Box
+    <InfoIcon
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        color: "#1976d2",
+        fontSize: 18,
+        cursor: "pointer",
       }}
-    >
-      {/* Row Index */}
-      <Typography fontSize={13}>
-        {row.index}
-      </Typography>
-
-      <InfoIcon
-        sx={{
-          color: "#1976d2",
-          fontSize: 18,
-          cursor: "pointer",
-        }}
-        onClick={() => handleDesignationInfo(row)}
-      />
-    </Box>
+      onClick={() => handleDesignationInfo(row)}
+    />
   ),
 },
-
-
-
- 
-
-{
-  accessorKey: "option",
-  header: "Option",
-  size: 200,
-  cell: ({ row }) => (
-    <Box
+    {
+      accessorKey: "option",
+      header: "Option",
+         size: 200,
+       cell: ({ row }) => (
+    <InfoIcon
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        color: "#1976d2",
+        fontSize: 18,
+        cursor: "pointer",
       }}
-    >
-      {/* Row Index */}
-      <Typography fontSize={13}>
-        {row.index}
-      </Typography>
-
-      <InfoIcon
-        sx={{
-          color: "#1976d2",
-          fontSize: 18,
-          cursor: "pointer",
-        }}
-        onClick={() => handleOptionInfo(row)}
-      />
-    </Box>
+      onClick={() => handleOptionInfo(row)}
+    />
   ),
-},
-
-
-
+    },
     {
       accessorKey: "added_by",
       header: "Added By",
