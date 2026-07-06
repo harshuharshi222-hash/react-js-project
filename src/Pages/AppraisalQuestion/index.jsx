@@ -2,8 +2,7 @@ import React, { useMemo, useState } from "react";
 import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
-import AddAppraisalQuestion from '../AppraisalQuestion/Form';
-import UpdateAppraisalQuestion from "../AppraisalQuestion/Edit";
+
 
 import {
   Box,
@@ -32,12 +31,12 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 
 
-import axios from "axios";
+
 import { useEffect } from "react";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
@@ -67,11 +66,6 @@ export default function AppraisalQuestion() {
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Active");
   const [tableData, setTableData] = useState([]);
-//   const filteredData = useMemo(() => {
-//   return tableData.filter(
-//     (item) => item.status?.toLowerCase() === status.toLowerCase()
-//   );
-// }, [tableData, status]);
 
 const [data, setData] = useState([]);
 const [loading, setLoading] = useState(false);
@@ -103,10 +97,6 @@ const payload = {
 
 const response = await getAppraisalQuestionApi(JSON.stringify(payload)).unwrap();
 
-    console.log("API Response", response);
-    console.log(response);
-console.log(response.data);
-
     setData(response.data || []);
   } catch (error) {
     console.error(error);
@@ -118,10 +108,6 @@ console.log(response.data);
 useEffect(() => {
   getAppraisalQuestion();
 }, [searchText, department, designation, category, status]);
-
-useEffect(() => {
-  getAppraisalQuestion();
-}, []);
 
 
 
@@ -400,15 +386,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 
-
-
-
-
-
-
-
-
-
 const StyledTableRow = styled(TableRow)(() => ({
   height: 42,
 
@@ -429,23 +406,6 @@ const StyledTableRow = styled(TableRow)(() => ({
   
 
 
-  const visibleColumns = [
-    selected.includes("SL/No") && "S.No",
-    selected.includes("Category Name") && "Category Name",
-    selected.includes("Title") && "Title",
-    selected.includes("Description") && "Description",
-    selected.includes("Designation") && "Designation",
-    selected.includes("Option") && "Option",
-    selected.includes("Added By") && "Added By",
-    selected.includes("Added On") && "Added On",
-    selected.includes("Status") && "Status",
-  ].filter(Boolean);
-  
-  //   const handleChange = (event) => {
-  //     const value = event.target.value;
-   
-  //     setSelected(typeof value === "string" ? value.split(",") : value);
-  //  };
    const handleChange = (event) => {
   const value =
     typeof event.target.value === "string"
@@ -467,18 +427,7 @@ const StyledTableRow = styled(TableRow)(() => ({
   });
 };
   
-  const [columnWidths, setColumnWidths] = useState({
-    "SL/No": 80,
-    "Category Name": 220,
-    "Title":200,
-    "Description":120,
-    "Designation":170,
-    "Option":100,
-    "Added By": 180,
-    "Added On": 180,
-    "Status": 140,
-  });
-  
+
 
 const columns = useMemo(
   () => [
@@ -706,9 +655,6 @@ const table = useReactTable({
   });
 };
 
-       const AppraisalQuestion = () => {
-        navigate('/AppraisalQuestion/index')
-     }
 
      const handleDesignationInfo = (row) => {
   navigate("/AppraisalQuestion/index/AddDesignation", {
@@ -730,11 +676,6 @@ const handlegotodashboard = () => {
       navigate('/dashboard')
    }
 
-const filteredData = useMemo(() => {
-  return tableData.filter(
-    (item) => item.status?.toLowerCase() === status.toLowerCase()
-  );
-}, [tableData, status]);
 
 
 
