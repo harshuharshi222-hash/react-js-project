@@ -1,8 +1,25 @@
 import {
-  Dialog,DialogTitle,DialogContent,Box,Typography,IconButton,
-  FormControl,Select,MenuItem,Paper,Button,
-  Table,TableHead,TableRow,TableCell,TableBody,TextField, TableContainer,
-  InputLabel
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Box,
+  Typography,
+  IconButton,
+  FormControl,
+  Select,
+  MenuItem,
+  Paper,
+  Button,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TextField, 
+  TableContainer,
+  InputLabel,
+    Snackbar,
+  Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
@@ -34,6 +51,21 @@ export default function AddOption({open=true,onClose=()=>{}}){
   
 
     const [rate, setRate] = useState("");
+
+    const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
+
+const handleCloseSnackbar = (event, reason) => {
+  if (reason === "clickaway") return;
+
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
 const [ratings, setRatings] = useState([]);
 const [text, setText] = useState("");
 
@@ -147,12 +179,20 @@ const addLink = () => {
 
 const handleSubmit = async () => {
   if (!rate) {
-    alert("Please select Rate");
+  setSnackbar({
+  open: true,
+  message: "Please select Rate",
+  severity: "warning",
+});
     return;
   }
 
   if (!description.trim()) {
-    alert("Please enter Description");
+   setSnackbar({
+  open: true,
+  message: "Please enter Description",
+  severity: "warning",
+});
     return;
   }
 
@@ -177,7 +217,11 @@ const handleSubmit = async () => {
     console.log("Create Response:", response);
 
     if (response.status === true || response.success === true) {
-      alert("Option Added Successfully");
+      setSnackbar({
+  open: true,
+  message: "Option Added Successfully",
+  severity: "success",
+});
 
       // Clear form
       setRate("");
@@ -190,11 +234,19 @@ const handleSubmit = async () => {
       // Refresh table
       loadQuestionOptions();
     } else {
-      alert(response.message || "Failed to add option");
+     setSnackbar({
+  open: true,
+  message: response.message || "Failed to add option",
+  severity: "error",
+});
     }
   } catch (error) {
     console.error(error);
-    alert("Something went wrong");
+  setSnackbar({
+  open: true,
+  message: "Something went wrong",
+  severity: "error",
+});
   }
 };
 
@@ -352,6 +404,24 @@ return(
 >
   {isSaving ? "Saving..." : "Submit"}
 </Button>
+<Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
 </Box>
    <Typography sx={{fontWeight:700,color:"#666",mb:2}}>Option History</Typography>
 

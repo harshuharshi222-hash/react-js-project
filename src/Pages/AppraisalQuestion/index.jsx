@@ -1280,6 +1280,7 @@ const filteredData = useMemo(() => {
     textTransform: "none",
     fontSize: "13px",
     px: 1,
+    
   }}
 >
   Next

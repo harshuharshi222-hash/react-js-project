@@ -14,7 +14,12 @@ import {
   TableCell,
   Checkbox,
   Button,
+  Autocomplete,
+   TextField,
+     Snackbar,
+  Alert,
 } from "@mui/material";
+
 import { useLocation } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +35,20 @@ import { useUpdateAppraisalQuestionDesignationMutation } from "../../api/constru
 export default function AddDesignation() {
 
   const [historyData, setHistoryData] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
+
+const handleCloseSnackbar = (event, reason) => {
+  if (reason === "clickaway") return;
+
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
 
 
   const [updateAppraisalQuestionDesignation] =
@@ -184,7 +203,11 @@ const handleSubmit = async () => {
   const selectedRows = rows.filter((row) => row.checked);
 
   if (selectedRows.length === 0) {
-    alert("Please select at least one designation.");
+    setSnackbar({
+  open: true,
+  message: "Please select at least one designation.",
+  severity: "warning",
+});
     return;
   }
 
@@ -208,7 +231,11 @@ const handleSubmit = async () => {
 
     console.log("Update Response:", response);
 
-    alert("Designation Updated Successfully");
+   setSnackbar({
+  open: true,
+  message: "Designation Updated Successfully",
+  severity: "success",
+});
 
     // Refresh history
     fetchHistory();
@@ -231,7 +258,11 @@ const handleSubmit = async () => {
 
   } catch (error) {
     console.error("API Error:", error);
-    alert("Failed to update designation");
+   setSnackbar({
+  open: true,
+  message: "Failed to update designation",
+  severity: "error",
+});
   }
 };
 console.log(historyData);
@@ -375,6 +406,25 @@ console.log(historyData[0]);
   >
     SUBMIT
   </Button>
+  <Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
+  
 
         </Box>
       </Paper>
