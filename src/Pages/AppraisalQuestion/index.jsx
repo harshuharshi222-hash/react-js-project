@@ -507,36 +507,92 @@ const columns = useMemo(
        size: 200,
     },
    
+
   {
   accessorKey: "designation",
   header: "Designation",
-  size: 200,
-  cell: ({ row }) => (
-    <InfoIcon
-      sx={{
-        color: "#1976d2",
-        fontSize: 18,
-        cursor: "pointer",
-      }}
-      onClick={() => handleDesignationInfo(row)}
-    />
-  ),
+  size: 180,
+  cell: ({ row }) => {
+    const designationList = row.original.designation || [];
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography fontSize={13}>
+          {designationList.length}
+        </Typography>
+
+        <InfoIcon
+          sx={{
+            color: "#1976d2",
+            cursor: "pointer",
+            fontSize: 18,
+          }}
+          onClick={() => handleDesignationInfo(row)}
+        />
+      </Box>
+    );
+  },
 },
-    {
-      accessorKey: "option",
-      header: "Option",
-         size: 200,
-       cell: ({ row }) => (
-    <InfoIcon
-      sx={{
-        color: "#1976d2",
-        fontSize: 18,
-        cursor: "pointer",
-      }}
-      onClick={() => handleOptionInfo(row)}
-    />
-  ),
-    },
+
+
+  //   {
+  //     accessorKey: "option",
+  //     header: "Option",
+  //        size: 200,
+  //      cell: ({ row }) => (
+  //   <InfoIcon
+  //     sx={{
+  //       color: "#1976d2",
+  //       fontSize: 18,
+  //       cursor: "pointer",
+  //     }}
+  //     onClick={() => handleOptionInfo(row)}
+  //   />
+  // ),
+  //   },
+
+  {
+  accessorKey: "option",
+  header: "Option",
+  size: 200,
+  cell: ({ row }) => {
+    const optionList = row.original.option || [];
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography fontSize={13}>
+          {Array.isArray(optionList) ? optionList.length : 0}
+        </Typography>
+
+        <InfoIcon
+          sx={{
+            color: "#1976d2",
+            fontSize: 18,
+            cursor: "pointer",
+          }}
+          onClick={() => handleOptionInfo(row)}
+        />
+      </Box>
+    );
+  },
+},
+
+
+
+
+
     {
       accessorKey: "added_by",
       header: "Added By",
@@ -589,12 +645,7 @@ const [pagination, setPagination] = useState({
   pageSize: 10,
 });
 
-// const table = useReactTable({
-//   data,
-//   columns,
-//   state: {
-//     pagination,
-//   },
+
 const table = useReactTable({
   data,
   columns,
@@ -609,10 +660,7 @@ const table = useReactTable({
   getPaginationRowModel: getPaginationRowModel(),
   onPaginationChange: setPagination,
 });
-//   onPaginationChange: setPagination,
-//   getCoreRowModel: getCoreRowModel(),
-//   getPaginationRowModel: getPaginationRowModel(),
-// });
+
 
     const navigate = useNavigate();
      const AddAppraisalQuestion = () => {
