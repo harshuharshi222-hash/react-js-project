@@ -540,13 +540,13 @@ cell: ({ row }) => {
             cursor: "pointer",
           }}
         >
-          {designationList.length > 0
-            ? `${designationList[0].designation_name}${
-                designationList.length > 1
-                  ? ` (+${designationList.length - 1})`
-                  : ""
-              }`
-            : ""}
+       {designationList.length > 0
+    ? `${designationList[0].designation_name}${
+        designationList.length > 1
+          ? ` (+${designationList.length - 1})`
+          : ""
+      }`
+    : ""}
         </Typography>
       </Tooltip>
 
@@ -597,8 +597,12 @@ cell: ({ row }) => {
           }}
         >
           {optionList.length > 0
-            ? optionList[0].rate_description.replace(/<[^>]*>/g, "")
-            : ""}
+    ? `${optionList[0].rate_description.replace(/<[^>]*>/g, "")}${
+        optionList.length > 1
+          ? ` (+${optionList.length - 1})`
+          : ""
+      }`
+    : ""}
         </Typography>
       </Tooltip>
 
