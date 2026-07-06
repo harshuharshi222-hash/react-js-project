@@ -355,6 +355,18 @@ const fetchCategory = async () => {
 };
   
   const [selected, setSelected] = useState(allColumns);
+
+const [columnVisibility, setColumnVisibility] = useState({
+  slNo: true,
+  category_name: true,
+  question_title: true,
+  description: true,
+  designation: true,
+  option: true,
+  added_by: true,
+  added_on: true,
+  status: true,
+});
 //table important//
 
 
@@ -428,12 +440,27 @@ const StyledTableRow = styled(TableRow)(() => ({
     selected.includes("Status") && "Status",
   ].filter(Boolean);
   
-    const handleChange = (event) => {
-      const value = event.target.value;
-   
-      setSelected(typeof value === "string" ? value.split(",") : value);
-   };
-   
+  
+   const handleChange = (event) => {
+  const value =
+    typeof event.target.value === "string"
+      ? event.target.value.split(",")
+      : event.target.value;
+
+  setSelected(value);
+
+  setColumnVisibility({
+    slNo: value.includes("SL/No"),
+    category_name: value.includes("Category Name"),
+    question_title: value.includes("Title"),
+    description: value.includes("Description"),
+    designation: value.includes("Designation"),
+    option: value.includes("Option"),
+    added_by: value.includes("Added By"),
+    added_on: value.includes("Added On"),
+    status: value.includes("Status"),
+  });
+};
   
   const [columnWidths, setColumnWidths] = useState({
     "SL/No": 80,
@@ -451,8 +478,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 const columns = useMemo(
   () => [
     {
-      // accessorKey: "slNo",
-      // header: "SL/No",
+      
       id: "slNo",
       header: "SL/No",
          size: 70,
@@ -558,16 +584,30 @@ const [pagination, setPagination] = useState({
   pageSize: 10,
 });
 
+// const table = useReactTable({
+//   data,
+//   columns,
+//   state: {
+//     pagination,
+//   },
 const table = useReactTable({
   data,
   columns,
   state: {
     pagination,
+    columnVisibility,
   },
-  onPaginationChange: setPagination,
+
+  onColumnVisibilityChange: setColumnVisibility,
+
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
+  onPaginationChange: setPagination,
 });
+//   onPaginationChange: setPagination,
+//   getCoreRowModel: getCoreRowModel(),
+//   getPaginationRowModel: getPaginationRowModel(),
+// });
 
     const navigate = useNavigate();
      const AddAppraisalQuestion = () => {

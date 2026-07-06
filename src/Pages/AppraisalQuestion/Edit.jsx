@@ -90,7 +90,7 @@ const handleUpdate = async () => {
   try {
     const payload = {
       userID: "171464700312440400",
-      appraisalID: formData.appraisalID || "", // or location.state.appraisalID
+      appraisalID: formData.appraisalID || "", //
       questionTitle: formData.questionTitle,
       description: formData.description,
       displayOrder: formData.displayOrder,
