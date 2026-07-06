@@ -440,7 +440,11 @@ const StyledTableRow = styled(TableRow)(() => ({
     selected.includes("Status") && "Status",
   ].filter(Boolean);
   
-  
+  //   const handleChange = (event) => {
+  //     const value = event.target.value;
+   
+  //     setSelected(typeof value === "string" ? value.split(",") : value);
+  //  };
    const handleChange = (event) => {
   const value =
     typeof event.target.value === "string"
@@ -478,7 +482,8 @@ const StyledTableRow = styled(TableRow)(() => ({
 const columns = useMemo(
   () => [
     {
-      
+      // accessorKey: "slNo",
+      // header: "SL/No",
       id: "slNo",
       header: "SL/No",
          size: 70,
