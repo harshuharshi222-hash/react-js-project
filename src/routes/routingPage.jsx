@@ -8,6 +8,14 @@ import CreateCL from '../Pages/create.jsx';
 import Get from '../Pages/get.jsx';
 import Update from '../Pages/update.jsx';
 
+import AppraisalQuestion from '../Pages/AppraisalQuestion/index.jsx';
+import AddAppraisalQuestion from '../Pages/AppraisalQuestion/Form.jsx';
+import AddDesignation from "../Pages/AppraisalQuestion/addDesignation.jsx";
+import AddOption from '../Pages/AppraisalQuestion/addOption.jsx';
+import UpdateOption from "../Pages/AppraisalQuestion/optionfiles/optionEdit.jsx";
+import UpdateAppraisalQuestion from "../Pages/AppraisalQuestion/Edit.jsx"
+
+
 export default function AppRoutes(){
       const navigate = useNavigate();
      const handlegotopromotionalt = () => {
