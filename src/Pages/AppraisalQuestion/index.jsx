@@ -4,6 +4,7 @@ import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
 import AddAppraisalQuestion from '../AppraisalQuestion/Form';
 import UpdateAppraisalQuestion from "../AppraisalQuestion/Edit";
+
 import {
   Box,
   Button,
@@ -512,81 +513,106 @@ const columns = useMemo(
   accessorKey: "designation",
   header: "Designation",
   size: 180,
-  cell: ({ row }) => {
-    const designationList = row.original.designation || [];
 
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography fontSize={13}>
-          {designationList.length}
-        </Typography>
+cell: ({ row }) => {
+  const designationList = row.original.designation || [];
 
-        <InfoIcon
+  const fullText = designationList
+    .map((d) => d.designation_name)
+    .join(", ");
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <Tooltip title={fullText} arrow>
+        <Typography
+          fontSize={13}
           sx={{
-            color: "#1976d2",
+            maxWidth: 120,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
             cursor: "pointer",
-            fontSize: 18,
           }}
-          onClick={() => handleDesignationInfo(row)}
-        />
-      </Box>
-    );
-  },
+        >
+          {designationList.length > 0
+            ? `${designationList[0].designation_name}${
+                designationList.length > 1
+                  ? ` (+${designationList.length - 1})`
+                  : ""
+              }`
+            : ""}
+        </Typography>
+      </Tooltip>
+
+      <InfoIcon
+        sx={{
+          color: "#1976d2",
+          cursor: "pointer",
+          fontSize: 18,
+        }}
+        onClick={() => handleDesignationInfo(row)}
+      />
+    </Box>
+  );
+}
 },
 
 
-  //   {
-  //     accessorKey: "option",
-  //     header: "Option",
-  //        size: 200,
-  //      cell: ({ row }) => (
-  //   <InfoIcon
-  //     sx={{
-  //       color: "#1976d2",
-  //       fontSize: 18,
-  //       cursor: "pointer",
-  //     }}
-  //     onClick={() => handleOptionInfo(row)}
-  //   />
-  // ),
-  //   },
 
   {
   accessorKey: "option",
   header: "Option",
   size: 200,
-  cell: ({ row }) => {
-    const optionList = row.original.option || [];
 
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography fontSize={13}>
-          {Array.isArray(optionList) ? optionList.length : 0}
-        </Typography>
+cell: ({ row }) => {
+  const optionList = row.original.option || [];
 
-        <InfoIcon
+  const fullText = optionList
+    .map((o) => o.rate_description.replace(/<[^>]*>/g, ""))
+    .join(", ");
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <Tooltip title={fullText} arrow>
+        <Typography
+          fontSize={13}
           sx={{
-            color: "#1976d2",
-            fontSize: 18,
+            maxWidth: 120,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
             cursor: "pointer",
           }}
-          onClick={() => handleOptionInfo(row)}
-        />
-      </Box>
-    );
-  },
+        >
+          {optionList.length > 0
+            ? optionList[0].rate_description.replace(/<[^>]*>/g, "")
+            : ""}
+        </Typography>
+      </Tooltip>
+
+      <InfoIcon
+        sx={{
+          color: "#1976d2",
+          fontSize: 18,
+          cursor: "pointer",
+        }}
+        onClick={() => handleOptionInfo(row)}
+      />
+    </Box>
+  );
+}
 },
 
 
@@ -1104,26 +1130,61 @@ const filteredData = useMemo(() => {
       </TableCell>
     </TableRow>
   ) : table.getRowModel().rows.length > 0 ? (
-    // table.getRowModel().rows.map((row) => (
+   
       table.getPaginationRowModel().rows.map((row) => (
       <StyledTableRow key={row.id}>
         {row.getVisibleCells().map((cell) => (
-          <StyledTableCell
-            key={cell.id}
-            sx={{
-              width: cell.column.getSize(),
-              minWidth: cell.column.getSize(),
-              maxWidth: cell.column.getSize(),
-              borderRight: "1px solid #f0f0f0",
-              whiteSpace: "normal",
-              wordBreak: "break-word",
-            }}
-          >
-            {flexRender(
-              cell.column.columnDef.cell,
-              cell.getContext()
-            )}
-          </StyledTableCell>
+
+<StyledTableCell
+  key={cell.id}
+  sx={{
+    width: cell.column.getSize(),
+    minWidth: cell.column.getSize(),
+    maxWidth: cell.column.getSize(),
+    borderRight: "1px solid #f0f0f0",
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+  }}
+>
+  {["category_name", "added_on", "status"].includes(cell.column.id) ? (
+    <Box
+      sx={{
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {flexRender(
+        cell.column.columnDef.cell,
+        cell.getContext()
+      )}
+    </Box>
+  ) : (
+    <Tooltip
+      title={
+        typeof cell.getValue() === "string"
+          ? cell.getValue()
+          : ""
+      }
+      arrow
+      placement="top"
+    >
+      <Box
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          cursor: "pointer",
+        }}
+      >
+        {flexRender(
+          cell.column.columnDef.cell,
+          cell.getContext()
+        )}
+      </Box>
+    </Tooltip>
+  )}
+</StyledTableCell>
         ))}
       </StyledTableRow>
     ))
