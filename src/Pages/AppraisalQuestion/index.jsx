@@ -702,7 +702,7 @@ const handlegotodashboard = () => {
   return (
     <Box
       sx={{
-        background: "#f5f5f5",
+        background: "#ffffff",
         minHeight: "100vh",
         p: 2,
       }}
@@ -713,7 +713,7 @@ const handlegotodashboard = () => {
         elevation={0}
         sx={{
           p: 2,
-          mb: -2,
+          mb: -7,
           borderRadius: 3,
           display: "flex",
           justifyContent: "end",
@@ -1001,7 +1001,7 @@ const handlegotodashboard = () => {
         sx={{
           borderRadius: 3,
           overflow: "hidden",
-          border: "25px solid #ffffff",
+          border: "25px solid #fcf9f9",
            overflowY: "auto",
         }}
       >
@@ -1021,7 +1021,7 @@ const handlegotodashboard = () => {
       height: "8px",
     },
     "&::-webkit-scrollbar-thumb": {
-      background: "#bdbdbd",
+      background: "#a8a8a1",
       borderRadius: "10px",
     },
   }}
