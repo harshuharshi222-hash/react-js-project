@@ -11,6 +11,8 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +79,21 @@ const fetchCategory = async () => {
     status: question?.status || "",
   });
 
+  const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
+
+const handleCloseSnackbar = (_, reason) => {
+  if (reason === "clickaway") return;
+
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
+
 const handleChange = (e) => {
   const { name, value } = e.target;
 
@@ -86,11 +103,13 @@ const handleChange = (e) => {
   }));
 };
 
-const handleUpdate = async () => {
+
+  
+  const handleUpdate = async () => {
   try {
     const payload = {
       userID: "171464700312440400",
-      appraisalID: formData.appraisalID || "", //
+      appraisalID: question?.id || "", 
       questionTitle: formData.questionTitle,
       description: formData.description,
       displayOrder: formData.displayOrder,
@@ -106,17 +125,36 @@ const handleUpdate = async () => {
 
     console.log("Update Response:", response);
 
-    if (response.status === true) {
-      alert("Updated Successfully");
+    if (response.status) {
+      setSnackbar({
+        open: true,
+        message: "Updated Successfully",
+        severity: "success",
+      });
+
+      // Optional: Navigate after 1.5 seconds
+      setTimeout(() => {
+        navigate("/AppraisalQuestion/index");
+      }, 1500);
     } else {
-      alert(response.message);
+      setSnackbar({
+        open: true,
+        message: response.message || "Update Failed",
+        severity: "error",
+      });
     }
   } catch (error) {
     console.log(error);
-    alert("Update Failed");
+
+    setSnackbar({
+      open: true,
+      message: "Update Failed",
+      severity: "error",
+    });
   }
 };
-  ///update //
+
+
   const [updateAppraisalQuestion] =
   useUpdateAppraisalQuestionMutation();
 
@@ -243,6 +281,21 @@ const handleUpdate = async () => {
 >
   UPDATE
 </Button>
+<Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
       </Box>
     </Box>
   );
