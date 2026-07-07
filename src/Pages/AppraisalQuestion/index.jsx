@@ -1022,7 +1022,7 @@ const handlegotodashboard = () => {
         sx={{
           borderRadius: 3,
           overflow: "hidden",
-          border: "25px solid #fcf9f9",
+          border: "25px solid #ffffff",
            overflowY: "auto",
         }}
       >
@@ -1031,7 +1031,8 @@ const handlegotodashboard = () => {
  <TableContainer
   component={Paper}
   sx={{
-    height: "500px",  /////height gixed////
+    height: "500px", /////height gixed////
+    border: "1px solid #d0d7de", 
  
     overflowY: "auto",
     overflowX: "auto",
