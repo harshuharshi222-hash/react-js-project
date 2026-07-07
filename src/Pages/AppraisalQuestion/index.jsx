@@ -458,114 +458,127 @@ const columns = useMemo(
     },
    
 
-  {
+
+{
   accessorKey: "designation",
   header: "Designation",
   size: 180,
 
-cell: ({ row }) => {
-  const designationList = row.original.designation || [];
+  cell: ({ row }) => {
+    const designationList = row.original.designation || [];
 
-  const fullText = designationList
-    .map((d) => d.designation_name)
-    .join(", ");
+    // First designation only
+    const firstDesignation =
+      designationList.length > 0
+        ? designationList[0].designation_name
+        : "";
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <Tooltip title={fullText} arrow>
-        <Typography
-          fontSize={13}
-          sx={{
-            maxWidth: 120,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            cursor: "pointer",
-          }}
-        >
-       {designationList.length > 0
-    ? `${designationList[0].designation_name}${
-        designationList.length > 1
-          ? ` (+${designationList.length - 1})`
-          : ""
-      }`
-    : ""}
-        </Typography>
-      </Tooltip>
-
-      <InfoIcon
+    return (
+      <Box
         sx={{
-          color: "#1976d2",
-          cursor: "pointer",
-          fontSize: 18,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
-        onClick={() => handleDesignationInfo(row)}
-      />
-    </Box>
-  );
-}
+      >
+        <Tooltip title={firstDesignation} arrow>
+          <Typography
+            fontSize={13}
+            sx={{
+              maxWidth: 120,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+          >
+            {designationList.length > 0
+              ? `${firstDesignation}${
+                  designationList.length > 1
+                    ? ` (+${designationList.length - 1})`
+                    : ""
+                }`
+              : ""}
+          </Typography>
+        </Tooltip>
+
+        <InfoIcon
+          sx={{
+            color: "#1976d2",
+            cursor: "pointer",
+            fontSize: 18,
+          }}
+          onClick={() => handleDesignationInfo(row)}
+        />
+      </Box>
+    );
+  },
 },
 
 
 
-  {
+
+
+{
   accessorKey: "option",
   header: "Option",
   size: 200,
 
-cell: ({ row }) => {
-  const optionList = row.original.option || [];
+  cell: ({ row }) => {
+    const optionList = row.original.option || [];
 
-  const fullText = optionList
-    .map((o) => o.rate_description.replace(/<[^>]*>/g, ""))
-    .join(", ");
+  
+    const firstOption =
+      optionList.length > 0
+        ? optionList[0].rate_description.replace(/<[^>]*>/g, "")
+        : "";
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <Tooltip title={fullText} arrow>
-        <Typography
-          fontSize={13}
+    
+const tooltipText =
+  optionList.length > 1
+    ? `${firstOption} (+${optionList.length - 1})`
+    : firstOption;
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Tooltip title={firstOption} arrow>
+          <Typography
+            fontSize={13}
+            sx={{
+              maxWidth: 120,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+          >
+            {optionList.length > 0
+              ? `${firstOption}${
+                  optionList.length > 1
+                    ? ` (+${optionList.length - 1})`
+                    : ""
+                }`
+              : ""}
+          </Typography>
+        </Tooltip>
+
+        <InfoIcon
           sx={{
-            maxWidth: 120,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+            color: "#1976d2",
+            fontSize: 18,
             cursor: "pointer",
           }}
-        >
-          {optionList.length > 0
-    ? `${optionList[0].rate_description.replace(/<[^>]*>/g, "")}${
-        optionList.length > 1
-          ? ` (+${optionList.length - 1})`
-          : ""
-      }`
-    : ""}
-        </Typography>
-      </Tooltip>
-
-      <InfoIcon
-        sx={{
-          color: "#1976d2",
-          fontSize: 18,
-          cursor: "pointer",
-        }}
-        onClick={() => handleOptionInfo(row)}
-      />
-    </Box>
-  );
-}
+          onClick={() => handleOptionInfo(row)}
+        />
+      </Box>
+    );
+  },
 },
 
 

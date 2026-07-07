@@ -293,7 +293,7 @@ Dependency API for Add Designation
 
     payload - {"userID":"171464700312440400","appraisalID":"120","questionTitle":"12","description":"12","displayOrder":"12","status":"Active","categoryID":"2"}
 
-Dependency API for update
+Dependency API for update   
 
 1. Category - http://192.168.0.201/dev/RestAPI_V1/v2/getAppraisalCategory
    payload - {"userID":"171464700312440400","status":"Active","generalSearch":"","sortOrder":"","iDisplayStart":0,"iDisplayLength":"-1"}
