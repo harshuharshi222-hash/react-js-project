@@ -584,12 +584,20 @@ const tooltipText =
 
 
 
-
-    {
-      accessorKey: "added_by",
-      header: "Added By",
-      size: 200,
-    },
+{
+  accessorKey: "added_by",
+  header: "Added By",
+  size: 180,
+  cell: ({ row }) => {
+    return (
+      row.original.added_by?.added_user_name ||
+      row.original.added_by?.user_name ||
+      row.original.added_user_name ||
+      row.original.added_by ||
+      "-"
+    );
+  },
+},
     {
       accessorKey: "added_on",
       header: "Added On",
