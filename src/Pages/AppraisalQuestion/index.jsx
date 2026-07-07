@@ -84,7 +84,7 @@ const payload = {
 
   sortOrder: "Desc",
   iDisplayStart: 0,
-  iDisplayLength: 150,
+  iDisplayLength: -1,
 
   processID: "",
   authorityID: "",
@@ -1036,14 +1036,14 @@ const handlegotodashboard = () => {
  
     overflowY: "auto",
     overflowX: "auto",
-    // border: "1px solid #dcdcdc",
+    
 
     "&::-webkit-scrollbar": {
       width: "8px",
       height: "8px",
     },
     "&::-webkit-scrollbar-thumb": {
-      background: "#a8a8a1",
+      background: "#fdfdfd",
       borderRadius: "10px",
     },
   }}
@@ -1096,7 +1096,7 @@ const handlegotodashboard = () => {
       userSelect: "none",
       touchAction: "none",
       "&:hover": {
-        backgroundColor: "#1976d2",
+        backgroundColor: "#f0f3f7",
       },
     }}
   />

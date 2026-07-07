@@ -51,10 +51,10 @@ const handleCloseSnackbar = () => {
     },
 
     validationSchema: Yup.object({
-      categoryName: Yup.string().required("Required"),
-      questionTitle: Yup.string().required("Required"),
+      categoryName: Yup.string().required("Select category"),
+      questionTitle: Yup.string().required("Enter Question Title"),
       description: Yup.string().required("Required"),
-      displayOrder: Yup.string().required("Required"),
+      displayOrder: Yup.string().required("It should be greater than 0"),
     }),
 
     onSubmit: async (values, { resetForm }) => {
