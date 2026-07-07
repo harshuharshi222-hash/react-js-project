@@ -530,7 +530,7 @@ const columns = useMemo(
   
     const firstOption =
       optionList.length > 0
-        ? optionList[0].rate_description.replace(/<[^>]*>/g, "")
+        ? optionList[0].rate_name .replace(/<[^>]*>/g, "")
         : "";
 
     
