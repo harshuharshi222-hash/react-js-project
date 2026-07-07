@@ -612,19 +612,40 @@ const tooltipText =
     return (
     
 
-      <Chip
+//       <Chip
+//   label={rowStatus}
+//   clickable
+//   onClick={() => handleEdit(row.original)}
+//   sx={{
+//     width: 90,
+//     fontWeight: "bold",
+//     color: "#fff",
+//     cursor: "pointer",
+//     backgroundColor:
+//       rowStatus === "Active"
+//         ? "#74BFD0"
+//         : "#6C63FF",
+//   }}
+// />
+
+<Chip
   label={rowStatus}
-  clickable
+
   onClick={() => handleEdit(row.original)}
   sx={{
     width: 90,
     fontWeight: "bold",
     color: "#fff",
     cursor: "pointer",
-    backgroundColor:
-      rowStatus === "Active"
-        ? "#74BFD0"
-        : "#6C63FF",
+    backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
+
+    "&:hover": {
+      backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
+    },
+
+    "&.MuiChip-clickable:hover": {
+      backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
+    },
   }}
 />
     );
