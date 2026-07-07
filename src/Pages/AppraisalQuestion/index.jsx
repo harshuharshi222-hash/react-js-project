@@ -582,8 +582,6 @@ const tooltipText =
 },
 
 
-
-
 {
   accessorKey: "added_by",
   header: "Added By",
