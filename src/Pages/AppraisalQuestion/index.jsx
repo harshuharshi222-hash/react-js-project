@@ -1145,15 +1145,23 @@ const handlegotodashboard = () => {
       )}
     </Box>
   ) : (
+ 
     <Tooltip
-      title={
-        typeof cell.getValue() === "string"
-          ? cell.getValue()
-          : ""
-      }
-      arrow
-      placement="top"
-    >
+  title={
+    cell.column.id === "added_by"
+      ? (
+          row.original.added_by?.added_user_name ||
+          row.original.added_by?.user_name ||
+          row.original.added_user_name ||
+          row.original.added_by ||
+          "-"
+        )
+      : typeof cell.getValue() === "string"
+      ? cell.getValue()
+      : ""
+  }
+  arrow
+>
       <Box
         sx={{
           overflow: "hidden",
