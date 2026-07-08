@@ -31,7 +31,7 @@ export default function AppRoutes(){
                            <Route path="/AppraisalQuestion/index" element={<AppraisalQuestion/>} />
                             <Route path="/AppraisalQuestion/index/Form" element={<AddAppraisalQuestion/>} />
                            <Route path="/AppraisalQuestion/index/AddDesignation" element={<AddDesignation />} />
-                           <Route path="/AppraisalQuestion/index/AddOption" element={<AddOption />} />
+                           <Route path="/AppraisalQuestion/index" element={<AddOption />} />
                            <Route path="/AppraisalQuestion/index/addOption/optionEdit" element={<UpdateOption />} />
                             <Route path="/AppraisalQuestion/index/Edit" element={<UpdateAppraisalQuestion />} />
                             </Routes>

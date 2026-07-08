@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
+import  AddOption from "../AppraisalQuestion/addOption";
 
 
 import {
@@ -56,6 +57,9 @@ import {
 } from "@tanstack/react-table";
 
 export default function AppraisalQuestion() {
+
+  const [optionOpen, setOptionOpen] = useState(false);
+const [selectedQuestion, setSelectedQuestion] = useState(null);
 
 
   const [searchText, setSearchText] = useState("");
@@ -704,13 +708,12 @@ const table = useReactTable({
   });
 };  
 
-     const handleOptionInfo = (row) => {
-  navigate("/AppraisalQuestion/index/AddOption", {
-    state: {
-      question: row.original,
-    },
-  });
-}; 
+
+
+const handleOptionInfo = (row) => {
+  setSelectedQuestion(row.original);
+  setOptionOpen(true);
+};
 
 const handlegotodashboard = () => {
       navigate('/dashboard')
@@ -1139,7 +1142,11 @@ const handlegotodashboard = () => {
   ))}
 </TableHead>
 
-
+<AddOption
+  open={optionOpen}
+  onClose={() => setOptionOpen(false)}
+  question={selectedQuestion}
+/>
 
 <TableBody>
   {loading ? (

@@ -286,7 +286,7 @@ return(
 >
   <DialogTitle sx={{display:"flex",justifyContent:"space-between",fontWeight:700,borderBottom:"1px solid #f9f2f2"}}>
    Add Option
-   <IconButton onClick={AppraisalQuestion}><CloseIcon sx={{color:"red"}}/></IconButton>
+   <IconButton onClick={onClose}><CloseIcon sx={{color:"red"}}/></IconButton>
   </DialogTitle>
   
  <DialogContent
