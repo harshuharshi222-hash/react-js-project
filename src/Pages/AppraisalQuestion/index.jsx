@@ -1299,9 +1299,9 @@ const handlegotodashboard = () => {
   onClick={() => table.previousPage()}
   disabled={!table.getCanPreviousPage()}
   sx={{
-    minWidth: 80,
-    width: 250,
-    height: 40,
+    minWidth: 60,
+    width: 400,
+    height: 50,
     textTransform: "none",
     fontSize: "13px",
     px: 1,
@@ -1349,8 +1349,8 @@ const handlegotodashboard = () => {
   disabled={!table.getCanNextPage()}
   sx={{
     minWidth: 80,
-    width: 250,
-    height: 40,
+    width: 400,
+    height: 60,
     textTransform: "none",
     fontSize: "13px",
     px: 1,

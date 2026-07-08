@@ -57,6 +57,9 @@ const fetchCategory = async () => {
     if (response?.data) {
       setCategoryList(response.data);
     }
+
+    
+
   } catch (error) {
     console.log(error);
   }
@@ -190,11 +193,6 @@ console.log("Status:", response.status);
     severity: "success",
   });
 
-  setTimeout(() => {
-    console.log("Navigating to table...");
-    navigate("/AppraisalQuestion/index");
-  }, 1000);
-
 
 
     } else {
@@ -205,6 +203,11 @@ console.log("Status:", response.status);
       });
       setIsUpdating(false);
     }
+
+      setTimeout(() => {
+      navigate("/AppraisalQuestion/index");
+    }, 1000);
+
   } catch (error) {
     console.log(error);
 

@@ -74,6 +74,10 @@ const handleCloseSnackbar = () => {
   setOpenSnackbar(true);
   resetForm();
 
+  setTimeout(() => {
+      navigate("/AppraisalQuestion/index");
+    }, 1000);
+
   } catch (error) {
     console.log("Full Error:", error);
     console.log("Error Data:", error?.data);

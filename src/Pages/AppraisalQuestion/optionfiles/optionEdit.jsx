@@ -78,13 +78,7 @@ const location = useLocation();
 
 const option = location.state?.option;
 
-// useEffect(() => {
-//   if (option) {
-//     setRate(option.rate);
-//     setStatus(option.status);
-//     setDescription(option.rate_description);
-//   }
-// }, [option]);
+
 useEffect(() => {
      if (option) {
     setRate(option.rate);
@@ -302,17 +296,7 @@ console.log(JSON.stringify(option, null, 2));
             justifyContent: "center",
           }}
         >
-          {/* <Button
-            variant="contained"
-            sx={{
-              width: 85,
-              height: 42,
-              textTransform: "uppercase",
-              borderRadius: 1,
-            }}
-          >
-            Save
-          </Button> */}
+          
           <Button
   variant="contained"
   onClick={handleSave}
