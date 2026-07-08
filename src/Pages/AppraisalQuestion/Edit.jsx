@@ -332,18 +332,7 @@ console.log("Status:", response.status);
           mt: 3,
         }}
       >
-        {/* <Button
-  variant="contained"
-  onClick={handleUpdate}
-  sx={{
-    px: 5,
-    py: 1,
-    fontWeight: "bold",
-    borderRadius: 1,
-  }}
->
-  UPDATE
-</Button> */}
+        
 <Button
   variant="contained"
   onClick={handleUpdate}

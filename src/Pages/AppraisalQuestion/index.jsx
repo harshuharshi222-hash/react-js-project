@@ -3,6 +3,8 @@ import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
 import  AddOption from "../AppraisalQuestion/addOption";
+import ClearIcon from "@mui/icons-material/Clear";
+
 
 
 import {
@@ -849,7 +851,8 @@ const handlegotodashboard = () => {
             </FormControl>
           </div>
 
-   
+
+
 <FormControl size="small" sx={{ width: 150 }}>
   <InputLabel>Department</InputLabel>
 
@@ -857,30 +860,43 @@ const handlegotodashboard = () => {
     value={department}
     label="Department"
     onChange={(e) => setDepartment(e.target.value)}
-      MenuProps={{
+    endAdornment={
+      department && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <ClearIcon
+            fontSize="small"
+            sx={{ cursor: "pointer" }}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent Select from opening
+              setDepartment("");
+            }}
+          />
+        </InputAdornment>
+      )
+    }
+    MenuProps={{
       PaperProps: {
         sx: {
-          width: 70,      // Popup width
-          maxHeight: 150,  // Optional
+          width: 70,
+          maxHeight: 150,
         },
       },
     }}
   >
     {departmentList.map((item) => (
-      
       <MenuItem
-  key={item.department_id}
-  value={item.department_id}
-  sx={{
-    width: 120,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontSize: "13px",
-  }}
->
-  {item.department_name}
-</MenuItem>
+        key={item.department_id}
+        value={item.department_id}
+        sx={{
+          width: 120,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          fontSize: "13px",
+        }}
+      >
+        {item.department_name}
+      </MenuItem>
     ))}
   </Select>
 </FormControl>
@@ -889,9 +905,24 @@ const handlegotodashboard = () => {
             <InputLabel>Designation</InputLabel>
   <Select
     value={designation}
-    displayEmpty
+   
+    label="Designation"
     onChange={(e) => setDesignation(e.target.value)}
-     MenuProps={{
+     endAdornment={
+      designation && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <ClearIcon
+            fontSize="small"
+            sx={{ cursor: "pointer" }}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent Select from opening
+              setDesignation("");
+            }}
+          />
+        </InputAdornment>
+      )
+    }
+    MenuProps={{
       PaperProps: {
         sx: {
           width: 70,      // Popup width
@@ -925,9 +956,22 @@ const handlegotodashboard = () => {
             <InputLabel>Category</InputLabel>
   <Select
     value={category}
-    displayEmpty
+    label="Category"
     onChange={(e) => setCategory(e.target.value)}
-   
+    endAdornment={
+      category && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <ClearIcon
+            fontSize="small"
+            sx={{ cursor: "pointer" }}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent Select from opening
+              setCategory("");
+            }}
+          />
+        </InputAdornment>
+      )
+    }
   >
     
 
