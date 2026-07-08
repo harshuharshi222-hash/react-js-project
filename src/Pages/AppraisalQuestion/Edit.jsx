@@ -28,6 +28,8 @@ import {
 
 export default function UpdateAppraisalQuestion() {
 
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const [categoryList, setCategoryList] = useState([]);
 
 const [getAppraisalCategory] =
@@ -105,11 +107,65 @@ const handleChange = (e) => {
 
 
   
-  const handleUpdate = async () => {
+//   const handleUpdate = async () => {
+//   try {
+//     const payload = {
+//       userID: "171464700312440400",
+//       appraisalID: question?.id || "", 
+//       questionTitle: formData.questionTitle,
+//       description: formData.description,
+//       displayOrder: formData.displayOrder,
+//       status: formData.status,
+//       categoryID: formData.categoryID,
+//     };
+
+//     console.log("Update Payload:", payload);
+
+//     const response = await updateAppraisalQuestion(
+//       JSON.stringify(payload)
+//     ).unwrap();
+
+//     console.log("Update Response:", response);
+
+//     if (response.status) {
+//       setSnackbar({
+//         open: true,
+//         message: "Updated Successfully",
+//         severity: "success",
+//       });
+
+//       // Optional: Navigate after 1.5 seconds
+//       setTimeout(() => {
+//         navigate("/AppraisalQuestion/index");
+//       }, 1500);
+//     } else {
+//       setSnackbar({
+//         open: true,
+//         message: response.message || "Update Failed",
+//         severity: "error",
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+
+//     setSnackbar({
+//       open: true,
+//       message: "Update Failed",
+//       severity: "error",
+//     });
+//   }
+// };
+
+
+const handleUpdate = async () => {
+  if (isUpdating) return;
+
+  setIsUpdating(true);
+
   try {
     const payload = {
       userID: "171464700312440400",
-      appraisalID: question?.id || "", 
+      appraisalID: question?.id || "",
       questionTitle: formData.questionTitle,
       description: formData.description,
       displayOrder: formData.displayOrder,
@@ -117,31 +173,37 @@ const handleChange = (e) => {
       categoryID: formData.categoryID,
     };
 
-    console.log("Update Payload:", payload);
-
     const response = await updateAppraisalQuestion(
       JSON.stringify(payload)
     ).unwrap();
 
-    console.log("Update Response:", response);
+  console.log("Response:", response);
+console.log("Status:", response.status);
 
-    if (response.status) {
-      setSnackbar({
-        open: true,
-        message: "Updated Successfully",
-        severity: "success",
-      });
 
-      // Optional: Navigate after 1.5 seconds
-      setTimeout(() => {
-        navigate("/AppraisalQuestion/index");
-      }, 1500);
+  if (response.status) {
+  console.log("Update Success");
+
+  setSnackbar({
+    open: true,
+    message: "Updated Successfully",
+    severity: "success",
+  });
+
+  setTimeout(() => {
+    console.log("Navigating to table...");
+    navigate("/AppraisalQuestion/index");
+  }, 1000);
+
+
+
     } else {
       setSnackbar({
         open: true,
         message: response.message || "Update Failed",
         severity: "error",
       });
+      setIsUpdating(false);
     }
   } catch (error) {
     console.log(error);
@@ -151,9 +213,10 @@ const handleChange = (e) => {
       message: "Update Failed",
       severity: "error",
     });
+
+    setIsUpdating(false);
   }
 };
-
 
   const [updateAppraisalQuestion] =
   useUpdateAppraisalQuestionMutation();
@@ -269,7 +332,7 @@ const handleChange = (e) => {
           mt: 3,
         }}
       >
-        <Button
+        {/* <Button
   variant="contained"
   onClick={handleUpdate}
   sx={{
@@ -280,6 +343,19 @@ const handleChange = (e) => {
   }}
 >
   UPDATE
+</Button> */}
+<Button
+  variant="contained"
+  onClick={handleUpdate}
+  disabled={isUpdating}
+  sx={{
+    px: 5,
+    py: 1,
+    fontWeight: "bold",
+    borderRadius: 1,
+  }}
+>
+  {isUpdating ? "UPDATING..." : "UPDATE"}
 </Button>
 <Snackbar
   open={snackbar.open}
