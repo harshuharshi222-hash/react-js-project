@@ -1112,6 +1112,7 @@ const handlegotodashboard = () => {
   component={Paper}
   sx={{
     height: "500px", /////height gixed////
+    
     border: "1px solid #d0d7de", 
  
     overflowY: "auto",
