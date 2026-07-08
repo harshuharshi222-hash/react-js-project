@@ -854,14 +854,30 @@ const handlegotodashboard = () => {
     value={department}
     label="Department"
     onChange={(e) => setDepartment(e.target.value)}
+      MenuProps={{
+      PaperProps: {
+        sx: {
+          width: 70,      // Popup width
+          maxHeight: 150,  // Optional
+        },
+      },
+    }}
   >
     {departmentList.map((item) => (
+      
       <MenuItem
-        key={item.department_id}
-        value={item.department_id}
-      >
-        {item.department_name}
-      </MenuItem>
+  key={item.department_id}
+  value={item.department_id}
+  sx={{
+    width: 120,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    fontSize: "13px",
+  }}
+>
+  {item.department_name}
+</MenuItem>
     ))}
   </Select>
 </FormControl>
@@ -872,6 +888,14 @@ const handlegotodashboard = () => {
     value={designation}
     displayEmpty
     onChange={(e) => setDesignation(e.target.value)}
+     MenuProps={{
+      PaperProps: {
+        sx: {
+          width: 70,      // Popup width
+          maxHeight: 150,  // Optional
+        },
+      },
+    }}
   >
     
 
@@ -879,6 +903,14 @@ const handlegotodashboard = () => {
       <MenuItem
         key={item.designation_id || item.id}
         value={item.designation_id || item.id}
+         sx={{
+    width: 120,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    fontSize: "13px",
+  }}
+        
       >
         {item.designation_name || item.designation}
       </MenuItem>
@@ -892,6 +924,7 @@ const handlegotodashboard = () => {
     value={category}
     displayEmpty
     onChange={(e) => setCategory(e.target.value)}
+   
   >
     
 
