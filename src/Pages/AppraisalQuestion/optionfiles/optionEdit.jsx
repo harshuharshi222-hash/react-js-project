@@ -43,6 +43,8 @@ export default function UpdateOption() {
 const [ratings, setRatings] = useState([]);
   const [getAppraisalRating, { isLoading }] =
     useGetAppraisalRatingMutation();
+    const [getHrAppraisalQuestionOption, { isLoading: optionLoading }] =
+  useGetHrAppraisalQuestionOptionMutation();
 
   const [updateAppraisalQuestion, { isLoading: saving }] =
   useUpdateAppraisalQuestionMutation();
@@ -80,13 +82,10 @@ const option = location.state?.option;
 
 
 useEffect(() => {
-     if (option) {
-    setRate(option.rate);
-    setStatus(option.status);
-    setDescription(option.rate_description);
+  if (option?.AppraisalQuestionID) {
+    loadQuestionOptions(option.AppraisalQuestionID);
   }
-    console.log(option);
-}, []);
+}, [option]);
 
 console.log("OPTION OBJECT");
 console.log(option);
@@ -123,6 +122,31 @@ console.log(JSON.stringify(option, null, 2));
   } catch (err) {
     console.log(err);
     alert("Update Failed");
+  }
+};
+
+const loadQuestionOptions = async (appraisalQuestionID) => {
+  try {
+    const payload = {
+      userID: "171464700312440400",
+      appraisalQuestionID: appraisalQuestionID,
+    };
+
+    const response = await getHrAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Option Response:", response);
+
+    if (response.data && response.data.length > 0) {
+      const optionData = response.data[0];
+
+      setRate(optionData.rate);
+      setStatus(optionData.status);
+      setDescription(optionData.rate_description);
+    }
+  } catch (err) {
+    console.log("Error loading options:", err);
   }
 };
   
@@ -315,3 +339,12 @@ console.log(JSON.stringify(option, null, 2));
     </Box>
   );
 }
+
+
+
+
+
+
+
+
+

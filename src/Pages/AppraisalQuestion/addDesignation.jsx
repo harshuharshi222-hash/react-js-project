@@ -31,10 +31,33 @@ import { useUpdateAppraisalQuestionDesignationMutation } from "../../api/constru
 
 
 
-
 export default function AddDesignation() {
 
+  const navigate = useNavigate();
+
+  const { state } = useLocation();
+
+  console.log("State :", state);
+
+  const question = state?.question;
+
+  console.log("Question :", question);
+
+  const appraisalQuestionID =
+    question?.appraisalQuestionID ||
+    question?.id ||
+    state?.appraisalQuestionID ||
+    "";
+
+  console.log("Appraisal Question ID :", appraisalQuestionID);
+
+  const AppraisalQuestion = () => {
+    navigate("/AppraisalQuestion/index");
+  };
+
   const [historyData, setHistoryData] = useState([]);
+
+ 
   const [snackbar, setSnackbar] = useState({
   open: false,
   message: "",
@@ -99,7 +122,7 @@ const handleDepartmentChange = async (e) => {
   try {
     const payload = {
       userID: "171464700312440400",
-      appraisalQuestionID: "120",
+      appraisalQuestionID: String(appraisalQuestionID),
       departmentID: deptID,
     };
 
@@ -133,13 +156,12 @@ useEffect(() => {
   fetchHistory();
 }, []);
 
-const fetchHistory = async () => {
+const fetchHistory = async (values) => {
   try {
-    const payload = {
-      userID: "171464700312440400",
-      appraisalQuestionID: "120",
-    };
-
+   const payload = {
+    userID: "171464700312440400",
+    appraisalQuestionID: String(appraisalQuestionID),
+};
     const response = await getHrAppraisalQuestionDesignation(JSON.stringify(payload)).unwrap();
 
     console.log(response);
@@ -155,19 +177,6 @@ const fetchHistory = async () => {
 
 
 
-  const navigate = useNavigate();
-  
-    const AppraisalQuestion = () => {
-      navigate("/AppraisalQuestion/index");
-    };
-
-  const { state } = useLocation();
-
-  console.log(state);
-
-  const question = state?.question;
-
-  console.log(question);
 
 
 
@@ -217,11 +226,11 @@ const handleSubmit = async () => {
       isSelected: row.checked ? "1" : "0",
     }));
 
-    const payload = {
-      userID: "171464700312440400",
-      appraisalQuestionID: "120",
-      designationID: designationPayload,
-    };
+   const payload = {
+    userID: "171464700312440400",
+    appraisalQuestionID: String(appraisalQuestionID),
+    designationID: designationPayload,
+};
 
     console.log("Update Payload:", payload);
 
