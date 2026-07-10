@@ -110,54 +110,7 @@ const handleChange = (e) => {
 
 
   
-//   const handleUpdate = async () => {
-//   try {
-//     const payload = {
-//       userID: "171464700312440400",
-//       appraisalID: question?.id || "", 
-//       questionTitle: formData.questionTitle,
-//       description: formData.description,
-//       displayOrder: formData.displayOrder,
-//       status: formData.status,
-//       categoryID: formData.categoryID,
-//     };
 
-//     console.log("Update Payload:", payload);
-
-//     const response = await updateAppraisalQuestion(
-//       JSON.stringify(payload)
-//     ).unwrap();
-
-//     console.log("Update Response:", response);
-
-//     if (response.status) {
-//       setSnackbar({
-//         open: true,
-//         message: "Updated Successfully",
-//         severity: "success",
-//       });
-
-//       // Optional: Navigate after 1.5 seconds
-//       setTimeout(() => {
-//         navigate("/AppraisalQuestion/index");
-//       }, 1500);
-//     } else {
-//       setSnackbar({
-//         open: true,
-//         message: response.message || "Update Failed",
-//         severity: "error",
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error);
-
-//     setSnackbar({
-//       open: true,
-//       message: "Update Failed",
-//       severity: "error",
-//     });
-//   }
-// };
 
 
 const handleUpdate = async () => {
@@ -180,8 +133,9 @@ const handleUpdate = async () => {
       JSON.stringify(payload)
     ).unwrap();
 
-  console.log("Response:", response);
+console.log("Response:", response);
 console.log("Status:", response.status);
+console.log("Type:", typeof response.status);
 
 
   if (response.status) {
@@ -223,7 +177,7 @@ console.log("Status:", response.status);
 
   const [updateAppraisalQuestion] =
   useUpdateAppraisalQuestionMutation();
-
+console.log("Snackbar:", snackbar);
 
 
   return (
@@ -355,14 +309,32 @@ console.log("Status:", response.status);
   onClose={handleCloseSnackbar}
   anchorOrigin={{ vertical: "top", horizontal: "right" }}
 >
-  <Alert
+  {/* <Alert
     onClose={handleCloseSnackbar}
     severity={snackbar.severity}
     variant="filled"
     sx={{ width: "100%" }}
   >
     {snackbar.message}
-  </Alert>
+  </Alert> */}
+
+  <Alert
+  onClose={handleCloseSnackbar}
+  severity={snackbar.severity}
+  variant="filled"
+  sx={{
+    width: "100%",
+    ...(snackbar.severity === "success" && {
+      bgcolor: "success.main",
+      color: "#17e455",
+      "& .MuiAlert-icon": {
+        color: "#20f127",
+      },
+    }),
+  }}
+>
+  {snackbar.message}
+</Alert>
 </Snackbar>
       </Box>
     </Box>

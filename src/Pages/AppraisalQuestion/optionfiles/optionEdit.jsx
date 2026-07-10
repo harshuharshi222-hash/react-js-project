@@ -13,6 +13,8 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Snackbar,
+    Alert,
 } from "@mui/material";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -37,17 +39,25 @@ import {
 } from "../../../api/constructionApi";
 
 export default function UpdateOption() {
+
+    
+    const navigate = useNavigate();
   const [rate, setRate] = useState("");
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
 
+  const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
 
 const [ratings, setRatings] = useState([]);
 
-  const [getAppraisalRating, { isLoading }] =
-    useGetAppraisalRatingMutation();
+const [getAppraisalRating] =
+  useGetAppraisalRatingMutation();
 
-    const [getHrAppraisalQuestionOption, { isLoading: optionLoading }] =
+const [getHrAppraisalQuestionOption] =
   useGetHrAppraisalQuestionOptionMutation();
 
 const [updateAppraisalQuestionOption, { isLoading: saving }] =
@@ -119,32 +129,68 @@ const loadOptionDetail = async () => {
 
       console.log("Option Detail Data:", data);
 
-      setDescription(data.description || data.rate_description || "");
-      setStatus(data.status || "Active");
-      setRate(String(data.rateID || data.rate_id || ""));
+     setDescription(data.description ?? data.rate_description ?? "");
+setStatus(data.status ?? "Active");
+setRate(String(data.rateID ?? data.rate_id ?? ""));
     }
   } catch (err) {
     console.log("Option Detail Error:", err);
   }
 };
 
-
 useEffect(() => {
-  if (appraisalQuestionID) {
-    loadQuestionOptions(appraisalQuestionID);
-  }
+  if (!appraisalQuestionID || !optionID) return;
 
-  if (optionID) {
-    loadOptionDetail();
-  }
+  loadQuestionOptions(appraisalQuestionID);
+  loadOptionDetail();
 }, [appraisalQuestionID, optionID]);
 
 console.log("OPTION OBJECT");
 console.log(option);
 console.table(option);
 
+const handleCloseSnackbar = (_, reason) => {
+  if (reason === "clickaway") return;
 
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
 
+// const handleSave = async () => {
+//   try {
+//     const payload = {
+//       userID: "169548080048036100",
+//       appraisalID: "",
+//       questionTitle: option?.questionTitle || "",
+//       description: description,
+//       displayOrder: option?.displayOrder || "",
+//       status: status,
+//       optionID: String(optionID),
+//       appraisalQuestionID: String(appraisalQuestionID),
+//       rateID: String(rate),
+//     };
+
+//     console.log("Update Payload:", payload);
+
+//     const response = await updateAppraisalQuestionOption(
+//       JSON.stringify(payload)
+//     ).unwrap();
+
+//     console.log("Update Response:", response);
+
+//     if (!response.error) {
+//       alert("Option Updated Successfully");
+//       navigate("/AppraisalQuestion/index");
+//     } else {
+//       alert(response.message || "Update Failed");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     alert("Update Failed");
+//   }
+// };
 const handleSave = async () => {
   try {
     const payload = {
@@ -168,16 +214,37 @@ const handleSave = async () => {
     console.log("Update Response:", response);
 
     if (!response.error) {
-      alert("Option Updated Successfully");
-      navigate("/AppraisalQuestion/index");
+      setSnackbar({
+        open: true,
+        message: response.message || "Option Updated Successfully",
+        severity: "success",
+      });
+
+      setTimeout(() => {
+        navigate("/AppraisalQuestion/index");
+      }, 1500);
     } else {
-      alert(response.message || "Update Failed");
+      setSnackbar({
+        open: true,
+        message: response.message || "Update Failed",
+        severity: "error",
+      });
     }
   } catch (err) {
     console.log(err);
-    alert("Update Failed");
+
+    setSnackbar({
+      open: true,
+     message:
+  err?.data?.message ||
+  err?.message ||
+  "Something went wrong!",
+      severity: "error",
+    });
   }
 };
+
+
 const loadQuestionOptions = async (id) => {
   try {
     const payload = {
@@ -196,8 +263,7 @@ console.log("Option:", response.data?.[0]?.option);
     console.log(err);
   }
 };
-  
-    const navigate = useNavigate();
+
     
       const AppraisalQuestion = () => {
         navigate("/AppraisalQuestion/index");
@@ -230,17 +296,17 @@ console.log("Option:", response.data?.[0]?.option);
           boxShadow: 1,
         }}
       >
-        <Typography sx={{ mb: 3 }}>
-          <span
-            style={{
-              color: "green",
-              fontWeight: 700,
-            }}
-          >
-            Question:
-          </span>{" "}
-          121 . 12
-        </Typography>
+     <Typography sx={{ mb: 3 }}>
+  <span
+    style={{
+      color: "green",
+      fontWeight: 700,
+    }}
+  >
+    Question:
+  </span>{" "}
+  {option?.questionTitle || "N/A"}
+</Typography>
 
         {/* Rate */}
 <FormControl fullWidth sx={{ mb: 3 }}>
@@ -252,7 +318,8 @@ console.log("Option:", response.data?.[0]?.option);
     label="Rate *"
     onChange={(e) => setRate(e.target.value)}
   >
-    {ratings.map((item) => (
+    {ratings.length > 0 &&
+  ratings.map((item) => (
       <MenuItem
         key={item.rateID}
         value={String(item.rateID)}
@@ -355,7 +422,7 @@ console.log("Option:", response.data?.[0]?.option);
             onChange={(e) => setStatus(e.target.value)}
           >
             <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Inactive">Inactive</MenuItem>
+            <MenuItem value="In-Active">Inactive</MenuItem>
           </Select>
         </FormControl>
 
@@ -371,7 +438,14 @@ console.log("Option:", response.data?.[0]?.option);
           <Button
   variant="contained"
   onClick={handleSave}
-  disabled={saving}
+disabled={
+  saving ||
+  !rate ||
+  !description.trim() ||
+  !status
+}
+
+
   sx={{
     width: 85,
     height: 42,
@@ -379,8 +453,27 @@ console.log("Option:", response.data?.[0]?.option);
     borderRadius: 1,
   }}
 >
-  {saving ? "Saving..." : "Save"}
+{saving ? "Updating..." : "Save"}
 </Button>
+
+<Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
         </Box>
       </Card>
     </Box>
