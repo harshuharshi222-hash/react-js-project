@@ -210,10 +210,36 @@ const handleSubmit = async () => {
 
     console.log("Create Payload:", payload);
 
-    const response = await createAppraisalQuestionOption(
-      JSON.stringify(payload)
-    ).unwrap();
+   const response = await createAppraisalQuestionOption(
+  JSON.stringify(payload)
+).unwrap();
 
+console.log("Create Response:", response);
+
+if (response.status === true || response.success === true) {
+  setSnackbar({
+    open: true,
+    message: "Option Added Successfully",
+    severity: "success",
+  });
+
+  // Clear form
+  setRate("");
+  setDescription("");
+
+  if (editorRef.current) {
+    editorRef.current.innerHTML = "";
+  }
+
+  // Refresh the table
+  await loadQuestionOptions();
+} else {
+  setSnackbar({
+    open: true,
+    message: response.message || "Failed to add option",
+    severity: "error",
+  });
+}
     console.log("Create Response:", response);
 
     if (response.status === true || response.success === true) {

@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -10,11 +9,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Toolbar,
   Typography,
   Snackbar,
-    Alert,
+  Alert,
 } from "@mui/material";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -27,261 +25,267 @@ import LinkIcon from "@mui/icons-material/Link";
 import LinkOffIcon from "@mui/icons-material/LinkOff";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   useGetAppraisalRatingMutation,
-  useGetHrAppraisalQuestionOptionMutation,
   useGetHrAppraisalQuestionOptionDetailMutation,
-  useUpdateAppraisalQuestionOptionMutation,
+  useUpdateAppraisalQuestionMutation,
+    useGetHrAppraisalQuestionOptionMutation,
 } from "../../../api/constructionApi";
 
 export default function UpdateOption() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    
-    const navigate = useNavigate();
+  const option = location.state?.option;
+
+  const editorRef = useRef(null);
+
   const [rate, setRate] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Active");
   const [description, setDescription] = useState("");
+  const [ratings, setRatings] = useState([]);
+  const [questionData, setQuestionData] = useState({});
 
   const [snackbar, setSnackbar] = useState({
-  open: false,
-  message: "",
-  severity: "success",
-});
+    open: false,
+    severity: "success",
+    message: "",
+  });
 
-const [ratings, setRatings] = useState([]);
+  const [getAppraisalRating] =
+    useGetAppraisalRatingMutation();
+    const [
+  getHrAppraisalQuestionOption,
+  { isLoading: optionLoading },
+] = useGetHrAppraisalQuestionOptionMutation();
 
-const [getAppraisalRating] =
-  useGetAppraisalRatingMutation();
+  const [
+    getHrAppraisalQuestionOptionDetail,
+    { isLoading: detailLoading },
+  ] = useGetHrAppraisalQuestionOptionDetailMutation();
 
-const [getHrAppraisalQuestionOption] =
-  useGetHrAppraisalQuestionOptionMutation();
+  const [
+    updateAppraisalQuestion,
+    { isLoading: saving },
+  ] = useUpdateAppraisalQuestionMutation();
 
-const [updateAppraisalQuestionOption, { isLoading: saving }] =
-  useUpdateAppraisalQuestionOptionMutation();
-
-  const [getHrAppraisalQuestionOptionDetail] =
-  useGetHrAppraisalQuestionOptionDetailMutation();
-  
-   useEffect(() => {
+  useEffect(() => {
     loadRatings();
   }, []);
-  
+
   const loadRatings = async () => {
     try {
       const payload = {
-        userID: "171464700312440400",
+        userID: "169548080048036100",
         status: "Active",
         sortOrder: "",
         generalSearch: "",
         iDisplayStart: 0,
         iDisplayLength: -1,
       };
-  
-      const response = await getAppraisalRating(JSON.stringify(payload)).unwrap();
-  
-      console.log("Rating Response:", response);
-  
-      // Change according to your API response
-      setRatings(response.data || []);
-    } catch (error) {
-      console.error("Error fetching ratings:", error);
+
+      const response = await getAppraisalRating(
+        JSON.stringify(payload)
+      ).unwrap();
+
+      console.log("Rating API:", response);
+
+      if (response?.data) {
+        setRatings(response.data);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
-  
 
-const location = useLocation();
-
-
-const option = location.state?.option;
-
-const appraisalQuestionID =
-  option?.AppraisalQuestionID ||
-  option?.appraisalQuestionID ||
-  option?.appraisalID ||
-  "";
-  console.log("Appraisal Question ID :", appraisalQuestionID);
-
-const optionID =
-  option?.optionID ||
-  option?.OptionID ||
-  option?.id ||
-  "";
-  console.log("Option ID :", optionID);
-const loadOptionDetail = async () => {
+    const loadQuestionOption = async () => {
   try {
     const payload = {
       userID: "169548080048036100",
-      optionID: String(optionID),
+      appraisalQuestionID: "134",
     };
 
-    const response = await getHrAppraisalQuestionOptionDetail(
-      JSON.stringify(payload)
-    ).unwrap();
-
-    console.log("Option Detail Response:", response);
-
-    if (response.data && response.data.length > 0) {
-      const data = response.data[0];
-
-      console.log("Option Detail Data:", data);
-
-     setDescription(data.description ?? data.rate_description ?? "");
-setStatus(data.status ?? "Active");
-setRate(String(data.rateID ?? data.rate_id ?? ""));
-    }
-  } catch (err) {
-    console.log("Option Detail Error:", err);
-  }
-};
-
-useEffect(() => {
-  if (!appraisalQuestionID || !optionID) return;
-
-  loadQuestionOptions(appraisalQuestionID);
-  loadOptionDetail();
-}, [appraisalQuestionID, optionID]);
-
-console.log("OPTION OBJECT");
-console.log(option);
-console.table(option);
-
-const handleCloseSnackbar = (_, reason) => {
-  if (reason === "clickaway") return;
-
-  setSnackbar((prev) => ({
-    ...prev,
-    open: false,
-  }));
-};
-
-// const handleSave = async () => {
-//   try {
-//     const payload = {
-//       userID: "169548080048036100",
-//       appraisalID: "",
-//       questionTitle: option?.questionTitle || "",
-//       description: description,
-//       displayOrder: option?.displayOrder || "",
-//       status: status,
-//       optionID: String(optionID),
-//       appraisalQuestionID: String(appraisalQuestionID),
-//       rateID: String(rate),
-//     };
-
-//     console.log("Update Payload:", payload);
-
-//     const response = await updateAppraisalQuestionOption(
-//       JSON.stringify(payload)
-//     ).unwrap();
-
-//     console.log("Update Response:", response);
-
-//     if (!response.error) {
-//       alert("Option Updated Successfully");
-//       navigate("/AppraisalQuestion/index");
-//     } else {
-//       alert(response.message || "Update Failed");
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     alert("Update Failed");
-//   }
-// };
-const handleSave = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      appraisalID: "",
-      questionTitle: option?.questionTitle || "",
-      description: description,
-      displayOrder: option?.displayOrder || "",
-      status: status,
-      optionID: String(optionID),
-      appraisalQuestionID: String(appraisalQuestionID),
-      rateID: String(rate),
-    };
-
-    console.log("Update Payload:", payload);
-
-    const response = await updateAppraisalQuestionOption(
-      JSON.stringify(payload)
-    ).unwrap();
-
-    console.log("Update Response:", response);
-
-    if (!response.error) {
-      setSnackbar({
-        open: true,
-        message: response.message || "Option Updated Successfully",
-        severity: "success",
-      });
-
-      setTimeout(() => {
-        navigate("/AppraisalQuestion/index");
-      }, 1500);
-    } else {
-      setSnackbar({
-        open: true,
-        message: response.message || "Update Failed",
-        severity: "error",
-      });
-    }
-  } catch (err) {
-    console.log(err);
-
-    setSnackbar({
-      open: true,
-     message:
-  err?.data?.message ||
-  err?.message ||
-  "Something went wrong!",
-      severity: "error",
-    });
-  }
-};
-
-
-const loadQuestionOptions = async (id) => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      appraisalQuestionID: String(id),
-    };
+    console.log("Payload:", payload);
 
     const response = await getHrAppraisalQuestionOption(
       JSON.stringify(payload)
     ).unwrap();
 
-    console.log(response);
-    console.log("First Row:", response.data?.[0]);
-console.log("Option:", response.data?.[0]?.option);
+    console.log("Option Response:", response);
+
+    if (response?.data?.length > 0) {
+      const option = response.data[0];
+
+      setRate(option.optionID);
+
+      setStatus(option.status);
+
+      setDescription(option.rate_description || "");
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML =
+          option.rate_description || "";
+      }
+    }
   } catch (err) {
-    console.log(err);
+    console.log("Option API Error:", err);
   }
 };
 
-    
-      const AppraisalQuestion = () => {
-        navigate("/AppraisalQuestion/index");
+
+useEffect(() => {
+  loadQuestionOption();
+}, []);
+
+
+  const handleRateChange = async (e) => {
+    const optionID = e.target.value;
+
+    setRate(optionID);
+
+    try {
+      const payload = {
+        userID: "169548080048036100",
+        optionID: String(optionID),
       };
 
-  return (
+      console.log("Detail Payload", payload);
+
+      const response =
+        await getHrAppraisalQuestionOptionDetail(
+          JSON.stringify(payload)
+        ).unwrap();
+
+      console.log("Detail Response", response);
+
+      if (response?.data) {
+        const data = Array.isArray(response.data)
+          ? response.data[0]
+          : response.data;
+
+        setQuestionData(data);
+
+        setStatus(data.status || "Active");
+
+        setDescription(
+          data.description ||
+            data.rate_description ||
+            ""
+        );
+
+        if (editorRef.current) {
+          editorRef.current.innerHTML =
+            data.description ||
+            data.rate_description ||
+            "";
+        }
+      }
+    } catch (err) {
+      console.log(err);
+
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "Failed to load option details.",
+      });
+    }
+  };
+
+  const executeCommand = (command, value = null) => {
+    if (!editorRef.current) return;
+
+    editorRef.current.focus();
+
+    document.execCommand(command, false, value);
+  };
+
+  const addLink = () => {
+    const url = prompt("Enter URL");
+
+    if (url) {
+      executeCommand("createLink", url);
+    }
+  };
+
+  const Tool = ({ children, onClick }) => (
+    <IconButton
+      size="small"
+      onClick={onClick}
+      sx={{
+        border: "1px solid #ccc",
+        width: 36,
+        height: 36,
+        borderRadius: 0,
+      }}
+    >
+      {children}
+    </IconButton>
+  );
+
+  const handleSave = async () => {
+    try {
+const payload = {
+  userID: "169548080048036100",
+  appraisalID: option?.AppraisalQuestionID || "",
+  questionTitle: option?.questionTitle ||"",
+  description,
+  displayOrder: option?.displayOrder || "",
+  status,
+  categoryID: option?.categoryID||"",
+};
+      console.log("Save Payload", payload);
+
+      const response =
+        await updateAppraisalQuestion(
+          JSON.stringify(payload)
+        ).unwrap();
+
+      console.log(response);
+
+      setSnackbar({
+        open: true,
+        severity: "success",
+        message: "Updated Successfully",
+      });
+
+      setTimeout(() => {
+        navigate("/AppraisalQuestion/index");
+      }, 1000);
+    } catch (err) {
+      console.log(err);
+
+      setSnackbar({
+        open: true,
+        severity: "error",
+        message: "Update Failed",
+      });
+    }
+  };
+
+  const AppraisalQuestion = () => {
+    navigate("/AppraisalQuestion/index");
+  };
+
+
+    return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
       <Toolbar sx={{ pl: 0 }}>
-        <IconButton>
-           <MenuOpenIcon sx={{ color: "#1976d2",  fontSize: 35 }} 
-        onClick={AppraisalQuestion} 
-        />
+        <IconButton onClick={AppraisalQuestion}>
+          <MenuOpenIcon
+            sx={{
+              color: "#1976d2",
+              fontSize: 35,
+            }}
+          />
         </IconButton>
 
         <Typography
           variant="h6"
-          fontWeight="600"
+          fontWeight={600}
           sx={{ ml: 1 }}
         >
           Update Option
@@ -293,47 +297,50 @@ console.log("Option:", response.data?.[0]?.option);
         sx={{
           p: 3,
           borderRadius: 3,
-          boxShadow: 1,
+          boxShadow: 2,
         }}
       >
-     <Typography sx={{ mb: 3 }}>
-  <span
-    style={{
-      color: "green",
-      fontWeight: 700,
-    }}
-  >
-    Question:
-  </span>{" "}
-  {option?.questionTitle || "N/A"}
-</Typography>
+        {/* Question */}
+        <Typography sx={{ mb: 3 }}>
+          <span
+            style={{
+              color: "green",
+              fontWeight: 700,
+            }}
+          >
+            Question :
+          </span>{" "}
+          {option?.questionTitle || ""}
+        </Typography>
 
         {/* Rate */}
-<FormControl fullWidth sx={{ mb: 3 }}>
-  <InputLabel id="rating-label">Rate *</InputLabel>
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel id="rating-label">
+            Rate *
+          </InputLabel>
 
-  <Select
-    labelId="rating-label"
-    value={String(rate)}
-    label="Rate *"
-    onChange={(e) => setRate(e.target.value)}
-  >
-    {ratings.length > 0 &&
-  ratings.map((item) => (
-      <MenuItem
-        key={item.rateID}
-        value={String(item.rateID)}
-      >
-        {item.rate_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+          <Select
+            labelId="rating-label"
+            value={rate}
+            label="Rate *"
+            onChange={handleRateChange}
+            disabled={detailLoading}
+          >
+            {ratings.map((item) => (
+              <MenuItem
+                key={item.id}
+                value={item.optionID || item.rate}
+              >
+                {item.rate_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        {/* Editor */}
+        {/* Rich Text Editor */}
         <Box
           sx={{
-            border: "1px solid #ddd",
+            border: "1px solid #d9d9d9",
             borderRadius: 1,
             overflow: "hidden",
             mb: 3,
@@ -343,71 +350,81 @@ console.log("Option:", response.data?.[0]?.option);
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              gap: 1,
+              gap: 0.5,
               p: 1,
+              borderBottom: "1px solid #d9d9d9",
               background: "#fafafa",
             }}
           >
-            <IconButton size="small">
-              <FormatBoldIcon />
-            </IconButton>
+            <Tool onClick={() => executeCommand("bold")}>
+              <FormatBoldIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <FormatItalicIcon />
-            </IconButton>
+            <Tool onClick={() => executeCommand("italic")}>
+              <FormatItalicIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <FormatUnderlinedIcon />
-            </IconButton>
+            <Tool onClick={() => executeCommand("underline")}>
+              <FormatUnderlinedIcon fontSize="small" />
+            </Tool>
 
-            <Divider orientation="vertical" flexItem />
+            <Tool
+              onClick={() =>
+                executeCommand("insertUnorderedList")
+              }
+            >
+              <FormatListBulletedIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <FormatListBulletedIcon />
-            </IconButton>
+            <Tool
+              onClick={() =>
+                executeCommand("insertOrderedList")
+              }
+            >
+              <FormatListNumberedIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <FormatListNumberedIcon />
-            </IconButton>
+            <Tool onClick={addLink}>
+              <LinkIcon fontSize="small" />
+            </Tool>
 
-            <Divider orientation="vertical" flexItem />
+            <Tool
+              onClick={() => executeCommand("unlink")}
+            >
+              <LinkOffIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <LinkIcon />
-            </IconButton>
+            <Tool
+              onClick={() => executeCommand("undo")}
+            >
+              <UndoIcon fontSize="small" />
+            </Tool>
 
-            <IconButton size="small">
-              <LinkOffIcon />
-            </IconButton>
-
-            <Divider orientation="vertical" flexItem />
-
-            <IconButton size="small">
-              <UndoIcon />
-            </IconButton>
-
-            <IconButton size="small">
-              <RedoIcon />
-            </IconButton>
+            <Tool
+              onClick={() => executeCommand("redo")}
+            >
+              <RedoIcon fontSize="small" />
+            </Tool>
           </Box>
 
           <Divider />
 
-          {/* Text Area */}
-          <TextField
-            multiline
-            rows={8}
-            fullWidth
-            variant="standard"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                p: 2,
-                alignItems: "flex-start",
-              },
+          {/* Editor */}
+          <Box
+            ref={editorRef}
+            contentEditable
+            suppressContentEditableWarning
+            onInput={(e) =>
+              setDescription(
+                e.currentTarget.innerHTML
+              )
+            }
+            sx={{
+              minHeight: 220,
+              p: 2,
+              outline: "none",
+              fontSize: 16,
+              background: "#fff",
             }}
           />
         </Box>
@@ -419,14 +436,21 @@ console.log("Option:", response.data?.[0]?.option);
           <Select
             value={status}
             label="Status *"
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) =>
+              setStatus(e.target.value)
+            }
           >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="In-Active">Inactive</MenuItem>
+            <MenuItem value="Active">
+              Active
+            </MenuItem>
+
+            <MenuItem value="Inactive">
+              Inactive
+            </MenuItem>
           </Select>
         </FormControl>
 
-        {/* Save */}
+        {/* Buttons */}
         <Box
           sx={{
             mt: 5,
@@ -434,57 +458,50 @@ console.log("Option:", response.data?.[0]?.option);
             justifyContent: "center",
           }}
         >
-          
           <Button
-  variant="contained"
-  onClick={handleSave}
-disabled={
-  saving ||
-  !rate ||
-  !description.trim() ||
-  !status
-}
-
-
-  sx={{
-    width: 85,
-    height: 42,
-    textTransform: "uppercase",
-    borderRadius: 1,
-  }}
->
-{saving ? "Updating..." : "Save"}
-</Button>
-
-<Snackbar
-  open={snackbar.open}
-  autoHideDuration={3000}
-  onClose={handleCloseSnackbar}
-  anchorOrigin={{
-    vertical: "top",
-    horizontal: "right",
-  }}
->
-  <Alert
-    onClose={handleCloseSnackbar}
-    severity={snackbar.severity}
-    variant="filled"
-    sx={{ width: "100%" }}
-  >
-    {snackbar.message}
-  </Alert>
-</Snackbar>
+            variant="contained"
+            onClick={handleSave}
+            disabled={saving}
+            sx={{
+              width: 110,
+              height: 42,
+              borderRadius: 1,
+              textTransform: "uppercase",
+            }}
+          >
+            {saving ? "Saving..." : "Save"}
+          </Button>
         </Box>
       </Card>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() =>
+          setSnackbar({
+            ...snackbar,
+            open: false,
+          })
+        }
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Alert
+          severity={snackbar.severity}
+          variant="filled"
+          onClose={() =>
+            setSnackbar({
+              ...snackbar,
+              open: false,
+            })
+          }
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
-
-
-
-
-
-
-
-
-
