@@ -197,33 +197,37 @@ const handleSubmit = async () => {
   }
 
   try {
-    // Find selected rating object
-    const selectedRate = ratings.find((item) => item.rate === rate);
+  const selectedRate = ratings.find((item) => item.rate === rate);
 
-    const payload = {
-      userID: "171464700312440400",
-      displayOrder: "",
-      appraisalQuestionID: "120",
-      rateID: String(selectedRate.id), // Rating ID from API
-      description: description, // HTML from editor
-    };
+  if (!selectedRate) {
+    setSnackbar({
+      open: true,
+      message: "Invalid Rate selected",
+      severity: "error",
+    });
+    return;
+  }
 
-    console.log("Create Payload:", payload);
+  const payload = {
+    userID: "171464700312440400",
+    displayOrder: "",
+    appraisalQuestionID: "120",
+    rateID: String(selectedRate.id),
+    description,
+  };
 
-   const response = await createAppraisalQuestionOption(
-  JSON.stringify(payload)
-).unwrap();
+  const response = await createAppraisalQuestionOption(
+    JSON.stringify(payload)
+  ).unwrap();
 
-console.log("Create Response:", response);
+  console.log("Create Response:", response);
 
-if (response.status === true || response.success === true) {
   setSnackbar({
     open: true,
-    message: "Option Added Successfully",
+    message: response.message || "Option Added Successfully",
     severity: "success",
   });
 
-  // Clear form
   setRate("");
   setDescription("");
 
@@ -231,50 +235,24 @@ if (response.status === true || response.success === true) {
     editorRef.current.innerHTML = "";
   }
 
-  // Refresh the table
   await loadQuestionOptions();
-} else {
+  console.log("Rows after reload:", response.data);
+
+} catch (error) {
+  console.log("Create API Error:", error);
+
   setSnackbar({
     open: true,
-    message: response.message || "Failed to add option",
+    message:
+      error?.data?.message ||
+      error?.data?.error ||
+      error?.error ||
+      "Something went wrong",
     severity: "error",
   });
 }
-    console.log("Create Response:", response);
+}
 
-    if (response.status === true || response.success === true) {
-      setSnackbar({
-  open: true,
-  message: "Option Added Successfully",
-  severity: "success",
-});
-
-      // Clear form
-      setRate("");
-      setDescription("");
-
-      if (editorRef.current) {
-        editorRef.current.innerHTML = "";
-      }
-
-      // Refresh table
-      loadQuestionOptions();
-    } else {
-     setSnackbar({
-  open: true,
-  message: response.message || "Failed to add option",
-  severity: "error",
-});
-    }
-  } catch (error) {
-    console.error(error);
-  setSnackbar({
-  open: true,
-  message: "Something went wrong",
-  severity: "error",
-});
-  }
-};
 
 const Tool = ({ children, onClick }) => (
   <IconButton

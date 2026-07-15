@@ -32,7 +32,7 @@ import {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionDetailMutation,
   useUpdateAppraisalQuestionMutation,
-    useGetHrAppraisalQuestionOptionMutation,
+  useGetHrAppraisalQuestionOptionMutation,
 } from "../../../api/constructionApi";
 
 export default function UpdateOption() {
@@ -57,10 +57,10 @@ export default function UpdateOption() {
 
   const [getAppraisalRating] =
     useGetAppraisalRatingMutation();
-    const [
-  getHrAppraisalQuestionOption,
-  { isLoading: optionLoading },
-] = useGetHrAppraisalQuestionOptionMutation();
+  const [
+    getHrAppraisalQuestionOption,
+    { isLoading: optionLoading },
+  ] = useGetHrAppraisalQuestionOptionMutation();
 
   const [
     getHrAppraisalQuestionOptionDetail,
@@ -101,98 +101,92 @@ export default function UpdateOption() {
     }
   };
 
-    const loadQuestionOption = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      appraisalQuestionID: "134",
-    };
-
-    console.log("Payload:", payload);
-
-    const response = await getHrAppraisalQuestionOption(
-      JSON.stringify(payload)
-    ).unwrap();
-
-    console.log("Option Response:", response);
-
-    if (response?.data?.length > 0) {
-      const option = response.data[0];
-
-      setRate(option.optionID);
-
-      setStatus(option.status);
-
-      setDescription(option.rate_description || "");
-
-      if (editorRef.current) {
-        editorRef.current.innerHTML =
-          option.rate_description || "";
-      }
-    }
-  } catch (err) {
-    console.log("Option API Error:", err);
-  }
-};
-
-
-useEffect(() => {
-  loadQuestionOption();
-}, []);
-
-
-  const handleRateChange = async (e) => {
-    const optionID = e.target.value;
-
-    setRate(optionID);
-
+  const loadQuestionOption = async () => {
     try {
       const payload = {
         userID: "169548080048036100",
-        optionID: String(optionID),
+        appraisalQuestionID: option?.appraisal_question_id,
       };
 
-      console.log("Detail Payload", payload);
+      const response = await getHrAppraisalQuestionOption(
+        JSON.stringify(payload)
+      ).unwrap();
 
-      const response =
-        await getHrAppraisalQuestionOptionDetail(
-          JSON.stringify(payload)
-        ).unwrap();
+     const optionData = response.data.find(
+    (item) => item.option_id === option.option_id
+);
+if(optionData){
 
-      console.log("Detail Response", response);
+   setRate(optionData.rate || "");
 
-      if (response?.data) {
-        const data = Array.isArray(response.data)
-          ? response.data[0]
-          : response.data;
+    setStatus(optionData.status);
 
-        setQuestionData(data);
+    setDescription(optionData.rate_description);
 
-        setStatus(data.status || "Active");
+    if(editorRef.current){
+        editorRef.current.innerHTML =
+            optionData.rate_description || "";
+    }
 
-        setDescription(
-          data.description ||
-            data.rate_description ||
-            ""
-        );
+}
 
-        if (editorRef.current) {
-          editorRef.current.innerHTML =
-            data.description ||
-            data.rate_description ||
-            "";
-        }
-      }
+
+      console.log("Payload:", payload);
+
+
+      console.log("Option Response:", response);
+
+      
     } catch (err) {
-      console.log(err);
-
-      setSnackbar({
-        open: true,
-        severity: "error",
-        message: "Failed to load option details.",
-      });
+      console.log("Option API Error:", err);
     }
   };
+
+
+  useEffect(() => {
+    loadQuestionOption();
+  }, []);
+
+const optionID = async (e) => {
+    const selectedRate = e.target.value;
+
+    setRate(selectedRate);
+
+    const selected = ratings.find(
+        (item) => item.rate === selectedRate
+    );
+
+    if (!selected) return;
+
+    try {
+
+        const payload = {
+            userID: "169548080048036100",
+            optionID: String(selected.id),
+        };
+
+        const response =
+            await getHrAppraisalQuestionOptionDetail(
+                JSON.stringify(payload)
+            ).unwrap();
+
+        const data = Array.isArray(response.data)
+            ? response.data[0]
+            : response.data;
+
+        setStatus(data.status);
+
+        setDescription(data.rate_description || "");
+
+        if (editorRef.current) {
+            editorRef.current.innerHTML =
+                data.rate_description || "";
+        }
+
+    } catch (err) {
+        console.log(err);
+    }
+};
 
   const executeCommand = (command, value = null) => {
     if (!editorRef.current) return;
@@ -227,15 +221,17 @@ useEffect(() => {
 
   const handleSave = async () => {
     try {
-const payload = {
-  userID: "169548080048036100",
-  appraisalID: option?.AppraisalQuestionID || "",
-  questionTitle: option?.questionTitle ||"",
-  description,
-  displayOrder: option?.displayOrder || "",
-  status,
-  categoryID: option?.categoryID||"",
-};
+      const payload = {
+        userID: "169548080048036100",
+        appraisalID: option?.otion_id || "",
+        questionTitle: option?.question_title  || "",
+        description: "",
+        appraisalQuestionID: option ?.appraisal_question_id
+          || "",
+        displayOrder: option?.display_order || "",
+        status,
+        categoryID: option?.category_id || "",
+      };
       console.log("Save Payload", payload);
 
       const response =
@@ -270,7 +266,7 @@ const payload = {
   };
 
 
-    return (
+  return (
     <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
       {/* Header */}
       <Toolbar sx={{ pl: 0 }}>
@@ -319,22 +315,22 @@ const payload = {
             Rate *
           </InputLabel>
 
-          <Select
-            labelId="rating-label"
-            value={rate}
-            label="Rate *"
-            onChange={handleRateChange}
-            disabled={detailLoading}
-          >
-            {ratings.map((item) => (
-              <MenuItem
-                key={item.id}
-                value={item.optionID || item.rate}
-              >
-                {item.rate_name}
-              </MenuItem>
-            ))}
-          </Select>
+        <Select
+    value={rate ?? ""}
+    label="Rate *"
+    onChange={optionID}
+>
+    {ratings.map((item) => (
+        <MenuItem
+            key={item.id}
+            value={item.rate}
+        >
+            {item.rate_name}
+        </MenuItem>
+    ))}
+</Select>
+
+
         </FormControl>
 
         {/* Rich Text Editor */}

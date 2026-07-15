@@ -148,25 +148,28 @@ const handleCloseSnackbar = () => {
 </Snackbar>
          
 
-              <Autocomplete
-  fullWidth
+
+<Autocomplete
   options={categoryOptions}
   getOptionLabel={(option) => option.label}
+  isOptionEqualToValue={(option, value) => option.id === value.id}
   value={
     categoryOptions.find(
-      (option) => option.id === formik.values.categoryName
+      (item) => item.id === formik.values.categoryName
     ) || null
   }
-  onChange={(event, newValue) => {
+  onChange={(event, value) => {
     formik.setFieldValue(
       "categoryName",
-      newValue ? newValue.id : ""
+      value ? value.id : ""
     );
   }}
+  onBlur={() => formik.setFieldTouched("categoryName", true)}
   renderInput={(params) => (
     <TextField
       {...params}
-      label="Category Name*"
+      fullWidth
+      label="Category Name"
       margin="normal"
       error={
         formik.touched.categoryName &&
