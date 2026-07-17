@@ -62,8 +62,7 @@ import { Outlet } from "react-router-dom";
 import AppraisalQuestion from '../Pages/AppraisalQuestion/index.jsx';
 import AddAppraisalQuestion from '../Pages/AppraisalQuestion/Form.jsx';
 import AddDesignation from "../Pages/AppraisalQuestion/addDesignation.jsx";
-import AddOption from '../Pages/AppraisalQuestion/addOption.jsx';
-import UpdateOption from "../Pages/AppraisalQuestion/optionfiles/optionEdit.jsx";
+import AddOption from '../Pages/AppraisalQuestion/optionfiles/Option.jsx';
 import UpdateAppraisalQuestion from "../Pages/AppraisalQuestion/Edit.jsx"
 
 
@@ -328,8 +327,8 @@ export default function MiniDrawer() {
                     <Route path="/AppraisalQuestion/index" element={<AppraisalQuestion/>} />
                     <Route path="/AppraisalQuestion/index/Form" element={<AddAppraisalQuestion/>} />
                       <Route path="/AppraisalQuestion/index/AddDesignation" element={<AddDesignation />} />
-                    <Route path="/AppraisalQuestion/index" element={<AddOption />} />
-                    <Route path="/AppraisalQuestion/index/addOption/optionEdit" element={<UpdateOption />} />
+                    <Route path="/AppraisalQuestion/index/Option" element={<AddOption />} />
+                    {/* <Route path="/AppraisalQuestion/index/addOption/optionEdit" element={<UpdateOption />} /> */}
                     <Route path="/AppraisalQuestion/index/Edit" element={<UpdateAppraisalQuestion />} />
                     </Routes>
               

@@ -2,9 +2,9 @@ import React, { useMemo, useState } from "react";
 import Tooltip from '@mui/material/Tooltip';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useNavigate } from "react-router-dom";
-import  AddOption from "../AppraisalQuestion/addOption";
-import ClearIcon from "@mui/icons-material/Clear";
 
+import ClearIcon from "@mui/icons-material/Clear";
+import AddOption from "../AppraisalQuestion/optionfiles/Option";
 import { useLocation } from "react-router-dom";
 
 
@@ -287,7 +287,6 @@ const fetchCategory = async () => {
   printWindow.print();
   printWindow.close();
 };
-
 
 
 
@@ -711,13 +710,16 @@ const table = useReactTable({
     },
   });
 };  
+  const handleOptionInfo = (row) => {
+  navigate("/AppraisalQuestion/index/Option", {
+    state: {
+      question: row.original,
+    },
+  });
+};  
 
 
 
-const handleOptionInfo = (row) => {
-  setSelectedQuestion(row.original);
-  setOptionOpen(true);
-};
 
 const handlegotodashboard = () => {
       navigate('/dashboard')
@@ -1189,11 +1191,7 @@ const handlegotodashboard = () => {
   ))}
 </TableHead>
 
-<AddOption
-  open={optionOpen}
-  onClose={() => setOptionOpen(false)}
-  question={selectedQuestion}
-/>
+
 
 <TableBody>
   {loading ? (
