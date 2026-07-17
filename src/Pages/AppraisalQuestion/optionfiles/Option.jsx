@@ -250,8 +250,8 @@ const handleSubmit = () => {
               fontWeight: 600,
             }}
           >
-            <br></br>
-            <br></br>
+            
+           .
           </Typography>
 
           <Typography component="span" fontSize={24}>
@@ -271,10 +271,10 @@ const handleSubmit = () => {
  rates.map((item)=>(
 
 <MenuItem
- key={item.appraisalQuestionOptionID}
- value={item.appraisalQuestionOptionID}
+ key={item.id}
+ value={item.id}
 >
- {item.rateName}
+ {item.rate_name}
 </MenuItem>
 
 ))
