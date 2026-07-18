@@ -142,6 +142,7 @@ const fetchHistory = async () => {
       JSON.stringify(payload)
     ).unwrap();
 
+    console.log("Create Response:", response);
     setHistory(response.data || []);
   } catch (err) {
     console.log(err);
@@ -153,15 +154,6 @@ const appraisalQuestionID =
   question?.appraisalQuestionID ||
   question?.id ||
   "";
-useEffect(()=>{
-
-  if(open && appraisalQuestionID){
-
-    fetchRates();
-
-  }
-
-},[open, appraisalQuestionID]);
 
 const exec = (command, value = null) => {
   if (!editorRef.current) return;
@@ -243,42 +235,79 @@ useEffect(() => {
 
 
 const handleSubmit = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      displayOrder: "",
-      appraisalQuestionID: String(appraisalQuestionID),
-      rateID: String(rate),
-      description: editorValue,
-    };
-
-    const response = await createAppraisalQuestionOption(
-      JSON.stringify(payload)
-    ).unwrap();
-
-    console.log(response);
-
-    setRate("");
-    setEditorValue("");
-
-    if (editorRef.current) {
-      editorRef.current.innerHTML = "";
-    }
-
-    fetchHistory();
-
+  if (!rate) {
     setSnackbar({
       open: true,
-      message: "Option created successfully.",
-      severity: "success",
+      message: "Please select Rate",
+      severity: "warning",
     });
+    return;
+  }
 
+  if (!editorValue.trim()) {
+    setSnackbar({
+      open: true,
+      message: "Please enter Description",
+      severity: "warning",
+    });
+    return;
+  }
+
+  const payload = {
+    userID: "169548080048036100",
+    displayOrder: "",
+    appraisalQuestionID: String(appraisalQuestionID),
+    rateID: String(rate),
+    description: editorValue,
+  };
+
+  console.log("Request Payload:", payload);
+
+  try {
+  
+    const response = await createAppraisalQuestionOption(  JSON.stringify(payload)).unwrap();
+
+    console.log("Create Response:", response);
+
+    if (
+      response?.status === true ||
+      response?.success === true ||
+      response?.statusCode === 200
+    ) {
+      setSnackbar({
+        open: true,
+        message: response.message || "Option created successfully.",
+        severity: "success",
+      });
+
+      setEditorValue(item.rate_description);
+
+if (editorRef.current) {
+  editorRef.current.innerHTML = item.rate_description;
+}
+      setEditorValue("");
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML = "";
+      }
+
+      fetchHistory();
+    } else {
+      setSnackbar({
+        open: true,
+        message: response.message || "Unable to save option.",
+        severity: "error",
+      });
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Create API Error:", error);
 
     setSnackbar({
       open: true,
-      message: "Failed to create option.",
+      message:
+        error?.data?.message ||
+        error?.error ||
+        "Something went wrong.",
       severity: "error",
     });
   }
@@ -508,7 +537,7 @@ sx={{
 }}
 />
         </Paper>
-<br></br>
+
         <Box
           display="flex"
           justifyContent="flex-end"
