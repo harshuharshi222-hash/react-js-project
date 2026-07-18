@@ -20,6 +20,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Snackbar ,
+  Alert ,
 } from "@mui/material";
 import TableChartIcon from "@mui/icons-material/TableChart";
 
@@ -37,7 +39,8 @@ import EditIcon from "@mui/icons-material/Edit";
 
 
 import {
-  useGetHrAppraisalQuestionOptionMutation
+  useCreateAppraisalQuestionOptionMutation,
+  useGetHrAppraisalQuestionOptionMutation,
 } from "../../../api/constructionApi";
 
 export default function AddOption() {
@@ -53,6 +56,23 @@ export default function AddOption() {
     navigate(-1);
   };
 
+
+  const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
+
+const handleCloseSnackbar = (_, reason) => {
+  if (reason === "clickaway") return;
+
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
+
+
   const editorRef = useRef(null);
 const [rate, setRate] = useState("");
 
@@ -64,6 +84,10 @@ const [rates,setRates] = useState([]);
 
 const [getHrAppraisalQuestionOption] =
   useGetHrAppraisalQuestionOptionMutation();
+
+const [createAppraisalQuestionOption] =
+  useCreateAppraisalQuestionOptionMutation();
+
 
 const fetchRates = async () => {
 
@@ -106,6 +130,24 @@ const fetchRates = async () => {
 
 };
 
+
+const fetchHistory = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      appraisalQuestionID: String(appraisalQuestionID),
+    };
+
+    const response = await getHrAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    setHistory(response.data || []);
+  } catch (err) {
+    console.log(err);
+    setHistory([]);
+  }
+};
 const appraisalQuestionID =
   question?.appraisal_question_id ||
   question?.appraisalQuestionID ||
@@ -175,9 +217,7 @@ const insertTable = () => {
     }
 
     table += "</tr>";
-
   }
-
 
   table += `
       </tbody>
@@ -194,14 +234,54 @@ const handleInput = () => {
   setEditorValue(editorRef.current.innerHTML);
 };
 
+useEffect(() => {
+  if (!appraisalQuestionID) return;
+
+  fetchRates();
+  fetchHistory();
+}, [appraisalQuestionID]);
 
 
+const handleSubmit = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      displayOrder: "",
+      appraisalQuestionID: String(appraisalQuestionID),
+      rateID: String(rate),
+      description: editorValue,
+    };
 
-const handleSubmit = () => {
-  console.log({
-    rate,
-    description: editorValue,
-  });
+    const response = await createAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log(response);
+
+    setRate("");
+    setEditorValue("");
+
+    if (editorRef.current) {
+      editorRef.current.innerHTML = "";
+    }
+
+    fetchHistory();
+
+    setSnackbar({
+      open: true,
+      message: "Option created successfully.",
+      severity: "success",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    setSnackbar({
+      open: true,
+      message: "Failed to create option.",
+      severity: "error",
+    });
+  }
 };
   return (
     <Dialog
@@ -227,7 +307,7 @@ const handleSubmit = () => {
 
       <DialogContent>
 
-        <Box mb={3}>
+        <Box mb={5}>
           <Typography
             component="span"
             sx={{
@@ -240,7 +320,7 @@ const handleSubmit = () => {
           </Typography>
 
           <Typography component="span" fontSize={24}>
-           {question?.appraisal_question_id}
+           {question?.id}
           </Typography>
 
           <Typography
@@ -259,7 +339,7 @@ const handleSubmit = () => {
           </Typography>
         </Box>
 
-        <FormControl fullWidth sx={{ mb: 3 }}>
+        <FormControl fullWidth sx={{ mb: 3 , mt:2}}>
           <InputLabel>Rate *</InputLabel>
 
           <Select
@@ -455,25 +535,27 @@ sx={{
         </Typography>
 
         <TableContainer component={Paper} variant="outlined">
-          <Table>
-            <TableHead>
-              <TableRow
-                sx={{
-                  backgroundColor: "#EEF5FC",
-                }}
-              >
-                <TableCell sx={{ fontWeight: 700 }}>Sl No</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Rate Name</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Rate</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Description</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Added By</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Added On</TableCell>
-                <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 700 }}>
-                  Edit
-                </TableCell>
-              </TableRow>
-            </TableHead>
+          <Table
+  sx={{
+    "& .MuiTableCell-root": {
+      border: "1px solid #dcdcdc",
+    },
+  }}
+>
+          <TableHead>
+  <TableRow sx={{ backgroundColor: "#EEF5FC" }}>
+    <TableCell sx={{ fontWeight: 700 }}>Sl No</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Rate Name</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Rate</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Description</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Added By</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Added On</TableCell>
+    <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+    <TableCell align="center" sx={{ fontWeight: 700 }}>
+      Action
+    </TableCell>
+  </TableRow>
+</TableHead>
 
             <TableBody>
               {history.length === 0 ? (
@@ -494,21 +576,21 @@ sx={{
                   <TableRow key={index} hover>
                     <TableCell>{index + 1}</TableCell>
 
-                    <TableCell>{item.rateName}</TableCell>
+                    <TableCell>{item.rate_name}</TableCell>
 
                     <TableCell>{item.rate}</TableCell>
 
                     <TableCell>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: item.description,
+                          __html: item.rate_description,
                         }}
                       />
                     </TableCell>
 
-                    <TableCell>{item.addedBy}</TableCell>
+                    <TableCell>{item.added_user_name}</TableCell>
 
-                    <TableCell>{item.addedOn}</TableCell>
+                    <TableCell>{item.added_on}</TableCell>
 
                     <TableCell>{item.status}</TableCell>
 
@@ -516,13 +598,13 @@ sx={{
                       <IconButton
                         color="primary"
                         onClick={() => {
-                        setRate(item.appraisalQuestionOptionID || item.rate);
+                        setRate(item.appraisal_question_id || item.rate);
 
-                          setEditorValue(item.description);
+                          setEditorValue(item.rate_description);
 
                           if (editorRef.current) {
                             editorRef.current.innerHTML =
-                              item.description;
+                              item.rate_description;
                           }
 
                           console.log("Edit", item);
@@ -539,6 +621,24 @@ sx={{
         </TableContainer>
 
       </DialogContent>
+      <Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
     </Dialog>
   );
 }
