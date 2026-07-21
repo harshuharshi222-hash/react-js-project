@@ -138,24 +138,6 @@ const fetchRates = async () => {
 
 };
 
-// const fetchHistory = async () => {
-//   try {
-//     const payload = {
-//       userID: "169548080048036100",
-//       appraisalQuestionID: String(question?.id),
-//     };
-
-//     const response = await getHrAppraisalQuestionOption(
-//       JSON.stringify(payload)
-//     ).unwrap();
-
-//     console.log("Create Response:", response);
-//     setHistory(response.data || []);
-//   } catch (err) {
-//     console.log(err);
-//     setHistory([]);
-//   }
-// };
 
   const fetchHistory = async () => {
   try {
