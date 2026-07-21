@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+
 import AddOption from "../optionfiles/Option";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -13,66 +15,80 @@ import {
   IconButton,
 } from "@mui/material";
 
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import LinkIcon from "@mui/icons-material/Link";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate, useLocation } from "react-router-dom";
+
+
 import {
-  FormatBold,
-  FormatItalic,
-  FormatUnderlined,
-  FormatListBulleted,
-  FormatListNumbered,
-  Link,
-  LinkOff,
-  Undo,
-  Redo,
-} from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+  useGetAppraisalRatingMutation,
+  useGetHrAppraisalQuestionOptionDetailMutation,
+   useGetHrAppraisalQuestionOptionMutation,
+} from "../../../api/constructionApi";
 
 export default function  UpdateOption(){
 
      const navigate = useNavigate();
     
-      
+      const AppraisalQuestion = () => {
+    navigate("/AppraisalQuestion/index");
+  };
 
 
+ const [rates,setRates] = useState([]);
 
+const [rate, setRate] = useState("");
+const [status, setStatus] = useState("");
+const [editorValue, setEditorValue] = useState("");
 
-    
+  
+ 
+const location = useLocation();
 
+const question = location.state?.question || {};
+const optionID = location.state?.optionID; // pass this while navigating
 
   const editorRef = useRef(null);
 
-
-  const [rate, setRate] = useState("5");
-
-  const [status, setStatus] = useState("Active");
-
-
   const [content, setContent] = useState("kok");
 
+const exec = (command, value = null) => {
+  if (!editorRef.current) return;
 
-  const ratings = [
-    {
-      value:"1",
-      label:"Poor (1)"
-    },
-    {
-      value:"2",
-      label:"Average (2)"
-    },
-    {
-      value:"3",
-      label:"Good (3)"
-    },
-    {
-      value:"4",
-      label:"Excellent (4)"
-    },
-    {
-      value:"5",
-      label:"Rock star (5)"
-    }
-  ];
+  editorRef.current.focus();
+
+  document.execCommand(command, false, value);
+
+  setEditorValue(
+    editorRef.current.innerHTML
+  );
+};
 
 
+const createLink = () => {
+  const url = window.prompt("Enter URL");
+
+  if (url) {
+    exec("createLink", url);
+  }
+};
+
+const removeLink = () => {
+  exec("unlink");
+};
+
+
+const handleInput = () => {
+  setEditorValue(editorRef.current.innerHTML);
+};
 
   const execCommand = (command)=>{
 
@@ -81,28 +97,124 @@ export default function  UpdateOption(){
     setContent(editorRef.current.innerHTML);
 
   }
+const [getAppraisalRating] =
+  useGetAppraisalRatingMutation();
+
+const [getHrAppraisalQuestionOptionDetail] =
+  useGetHrAppraisalQuestionOptionDetailMutation();
+
+  const [getHrAppraisalQuestionOption] =
+  useGetHrAppraisalQuestionOptionMutation();
 
 
-
-  const saveData = ()=>{
-
-
+  const fetchOption = async () => {
+  try {
     const payload = {
-
-      questionId:144,
-
-      rate:rate,
-
-      description:editorRef.current.innerHTML,
-
-      status:status
-
+      userID: "171464700312440400",
+      appraisalQuestionID: String(question?.id), // or "120"
     };
 
+    console.log("Option Payload:", payload);
 
-    console.log(payload);
+    const response = await getHrAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
 
+    console.log("Option Response:", response);
+
+    if (response?.data?.length > 0) {
+      const data = response.data[0]; // first option
+
+      setRate(String(data.rate_id || data.rate));
+
+      setStatus(data.status || "");
+
+      setEditorValue(data.rate_description || "");
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML =
+          data.rate_description || "";
+      }
+    }
+  } catch (error) {
+    console.error("Option API Error:", error);
   }
+};
+
+console.log("Location State:", location.state);
+console.log("optionID:", optionID);
+
+useEffect(() => {
+  if (question?.id) {
+    fetchOption(); // history
+  }
+
+  if (optionID) {
+    fetchOptionDetail(); // selected option
+  }
+
+  fetchRates();
+}, [question?.id, optionID]);
+
+
+
+
+
+
+
+const fetchOptionDetail = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      optionID: String(optionID),
+    };
+
+    console.log("Payload:", payload);
+
+    const response = await getHrAppraisalQuestionOptionDetail(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Response:", response);
+
+    if (response?.data) {
+      const data = response.data;
+
+      setRate(String(data.rate_id));
+      setStatus(data.status);
+      setEditorValue(data.description || "");
+
+      if (editorRef.current) {
+        editorRef.current.innerHTML = data.description || "";
+      }
+    }
+  } catch (error) {
+    console.log("Error:", error);
+  }
+};
+
+
+const fetchRates = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      status: "Active",
+      sortOrder: "",
+      generalSearch: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
+    };
+
+    const response = await getAppraisalRating(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    setRates(response?.data || []);
+  } catch (error) {
+    console.log(error);
+    setRates([]);
+  }
+};
 
 
 
@@ -119,35 +231,29 @@ padding:"20px"
 
 {/* Header */}
 
-<Box
-sx={{
-display:"flex",
-alignItems:"center",
-mb:2
-}}
+    <Box
+ 
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    mb: 3,
+    color: "#3392df",
+    fontSize: "28px",
+    fontWeight: 500,
+    cursor: "pointer",
+  }}
 >
 
-<Typography
-fontSize="20px"
-fontWeight="600"
->
-
-☰
-
-</Typography>
+<MenuOpenIcon sx={{ mr: 1 , fontSize:30,}}
+        onClick={AppraisalQuestion} 
+        />
 
 
-<Typography
-sx={{
-ml:3
-}}
-fontSize="20px"
-fontWeight="600"
->
+
 
 Update Option
 
-</Typography>
+
 
 
 </Box>
@@ -167,230 +273,212 @@ borderRadius:3
 {/* Question */}
 
 
-<Typography
-sx={{
-mb:2
-}}
->
+<Box mb={5}>
+          <Typography
+            component="span"
+            sx={{
+              color: "green",
+              fontWeight: 700,
+              mr: 1,
+            }}
+          >
+            Question:
+          </Typography>
 
+          <Typography component="span" fontSize={24}>
+           {question?.id}
+          </Typography>
 
-<span
-style={{
-color:"green",
-fontWeight:"600"
-}}
->
-Question:
-</span>
+          <Typography
+            component="span"
+            sx={{
+              mx: 1,
+              fontWeight: 600,
+            }}
+          >
+            
+           .
+          </Typography>
 
-
-&nbsp;
-
-144
-
-
-&nbsp; |1 test
-
-
-</Typography>
-
+          <Typography component="span" fontSize={24}>
+            {question?.question_title}
+          </Typography>
+        </Box>
 
 
 
 
 {/* Rate */}
 
+<FormControl fullWidth sx={{ mb: 3 , mt:2}}>
+          <InputLabel>Rate *</InputLabel>
 
-<FormControl
-fullWidth
-size="small"
-sx={{
-mb:2
-}}
->
-
-
-<InputLabel>
-Rate *
-</InputLabel>
-
-
-<Select
-
-value={rate}
-
-label="Rate *"
-
-onChange={(e)=>setRate(e.target.value)}
-
->
-
-
-{
-ratings.map((item)=>(
+          <Select
+            value={rate}
+            label="Rate *"
+            onChange={(e) => setRate(e.target.value)}
+          >
+         {
+ rates.map((item)=>(
 
 <MenuItem
-key={item.value}
-value={item.value}
+ key={item.id}
+ value={item.id}
 >
-
-{item.label}
-
+ {item.rate_name}
 </MenuItem>
 
 ))
 }
+          </Select>
+        </FormControl>
 
-
-</Select>
-
-
-</FormControl>
-
-
-
-
-
-
-{/* Rich Text Editor */}
-
-
-
-<Box
-
+        <Paper
+          variant="outlined"
+          sx={{
+            minHeight: 280,
+            borderRadius: 1,
+          }}
+        >
+         <Box
 sx={{
-
-border:"1px solid #ccc",
-
-borderRadius:1,
-
-height:"225px"
-
-}}
-
->
-
-
-{/* Toolbar */}
-
-
-<Box
-sx={{
-display:"flex",
-padding:"8px",
-borderBottom:"1px solid #ddd"
+ display:"flex",
+ gap:1,
+ p:1,
+ borderBottom:"1px solid #ddd",
+ flexWrap:"wrap"
 }}
 >
 
+<IconButton
+  size="small"
+  sx={{
+    p: 0.5,
+    border: "1px solid #ddd",
+    borderRadius: 0,
+  }}
+  onClick={()=>exec("bold")}
+>
+  <FormatBoldIcon sx={{ fontSize: 18 }} />
+</IconButton>
 
 <IconButton
-onClick={()=>execCommand("bold")}
+  size="small"
+  sx={{ p: 0.5, 
+    border: "1px solid #ddd",
+    borderRadius: 0, }}
+  onClick={()=>exec("italic")}
 >
-<FormatBold/>
+  <FormatItalicIcon sx={{ fontSize: 18 }} />
 </IconButton>
 
 
 <IconButton
-onClick={()=>execCommand("italic")}
+  size="small"
+  sx={{ p: 0.5 ,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+  }}
+  onClick={()=>exec("underline")}
 >
-<FormatItalic/>
+  <FormatUnderlinedIcon sx={{ fontSize: 18 }} />
 </IconButton>
 
 
 <IconButton
-onClick={()=>execCommand("underline")}
+  size="small"
+  sx={{ p: 0.5,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+   }}
+  onClick={()=>exec("insertUnorderedList")}
 >
-<FormatUnderlined/>
-</IconButton>
-
-
-
-<IconButton
-onClick={()=>execCommand("insertUnorderedList")}
->
-<FormatListBulleted/>
-</IconButton>
-
-
-<IconButton
-onClick={()=>execCommand("insertOrderedList")}
->
-<FormatListNumbered/>
+  <FormatListBulletedIcon sx={{ fontSize: 18 }} />
 </IconButton>
 
 
 <IconButton
-onClick={()=>execCommand("createLink")}
+  size="small"
+  sx={{ p: 0.5,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+   }}
+  onClick={()=>exec("insertOrderedList")}
 >
-<Link/>
-</IconButton>
-
-
-
-<IconButton
-onClick={()=>execCommand("unlink")}
->
-<LinkOff/>
-</IconButton>
-
-
-
-<IconButton
-onClick={()=>execCommand("undo")}
->
-<Undo/>
+  <FormatListNumberedIcon sx={{ fontSize: 18 }} />
 </IconButton>
 
 
 <IconButton
-onClick={()=>execCommand("redo")}
+  size="small"
+  sx={{ p: 0.5 ,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+  }}
+  onClick={createLink}
 >
-<Redo/>
+  <LinkIcon sx={{ fontSize: 18 }} />
 </IconButton>
+
+
+<IconButton
+  size="small"
+  sx={{ p: 0.5,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+   }}
+  onClick={removeLink}
+>
+  <LinkOffIcon sx={{ fontSize: 18 }} />
+</IconButton>
+
+
+<IconButton
+  size="small"
+  sx={{ p: 0.5,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+   }}
+  onClick={()=>exec("undo")}
+>
+  <UndoIcon sx={{ fontSize: 18 }} />
+</IconButton>
+
+
+<IconButton
+  size="small"
+  sx={{ p: 0.5,
+     border: "1px solid #ddd",
+    borderRadius: 1,
+   }}
+  onClick={()=>exec("redo")}
+>
+  <RedoIcon sx={{ fontSize: 18 }} />
+</IconButton>
+
+
+
 
 
 
 </Box>
-
-
-
-
-
-<Box
-
+          <Box
 ref={editorRef}
-
 contentEditable
-
 suppressContentEditableWarning
-
-onInput={(e)=>
-setContent(e.currentTarget.innerHTML)
-}
-
+onInput={handleInput}
 sx={{
-
-padding:"12px",
-
-height:"160px",
-
-outline:"none",
-
-fontSize:"18px"
-
+ minHeight:170,
+ p:2,
+ outline:"none",
+ fontSize:15,
+ "&:empty:before":{
+  //  content:'"Enter description..."',
+   color:"#999"
+ }
 }}
-
-dangerouslySetInnerHTML={{
-__html:content
-}}
-
-
 />
-
-
-</Box>
-
-
+        </Paper>
 
 
 
@@ -430,7 +518,7 @@ Active
 
 
 <MenuItem value="Inactive">
-Inactive
+In Active
 </MenuItem>
 
 
@@ -450,35 +538,19 @@ Inactive
 {/* Save Button */}
 
 
-<Box
-textAlign="center"
-mt={3}
->
-
-
-<Button
-
-variant="contained"
-
-onClick={saveData}
-
-sx={{
-
-background:"#1976d2",
-
-padding:"10px 35px"
-
-}}
-
->
-
-SAVE
-
-</Button>
-
-
+<Box sx={{ mt: 6 }}>
+  <Button
+    variant="contained"
+    // onClick={saveData}
+    sx={{
+      background: "#1976d2",
+      px: 4,
+      py: 1.2,
+    }}
+  >
+    SAVE
+  </Button>
 </Box>
-
 
 
 

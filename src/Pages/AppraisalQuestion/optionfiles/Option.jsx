@@ -621,23 +621,18 @@ sx={{
                     <TableCell>{item.status}</TableCell>
 
                     <TableCell align="center">
-                      <IconButton
-                        color="primary"
-                        onClick={() => {
-                        setRate(item.appraisal_question_id || item.rate);
-
-                          setEditorValue(item.rate_description);
-
-                          if (editorRef.current) {
-                            editorRef.current.innerHTML =
-                              item.rate_description;
-                          }
-
-                          console.log("Edit", item);
-                        }}
-                      >
-                        <EditIcon  onClick={UpdateOption}/>
-                      </IconButton>
+<IconButton
+  onClick={() =>
+    navigate("/AppraisalQuestion/index/addOption/optionEdit", {
+      state: {
+        question,
+        optionID: item.option_id,   // or item.option_id
+      },
+    })
+  }
+>
+  <EditIcon />
+</IconButton>
                     </TableCell>
                   </TableRow>
                 ))

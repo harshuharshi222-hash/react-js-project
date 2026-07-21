@@ -319,7 +319,6 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 2, backgroundColor: '#f1f8f8' }}>
                 <DrawerHeader />
          
-             
                     <Routes>
                     <Route path="/dashboard/table/create" element={< CreateCL />} />
                     <Route path="/dashboard/table" element={<PromotionalActivity />} />
