@@ -41,10 +41,15 @@ import {
   useGetHrAppraisalQuestionOptionMutation,
    useGetAppraisalRatingMutation,
 } from "../../../api/constructionApi";
+
+
 export default function AddOption() {
 
   const location = useLocation();
   const navigate = useNavigate();
+ const UpdateOption = () => {
+        navigate('/AppraisalQuestion/index/addOption/optionEdit')
+     }
 
   const question = location.state?.question || {};
 
@@ -631,7 +636,7 @@ sx={{
                           console.log("Edit", item);
                         }}
                       >
-                        <EditIcon />
+                        <EditIcon  onClick={UpdateOption}/>
                       </IconButton>
                     </TableCell>
                   </TableRow>
