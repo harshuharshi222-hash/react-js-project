@@ -1,5 +1,5 @@
-  import React, { useRef, useState, useEffect } from "react";
-  import { useLocation, useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   Dialog,
@@ -20,10 +20,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Snackbar ,
-  Alert ,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import TableChartIcon from "@mui/icons-material/TableChart";
 
 import CloseIcon from "@mui/icons-material/Close";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -37,12 +36,11 @@ import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import EditIcon from "@mui/icons-material/Edit";
 
-
 import {
   useCreateAppraisalQuestionOptionMutation,
   useGetHrAppraisalQuestionOptionMutation,
+   useGetAppraisalRatingMutation,
 } from "../../../api/constructionApi";
-
 export default function AddOption() {
 
   const location = useLocation();
@@ -87,6 +85,8 @@ const [getHrAppraisalQuestionOption] =
 
 const [createAppraisalQuestionOption] =
   useCreateAppraisalQuestionOptionMutation();
+  const [getAppraisalRating] =
+  useGetAppraisalRatingMutation();
 
 
 const fetchRates = async () => {
@@ -94,35 +94,43 @@ const fetchRates = async () => {
   try {
 
     const payload = {
-      userID: "169548080048036100",
-      appraisalQuestionID: String(appraisalQuestionID)
+      userID: "171464700312440400",
+      status: "Active",
+      sortOrder: "",
+      generalSearch: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
     };
 
 
-    console.log("Rate API Payload:", payload);
+    console.log(
+      "Appraisal Rating Payload:",
+      payload
+    );
 
 
     const response =
-      await getHrAppraisalQuestionOption(
-        JSON.stringify(payload)
-      ).unwrap();
+      await getAppraisalRating(JSON.stringify(payload)).unwrap();
 
 
     console.log(
-      "Rate API Response:",
+      "Appraisal Rating Response:",
       response
     );
 
 
-    setRates(response.data || []);
+    setRates(
+      response?.data || []
+    );
 
 
   } catch(error){
 
     console.error(
-      "Rate API Error:",
+      "Appraisal Rating Error:",
       error
     );
+
 
     setRates([]);
 
@@ -130,12 +138,11 @@ const fetchRates = async () => {
 
 };
 
-
 const fetchHistory = async () => {
   try {
     const payload = {
       userID: "169548080048036100",
-      appraisalQuestionID: String(appraisalQuestionID),
+      appraisalQuestionID: String(question?.id),
     };
 
     const response = await getHrAppraisalQuestionOption(
@@ -181,45 +188,6 @@ const removeLink = () => {
 };
 
 
-const insertTable = () => {
-  const rows = prompt("Enter rows", "3");
-  const cols = prompt("Enter columns", "3");
-
-  if (!rows || !cols) return;
-
-
-  let table = `
-    <table border="1" style="border-collapse:collapse;width:100%;">
-      <tbody>
-  `;
-
-
-  for(let i=0;i<rows;i++){
-
-    table += "<tr>";
-
-    for(let j=0;j<cols;j++){
-
-      table += `
-        <td style="padding:8px;">
-          Cell
-        </td>
-      `;
-
-    }
-
-    table += "</tr>";
-  }
-
-  table += `
-      </tbody>
-    </table>
-    <br/>
-  `;
-
-
-  exec("insertHTML", table);
-};
 
 
 const handleInput = () => {
@@ -256,7 +224,7 @@ const handleSubmit = async () => {
   const payload = {
     userID: "169548080048036100",
     displayOrder: "",
-    appraisalQuestionID: String(appraisalQuestionID),
+    appraisalQuestionID: String(question?.id),
     rateID: String(rate),
     description: editorValue,
   };
@@ -280,11 +248,7 @@ const handleSubmit = async () => {
         severity: "success",
       });
 
-      setEditorValue(item.rate_description);
 
-if (editorRef.current) {
-  editorRef.current.innerHTML = item.rate_description;
-}
       setEditorValue("");
 
       if (editorRef.current) {

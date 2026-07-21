@@ -188,7 +188,7 @@ export const {
   useUpdateAppraisalQuestionDesignationMutation,
   useGetAppraisalCategoryMutation,
   useUpdateAppraisalQuestionMutation,
-  getHrAppraisalQuestionOption,
+
   
    
 } = constructionApi;
