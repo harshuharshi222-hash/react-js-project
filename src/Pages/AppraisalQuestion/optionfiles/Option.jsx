@@ -138,24 +138,70 @@ const fetchRates = async () => {
 
 };
 
-const fetchHistory = async () => {
+// const fetchHistory = async () => {
+//   try {
+//     const payload = {
+//       userID: "169548080048036100",
+//       appraisalQuestionID: String(question?.id),
+//     };
+
+//     const response = await getHrAppraisalQuestionOption(
+//       JSON.stringify(payload)
+//     ).unwrap();
+
+//     console.log("Create Response:", response);
+//     setHistory(response.data || []);
+//   } catch (err) {
+//     console.log(err);
+//     setHistory([]);
+//   }
+// };
+
+  const fetchHistory = async () => {
   try {
+
     const payload = {
-      userID: "169548080048036100",
+      userID: "171464700312440400",
       appraisalQuestionID: String(question?.id),
     };
 
-    const response = await getHrAppraisalQuestionOption(
-      JSON.stringify(payload)
-    ).unwrap();
 
-    console.log("Create Response:", response);
-    setHistory(response.data || []);
-  } catch (err) {
-    console.log(err);
+    console.log(
+      "History API Payload:",
+      payload
+    );
+
+
+    const response =
+      await getHrAppraisalQuestionOption(
+        JSON.stringify(payload)
+      ).unwrap();
+
+
+    console.log(
+      "History API Response:",
+      response
+    );
+
+
+    setHistory(
+      response?.data || []
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "History API Error:",
+      error
+    );
+
+
     setHistory([]);
+
   }
 };
+
 const appraisalQuestionID =
   question?.appraisal_question_id ||
   question?.appraisalQuestionID ||
