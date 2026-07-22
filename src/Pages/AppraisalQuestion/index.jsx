@@ -1376,7 +1376,10 @@ const handlegotodashboard = () => {
   >
    
 <Typography variant="body2" sx={{ fontWeight: 600 }}>
-Page {pagination.pageIndex + 1} of {Math.ceil(totalRecords / pagination.pageSize)}
+Page {pagination.pageIndex + 1} of  {Math.max(
+    12,
+    Math.ceil(Number(totalRecords || 0) / Number(pagination.pageSize))
+  )}
 </Typography>
 
     <FormControl size="small" sx={{ minWidth: 120 }}>
@@ -1405,12 +1408,12 @@ Page {pagination.pageIndex + 1} of {Math.ceil(totalRecords / pagination.pageSize
 <Button
   variant="outlined"
   size="small"
-  onClick={() => {
+ onClick={() =>
     setPagination((prev) => ({
       ...prev,
       pageIndex: prev.pageIndex + 1,
-    }));
-  }}
+    }))
+  }
    
   sx={{
     minWidth: 80,
