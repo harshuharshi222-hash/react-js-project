@@ -466,6 +466,8 @@ const columns = useMemo(
    
 
 
+
+
 {
   accessorKey: "designation",
   header: "Designation",
@@ -474,7 +476,6 @@ const columns = useMemo(
   cell: ({ row }) => {
     const designationList = row.original.designation || [];
 
-    // First designation only
     const firstDesignation =
       designationList.length > 0
         ? designationList[0].designation_name
@@ -499,24 +500,36 @@ const columns = useMemo(
               cursor: "pointer",
             }}
           >
-            {designationList.length > 0
-              ? `${firstDesignation}${
-                  designationList.length > 1
-                    ? ` (+${designationList.length - 1})`
-                    : ""
-                }`
-              : ""}
+            {firstDesignation}
           </Typography>
         </Tooltip>
 
-        <InfoIcon
+        <Box
           sx={{
-            color: "#1976d2",
-            cursor: "pointer",
-            fontSize: 18,
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
           }}
-          onClick={() => handleDesignationInfo(row)}
-        />
+        >
+          <InfoIcon
+            sx={{
+              color: "#1976d2",
+              cursor: "pointer",
+              fontSize: 18,
+            }}
+            onClick={() => handleDesignationInfo(row)}
+          />
+
+          {designationList.length > 0 && (
+            <Typography
+              fontSize={12}
+              fontWeight={600}
+              color="black"
+            >
+              +({designationList.length})
+            </Typography>
+          )}
+        </Box>
       </Box>
     );
   },
@@ -526,67 +539,8 @@ const columns = useMemo(
 
 
 
-// {
-//   accessorKey: "option",
-//   header: "Option",
-//   size: 200,
 
-//   cell: ({ row }) => {
-//     const optionList = row.original.option || [];
 
-  
-//     const firstOption =
-//       optionList.length > 0
-//         ? optionList[0].rate_name .replace(/<[^>]*>/g, "")
-//         : "";
-
-    
-// const tooltipText =
-//   optionList.length > 1
-//     ? `${firstOption} (+${optionList.length - 1})`
-//     : firstOption;
-
-//     return (
-//       <Box
-//         sx={{
-//           display: "flex",
-//           alignItems: "center",
-//           justifyContent: "space-between",
-//         }}
-//       >
-//         <Tooltip title={firstOption} arrow>
-//           <Typography
-//             fontSize={13}
-//             sx={{
-//               maxWidth: 120,
-//               overflow: "hidden",
-//               textOverflow: "ellipsis",
-//               whiteSpace: "nowrap",
-//               cursor: "pointer",
-//             }}
-//           >
-//             {optionList.length > 0
-//               ? `${firstOption}${
-//                   optionList.length > 1
-//                     ? ` (+${optionList.length - 1})`
-//                     : ""
-//                 }`
-//               : ""}
-//           </Typography>
-//         </Tooltip>
-
-//         <InfoIcon
-//           sx={{
-//             color: "#1976d2",
-//             fontSize: 18,
-//             cursor: "pointer",
-//           }}
-//           onClick={() => handleOptionInfo(row)}
-//         />
-//       </Box>
-//     );
-//   },
-// },
 {
   accessorKey: "option",
   header: "Option",
@@ -612,30 +566,42 @@ const columns = useMemo(
           <Typography
             fontSize={13}
             sx={{
-              maxWidth: 140,
+              maxWidth: 120,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
           >
-            {optionList.length > 0
-              ? ` ${firstOption}${
-                  optionList.length > 1
-                    ? ` (+${optionList.length - 1})`
-                    : ""
-                }`
-              : ""}
+            {firstOption}
           </Typography>
         </Tooltip>
 
-        <InfoIcon
+        <Box
           sx={{
-            color: "#1976d2",
-            fontSize: 18,
-            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
           }}
-          onClick={() => handleOptionInfo(row)}
-        />
+        >
+          <InfoIcon
+            sx={{
+              color: "#1976d2",
+              fontSize: 18,
+              cursor: "pointer",
+            }}
+            onClick={() => handleOptionInfo(row)}
+          />
+
+          {optionList.length > 0 && (
+            <Typography
+              fontSize={12}
+              fontWeight={600}
+              color="black"
+            >+
+              ({optionList.length})
+            </Typography>
+          )}
+        </Box>
       </Box>
     );
   },
