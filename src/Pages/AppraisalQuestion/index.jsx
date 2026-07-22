@@ -65,6 +65,7 @@ export default function AppraisalQuestion() {
   const [optionOpen, setOptionOpen] = useState(false);
 const [selectedQuestion, setSelectedQuestion] = useState(null);
 
+const [totalRecords, setTotalRecords] = useState(0);
 
   const [searchText, setSearchText] = useState("");
 
@@ -81,29 +82,45 @@ const [loading, setLoading] = useState(false);
 const [getAppraisalQuestionApi] = useGetAppraisalQuestionMutation();
 
 
-const getAppraisalQuestion = async () => {
+
+
+const [pagination, setPagination] = useState({
+  pageIndex: 0,
+  pageSize: 10,
+});
+
+   const getAppraisalQuestion = async (
+  pageIndex = pagination.pageIndex,
+  pageSize = pagination.pageSize
+) => {
   try {
+    setLoading(true);
 
-const payload = {
-  userID: "169548080048036100",
+    const payload = {
+      userID: "169548080048036100",
 
-  status: status,
-  generalSearch: searchText,
+      status: status,
+      generalSearch: searchText,
 
-  sortOrder: "Desc",
-  iDisplayStart: 0,
-  iDisplayLength: -1,
+      sortOrder: "Desc",
 
-  processID: "",
-  authorityID: "",
+      iDisplayStart: pageIndex * pageSize,
+      iDisplayLength: pageSize,
 
-  departmentID: department,
-  designationID: designation,
-  categoryID: category,
-};
+      processID: "",
+      authorityID: "",
 
+      departmentID: department,
+      designationID: designation,
+      categoryID: category,
+    };
 
-const response = await getAppraisalQuestionApi(JSON.stringify(payload)).unwrap();
+    const response = await getAppraisalQuestionApi(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    setData(response.data || []);
+setTotalRecords(response.totalRecords);
 
     setData(response.data || []);
   } catch (error) {
@@ -113,10 +130,21 @@ const response = await getAppraisalQuestionApi(JSON.stringify(payload)).unwrap()
   }
 };
 
-useEffect(() => {
-  getAppraisalQuestion();
-}, [searchText, department, designation, category, status]);
 
+useEffect(() => {
+  getAppraisalQuestion(
+    pagination.pageIndex,
+    pagination.pageSize
+  );
+}, [
+  pagination.pageIndex,
+  pagination.pageSize,
+  searchText,
+  department,
+  designation,
+  category,
+  status,
+]);
 
 
 //department//
@@ -438,14 +466,13 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 const columns = useMemo(
   () => [
-    {
-      // accessorKey: "slNo",
-      // header: "SL/No",
-      id: "slNo",
-      header: "SL/No",
-         size: 70,
-      cell: ({ row }) => row.index + 1,
-    },
+  {
+  id: "slNo",
+  header: "SL/No",
+  size: 70,
+  cell: ({ row }) =>
+    pagination.pageIndex * pagination.pageSize + row.index + 1,
+},
     {
       accessorKey: "category_name",
       header: "Category Name",
@@ -637,21 +664,7 @@ const columns = useMemo(
     return (
     
 
-//       <Chip
-//   label={rowStatus}
-//   clickable
-//   onClick={() => handleEdit(row.original)}
-//   sx={{
-//     width: 90,
-//     fontWeight: "bold",
-//     color: "#fff",
-//     cursor: "pointer",
-//     backgroundColor:
-//       rowStatus === "Active"
-//         ? "#74BFD0"
-//         : "#6C63FF",
-//   }}
-// />
+
 
 <Chip
   label={rowStatus}
@@ -679,32 +692,31 @@ const columns = useMemo(
 
 
   ],
-  []
-);
+  [pagination.pageIndex, pagination.pageSize]);
 
   console.log("Table Data", data);
 
-const [pagination, setPagination] = useState({
-  pageIndex: 0,
-  pageSize: 10,
-});
+
 
 
 const table = useReactTable({
   data,
   columns,
+
   state: {
     pagination,
     columnVisibility,
   },
 
+  manualPagination: true,
+
+  pageCount: Math.ceil(totalRecords / pagination.pageSize),
+
+  onPaginationChange: setPagination,
   onColumnVisibilityChange: setColumnVisibility,
 
   getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  onPaginationChange: setPagination,
 });
-
 
     const navigate = useNavigate();
      const AddAppraisalQuestion = () => {
@@ -742,6 +754,10 @@ const table = useReactTable({
 const handlegotodashboard = () => {
       navigate('/dashboard')
    }
+
+
+   //pagination 
+
 
 
 
@@ -881,7 +897,15 @@ const handlegotodashboard = () => {
   <Select
     value={department}
     label="Department"
-    onChange={(e) => setDepartment(e.target.value)}
+    // onChange={(e) => setDepartment(e.target.value)}
+ onChange={(e) => {
+  setDepartment(e.target.value);
+
+  setPagination((prev) => ({
+    ...prev,
+    pageIndex: 0,
+  }));
+}}
     endAdornment={
       department && (
         <InputAdornment position="end" sx={{ mr: 2 }}>
@@ -1312,10 +1336,18 @@ const handlegotodashboard = () => {
   }}
 >
   {/* Previous Button */}
+
+
 <Button
   variant="outlined"
   size="small"
-  onClick={() => table.previousPage()}
+ disabled={!table.getCanPreviousPage()}
+  onClick={() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: prev.pageIndex - 1,
+    }));
+  }}
   disabled={!table.getCanPreviousPage()}
   sx={{
     minWidth: 60,
@@ -1329,6 +1361,11 @@ const handlegotodashboard = () => {
   Previous
 </Button>
 
+
+
+
+
+
   {/* Center */}
   <Box
     sx={{
@@ -1339,17 +1376,19 @@ const handlegotodashboard = () => {
   >
    
 <Typography variant="body2" sx={{ fontWeight: 600 }}>
-  Page {table.getState().pagination.pageIndex + 1} of{" "}
-  {table.getPageCount()}
+Page {pagination.pageIndex + 1} of {Math.ceil(totalRecords / pagination.pageSize)}
 </Typography>
 
     <FormControl size="small" sx={{ minWidth: 120 }}>
       <Select
-        value={pagination.pageSize}
-        onChange={(e) =>
-          table.setPageSize(Number(e.target.value))
-        }
-      >
+  value={pagination.pageSize}
+  onChange={(e) => {
+    setPagination({
+      pageIndex: 0,
+      pageSize: Number(e.target.value),
+    });
+  }}
+>
         <MenuItem value={10}>10 Rows</MenuItem>
         <MenuItem value={20}>20 Rows</MenuItem>
         <MenuItem value={30}>30 Rows</MenuItem>
@@ -1361,11 +1400,18 @@ const handlegotodashboard = () => {
   </Box>
 
   {/* Next Button */}
- <Button
+
+
+<Button
   variant="outlined"
   size="small"
-  onClick={() => table.nextPage()}
-  disabled={!table.getCanNextPage()}
+  onClick={() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: prev.pageIndex + 1,
+    }));
+  }}
+   
   sx={{
     minWidth: 80,
     width: 400,
@@ -1378,6 +1424,7 @@ const handlegotodashboard = () => {
 >
   Next
 </Button>
+
 </Box>
 
       </Paper>

@@ -627,25 +627,13 @@ sx={{
 <IconButton
   onClick={() => {
     console.log("Selected Item:", item);
-
-    // Find the correct id from API response
-    const optionId =
-      item.option_id ??
-      item.optionID ??
-      item.id ??
-      item.appraisal_question_option_id;
-
-    console.log("Passing optionID:", optionId);
-
-    if (!optionId) {
-      alert("Option ID not found. Check API response.");
-      return;
-    }
+console.log("item.option_id =", item.option_id);
+console.log("item.id =", item.id);
 
     navigate("/AppraisalQuestion/index/addOption/optionEdit", {
       state: {
         question,
-        optionID: optionId,
+        optionID: item.option_id,
       },
     });
   }}
