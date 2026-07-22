@@ -33,11 +33,11 @@ const handleCloseSnackbar = () => {
 
   const categoryOptions = [
   {
-    id: "1",
+    id: "2",
     label: "WORK EFFICIENCY",
   },
   {
-    id: "2",
+    id: "1",
     label: "WORK FACTORS",
   },
 ];
@@ -59,15 +59,18 @@ const handleCloseSnackbar = () => {
 
     onSubmit: async (values, { resetForm }) => {
   try {
-    const payload = {
-      userID: "171464700312440400",
-      displayOrder: values.displayOrder,
-      questionTitle: values.questionTitle,
-      description: values.description,
-      categoryID: values.categoryName,
-    };
+  const payload = {
+  userID: "171464700312440400",
+  displayOrder: values.displayOrder,
+  questionTitle: values.questionTitle,
+  description: values.description,
+  categoryID: values.categoryName,
+};
 
-    const response = await createAppraisalQuestion(JSON.stringify(payload)).unwrap();
+console.log("Selected Category ID:", values.categoryName);
+console.log("Payload:", payload);
+
+const response = await createAppraisalQuestion(JSON.stringify(payload)).unwrap();
 
     console.log("Success:", response);
 
