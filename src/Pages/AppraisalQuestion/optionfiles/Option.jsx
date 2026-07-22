@@ -52,6 +52,7 @@ export default function AddOption() {
      }
 
   const question = location.state?.question || {};
+  const optionID = location.state?.optionID || "";
 
   const open = true;
 
@@ -260,6 +261,7 @@ const handleSubmit = async () => {
     appraisalQuestionID: String(question?.id),
     rateID: String(rate),
     description: editorValue,
+   
   };
 
   console.log("Request Payload:", payload);
@@ -309,6 +311,7 @@ const handleSubmit = async () => {
     });
   }
 };
+
   return (
     <Dialog
       open={open}
@@ -622,14 +625,30 @@ sx={{
 
                     <TableCell align="center">
 <IconButton
-  onClick={() =>
+  onClick={() => {
+    console.log("Selected Item:", item);
+
+    // Find the correct id from API response
+    const optionId =
+      item.option_id ??
+      item.optionID ??
+      item.id ??
+      item.appraisal_question_option_id;
+
+    console.log("Passing optionID:", optionId);
+
+    if (!optionId) {
+      alert("Option ID not found. Check API response.");
+      return;
+    }
+
     navigate("/AppraisalQuestion/index/addOption/optionEdit", {
       state: {
         question,
-        optionID: item.option_id,   // or item.option_id
+        optionID: optionId,
       },
-    })
-  }
+    });
+  }}
 >
   <EditIcon />
 </IconButton>
