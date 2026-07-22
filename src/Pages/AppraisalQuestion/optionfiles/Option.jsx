@@ -232,7 +232,7 @@ useEffect(() => {
 
   fetchRates();
   fetchHistory();
-}, [appraisalQuestionID]);
+}, [appraisalQuestionID, location.state?.refresh]);
 
 
 const handleSubmit = async () => {
@@ -609,7 +609,7 @@ sx={{
                     <TableCell>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: item.rate_description,
+                    __html: item.description || item.rate_description,
                         }}
                       />
                     </TableCell>

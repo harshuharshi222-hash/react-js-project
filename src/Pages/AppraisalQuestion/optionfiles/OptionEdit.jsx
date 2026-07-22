@@ -1,5 +1,4 @@
 
-import AddOption from "../optionfiles/Option";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -13,6 +12,8 @@ import {
   Button,
   Divider,
   IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -32,6 +33,7 @@ import {
   useGetAppraisalRatingMutation,
   useGetHrAppraisalQuestionOptionDetailMutation,
    useGetHrAppraisalQuestionOptionMutation,
+     useUpdateAppraisalQuestionOptionMutation,
 } from "../../../api/constructionApi";
 
 export default function  UpdateOption(){
@@ -49,7 +51,20 @@ const [rate, setRate] = useState("");
 const [status, setStatus] = useState("");
 const [editorValue, setEditorValue] = useState("");
 
-  
+  const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
+
+const handleCloseSnackbar = (_, reason) => {
+  if (reason === "clickaway") return;
+
+  setSnackbar((prev) => ({
+    ...prev,
+    open: false,
+  }));
+};
  
 const location = useLocation();
 
@@ -58,7 +73,7 @@ const optionID = location.state?.optionID; // pass this while navigating
 
   const editorRef = useRef(null);
 
-  const [content, setContent] = useState("kok");
+ 
 
 const exec = (command, value = null) => {
   if (!editorRef.current) return;
@@ -90,13 +105,6 @@ const handleInput = () => {
   setEditorValue(editorRef.current.innerHTML);
 };
 
-  const execCommand = (command)=>{
-
-    document.execCommand(command,false,null);
-
-    setContent(editorRef.current.innerHTML);
-
-  }
 const [getAppraisalRating] =
   useGetAppraisalRatingMutation();
 
@@ -106,6 +114,8 @@ const [getHrAppraisalQuestionOptionDetail] =
   const [getHrAppraisalQuestionOption] =
   useGetHrAppraisalQuestionOptionMutation();
 
+  const [updateAppraisalQuestionOption] =
+  useUpdateAppraisalQuestionOptionMutation();
 
   const fetchOption = async () => {
   try {
@@ -217,6 +227,55 @@ const fetchRates = async () => {
 };
 
 
+const saveData = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      appraisalID: "",
+      questionTitle: question?.question_title || "",
+      description: editorValue,
+      displayOrder: "",
+      status: status,
+      optionID: String(optionID),
+      appraisalQuestionID: String(question?.id),
+      rateID: String(rate),
+    };
+
+    console.log("Update Payload:", payload);
+
+    const response = await updateAppraisalQuestionOption(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Update Response:", response);
+
+    if (response?.success || response?.status === true) {
+      setSnackbar({
+        open: true,
+        message: response?.message || "Option updated successfully.",
+        severity: "success",
+      });
+
+      setTimeout(() => {
+        navigate("/AppraisalQuestion/index");
+      }, 1500);
+    } else {
+      setSnackbar({
+        open: true,
+        message: response?.message || "Update failed.",
+        severity: "error",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+
+    setSnackbar({
+      open: true,
+      message: "Something went wrong.",
+      severity: "error",
+    });
+  }
+};
 
 return (
 
@@ -541,7 +600,7 @@ In Active
 <Box sx={{ mt: 6 }}>
   <Button
     variant="contained"
-    // onClick={saveData}
+    onClick={saveData}
     sx={{
       background: "#1976d2",
       px: 4,
@@ -551,7 +610,24 @@ In Active
     SAVE
   </Button>
 </Box>
-
+<Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={handleCloseSnackbar}
+    severity={snackbar.severity}
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
 
 
 </Box>
