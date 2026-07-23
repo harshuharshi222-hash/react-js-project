@@ -119,8 +119,15 @@ const [pagination, setPagination] = useState({
       JSON.stringify(payload)
     ).unwrap();
 
+console.log("Response JSON:", JSON.stringify(response, null, 2));
+      console.log("Complete Response:", response);
+    console.log("API Response:", response);
+console.log("Total Records:", response.totalRecords);
+console.log("Data Length:", response.data?.length);
+
     setData(response.data || []);
-setTotalRecords(response.totalRecords);
+console.log(response);
+setTotalRecords(response.totalCount || 0);
 
     setData(response.data || []);
   } catch (error) {
@@ -339,6 +346,7 @@ const fetchCategory = async () => {
     "Added On",
     "Status",
   ];
+
 
   const rows = data.map((item, index) => [
     index + 1,
@@ -696,8 +704,10 @@ const columns = useMemo(
 
   console.log("Table Data", data);
 
-
-
+const totalPages = Math.max(
+  1,
+  Math.ceil((totalRecords || 0) / pagination.pageSize)
+);
 
 const table = useReactTable({
   data,
@@ -710,7 +720,7 @@ const table = useReactTable({
 
   manualPagination: true,
 
-  pageCount: Math.ceil(totalRecords / pagination.pageSize),
+pageCount: Math.ceil((totalRecords || 0) / pagination.pageSize),
 
   onPaginationChange: setPagination,
   onColumnVisibilityChange: setColumnVisibility,
@@ -754,10 +764,6 @@ const table = useReactTable({
 const handlegotodashboard = () => {
       navigate('/dashboard')
    }
-
-
-   //pagination 
-
 
 
 
@@ -1341,13 +1347,14 @@ const handlegotodashboard = () => {
 <Button
   variant="outlined"
   size="small"
- disabled={!table.getCanPreviousPage()}
-  onClick={() => {
+  disabled={pagination.pageIndex === 0}
+  onClick={() =>
     setPagination((prev) => ({
       ...prev,
       pageIndex: prev.pageIndex - 1,
-    }));
-  }}
+    }))
+  }
+
   disabled={!table.getCanPreviousPage()}
   sx={{
     minWidth: 60,
@@ -1376,10 +1383,7 @@ const handlegotodashboard = () => {
   >
    
 <Typography variant="body2" sx={{ fontWeight: 600 }}>
-Page {pagination.pageIndex + 1} of  {Math.max(
-    12,
-    Math.ceil(Number(totalRecords || 0) / Number(pagination.pageSize))
-  )}
+Page {pagination.pageIndex + 1} of {totalPages}
 </Typography>
 
     <FormControl size="small" sx={{ minWidth: 120 }}>
@@ -1408,12 +1412,13 @@ Page {pagination.pageIndex + 1} of  {Math.max(
 <Button
   variant="outlined"
   size="small"
- onClick={() =>
+  disabled={pagination.pageIndex >= totalPages - 1}
+  onClick={() =>
     setPagination((prev) => ({
       ...prev,
       pageIndex: prev.pageIndex + 1,
     }))
-  }
+}
    
   sx={{
     minWidth: 80,
