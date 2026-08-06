@@ -625,7 +625,7 @@ sx={{
 
                     <TableCell align="center">
 <IconButton
-  onClick={() => {
+  onClick={() => { 
     console.log("Selected Item:", item);
 console.log("item.option_id =", item.option_id);
 console.log("item.id =", item.id);
@@ -636,7 +636,7 @@ console.log("item.id =", item.id);
         optionID: item.option_id,
       },
     });
-  }}
+  }} 
 >
   <EditIcon />
 </IconButton>

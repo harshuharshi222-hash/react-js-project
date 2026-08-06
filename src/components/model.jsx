@@ -160,6 +160,9 @@ export default function MiniDrawer() {
     navigate('/AppraisalQuestion/index')
  }
 
+  const handlegotoProcess = () => {
+    navigate('/Process/index')
+ }
 
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -305,6 +308,19 @@ export default function MiniDrawer() {
                                 <CircleIcon  sx={{fontSize:10,mr:1,}}></CircleIcon>
                                </div>
                                 <ListItemText primary="Appraisal Question"  sx={{size:'small'}}  onClick={handlegotoAppraisalQuestion} />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
+
+                    <Collapse in={openNestedList1} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemIcon sx={{ color: 'white' }}>   
+                                </ListItemIcon>
+                               <div sx={{size:'1px',}}>
+                                <CircleIcon  sx={{fontSize:10,mr:1,}}></CircleIcon>
+                               </div>
+                                <ListItemText primary="Process"  sx={{size:'small'}}  onClick={handlegotoProcess}  />
                             </ListItemButton>
                         </List>
                     </Collapse>

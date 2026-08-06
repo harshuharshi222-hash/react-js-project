@@ -397,6 +397,9 @@ const [columnVisibility, setColumnVisibility] = useState({
   added_on: true,
   status: true,
 });
+
+
+
 //table important//
 
 
@@ -454,7 +457,7 @@ const StyledTableRow = styled(TableRow)(() => ({
     typeof event.target.value === "string"
       ? event.target.value.split(",")
       : event.target.value;
-
+ 
   setSelected(value);
 
   setColumnVisibility({
