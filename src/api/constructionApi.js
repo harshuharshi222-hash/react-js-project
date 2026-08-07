@@ -194,6 +194,17 @@ getLiaisonProcess: builder.mutation({
   }),
 }),
 
+getLiaisonProcessCategory: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getLiaisonProcessCategory1",
+    method: "POST",
+    body,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }),
+}),
+
   }),
 });
 
@@ -220,6 +231,8 @@ export const {
 
   //new //
     useGetLiaisonProcessMutation,
+    useGetLiaisonProcessCategoryMutation,
+
   
    
 } = constructionApi;

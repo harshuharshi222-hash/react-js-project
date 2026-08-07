@@ -53,7 +53,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDesignationFilterMutation } from "../../api/constructionApi";
-import { useGetAppraisalQuestionCategoryFilterMutation } from "../../api/constructionApi";
+
 
 import {
   flexRender,
@@ -66,6 +66,9 @@ import {
 // new //
 
 import { useGetLiaisonProcessMutation } from "../../api/constructionApi";
+import {
+  useGetLiaisonProcessCategoryMutation,
+} from "../../api/constructionApi";
 
 export default function LiaisonProcess() {
 
@@ -143,6 +146,40 @@ useEffect(() => {
   category,
   designation,
 ]);
+
+// cat//
+
+const [getLiaisonProcessCategory] =
+  useGetLiaisonProcessCategoryMutation();
+
+const [categoryList, setCategoryList] = useState([]);
+
+useEffect(() => {
+  fetchCategory();
+}, []);
+
+const fetchCategory = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+    };
+
+    const response = await getLiaisonProcessCategory(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Category Response:", response);
+
+    if (response?.data) {
+      setCategoryList(response.data);
+    } else {
+      setCategoryList([]);
+    }
+  } catch (error) {
+    console.log("Category API Error:", error);
+    setCategoryList([]);
+  }
+};
 
 
 
@@ -225,38 +262,6 @@ const fetchDesignation = async () => {
 
   // category//
 
-const [getCategoryFilter] =
-  useGetAppraisalQuestionCategoryFilterMutation();
-
-const [categoryList, setCategoryList] = useState([]);
-
-useEffect(() => {
-  fetchCategory();
-}, []);
-
-const fetchCategory = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      categoryID: "",
-      departmentID: "",
-      designationID: "",
-      status: "Active",
-    };
-
-    const response = await getCategoryFilter(JSON.stringify(payload)).unwrap();
-
-    console.log("Category API Response:", response);
-
-    if (response?.data) {
-      setCategoryList(response.data);
-    } else {
-      setCategoryList([]);
-    }
-  } catch (error) {
-    console.log("Category Error:", error);
-  }
-};
 
   const allColumns = [
     "SL/No",
@@ -802,57 +807,45 @@ const handlegotodashboard = () => {
 
 
 
-<FormControl size="small" sx={{ width: 150 }}>
+<FormControl size="small" sx={{ width: 180 }}>
   <InputLabel>Category</InputLabel>
 
   <Select
-    value={department}
-    label="Department"
-   
- onChange={(e) => {
-  setDepartment(e.target.value);
+    value={category}
+    label="Category"
+    onChange={(e) => {
+      setCategory(e.target.value);
 
-  setPagination((prev) => ({
-    ...prev,
-    pageIndex: 0,
-  }));
-}}
+      setPagination((prev) => ({
+        ...prev,
+        pageIndex: 0,
+      }));
+    }}
     endAdornment={
-      department && (
+      category && (
         <InputAdornment position="end" sx={{ mr: 2 }}>
           <ClearIcon
             fontSize="small"
             sx={{ cursor: "pointer" }}
             onClick={(e) => {
-              e.stopPropagation(); // Prevent Select from opening
-              setDepartment("");
+              e.stopPropagation();
+              setCategory("");
             }}
           />
         </InputAdornment>
       )
     }
-    MenuProps={{
-      PaperProps: {
-        sx: {
-          width: 70,
-          maxHeight: 150,
-        },
-      },
-    }}
   >
-    {departmentList.map((item) => (
+    <MenuItem value="">
+      <em>All</em>
+    </MenuItem>
+
+    {categoryList.map((item) => (
       <MenuItem
-        key={item.department_id}
-        value={item.department_id}
-        sx={{
-          width: 120,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          fontSize: "13px",
-        }}
+        key={item.process_category_id}
+        value={item.process_category_id}
       >
-        {item.department_name}
+        {item.process_category_name}
       </MenuItem>
     ))}
   </Select>
