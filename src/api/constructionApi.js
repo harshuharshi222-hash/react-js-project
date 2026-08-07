@@ -183,6 +183,17 @@ updateAppraisalQuestionOption: builder.mutation({
   }),
 }),
 
+
+//new //
+
+getLiaisonProcess: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getLiaisonProcess",
+    method: "POST",
+    body,
+  }),
+}),
+
   }),
 });
 
@@ -206,6 +217,9 @@ export const {
   useUpdateAppraisalQuestionMutation,
   useGetHrAppraisalQuestionOptionDetailMutation,
     useUpdateAppraisalQuestionOptionMutation,
+
+  //new //
+    useGetLiaisonProcessMutation,
   
    
 } = constructionApi;

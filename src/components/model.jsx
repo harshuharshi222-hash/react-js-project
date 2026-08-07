@@ -68,6 +68,10 @@ import UpdateOption from "../Pages/AppraisalQuestion/optionfiles/OptionEdit.jsx"
 
 
 
+import LiaisonProcess from '../Pages/Process/ProcessIndex.jsx';
+
+
+
 
 const drawerWidth = 240;
 
@@ -161,7 +165,7 @@ export default function MiniDrawer() {
  }
 
   const handlegotoProcess = () => {
-    navigate('/Process/index')
+    navigate('/LiaisonProcess/Process')
  }
 
     const theme = useTheme();
@@ -346,6 +350,8 @@ export default function MiniDrawer() {
                     <Route path="/AppraisalQuestion/index/Option" element={<AddOption />} />
                     <Route path="/AppraisalQuestion/index/addOption/optionEdit" element={<UpdateOption />} />
                     <Route path="/AppraisalQuestion/index/Edit" element={<UpdateAppraisalQuestion />} />
+
+                    <Route path="/LiaisonProcess/Process" element={<LiaisonProcess />} />
                     </Routes>
               
 
