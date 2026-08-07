@@ -205,6 +205,15 @@ getLiaisonProcessCategory: builder.mutation({
   }),
 }),
 
+
+getUser: builder.mutation({
+  query: (body) => ({
+    url: "/dev/RestAPI_V1/v2/getUser",
+    method: "POST",
+    body,
+  }),
+}),
+
   }),
 });
 
@@ -232,6 +241,7 @@ export const {
   //new //
     useGetLiaisonProcessMutation,
     useGetLiaisonProcessCategoryMutation,
+    useGetUserMutation,
 
   
    

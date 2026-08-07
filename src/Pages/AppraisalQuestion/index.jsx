@@ -268,7 +268,7 @@ const fetchCategory = async () => {
   const allColumns = [
     "SL/No",
     "Category Name",
-    "Title",
+    "Title", 
     "Description",
     "Designation",
     "Option",

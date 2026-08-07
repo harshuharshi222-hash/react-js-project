@@ -52,7 +52,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
 import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
-import { useGetAppraisalQuestionDesignationFilterMutation } from "../../api/constructionApi";
+
 
 
 import {
@@ -69,6 +69,7 @@ import { useGetLiaisonProcessMutation } from "../../api/constructionApi";
 import {
   useGetLiaisonProcessCategoryMutation,
 } from "../../api/constructionApi";
+import { useGetUserMutation } from "../../api/constructionApi";
 
 export default function LiaisonProcess() {
 
@@ -89,6 +90,11 @@ const [totalRecords, setTotalRecords] = useState(0);
 const [data, setData] = useState([]);
 const [loading, setLoading] = useState(false);
 
+const [getUser] = useGetUserMutation();
+
+const [userList, setUserList] = useState([]);
+const [user, setUser] = useState("");
+const [ismandatory, setIsMandatory] = useState("");
 
 const [getLiaisonProcessApi] = useGetLiaisonProcessMutation();
 
@@ -111,7 +117,7 @@ const getLiaisonProcess = async (
       userID: "169548080048036100",
       processStatus: status,
       processCategory: category,
-      processOwner: designation,
+     processOwner: user,
       isMandatory: "",
       completionType: "",
       executionType: "",
@@ -181,6 +187,39 @@ const fetchCategory = async () => {
   }
 };
 
+// user//
+
+
+useEffect(() => {
+  fetchUsers();
+}, []);
+
+const fetchUsers = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      departmentID: "",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
+    };
+
+    const response = await getUser(JSON.stringify(payload)).unwrap();
+
+    console.log("User Response", response);
+
+    if (response?.data) {
+      setUserList(response.data);
+    } else {
+      setUserList([]);
+    }
+  } catch (err) {
+    console.log(err);
+    setUserList([]);
+  }
+};
+
 
 
 
@@ -221,42 +260,6 @@ const fetchDepartments = async () => {
   const [departmentList, setDepartmentList] = useState([]);
 
 
-
-// designation //
-
-const [getDesignation] =
-  useGetAppraisalQuestionDesignationFilterMutation();
-const [designationList, setDesignationList] = useState([]);
-
-useEffect(() => {
-  fetchDesignation();
-}, []);
-
-const fetchDesignation = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      categoryID: "",
-      departmentID: "",
-      designationID: "",
-      status: "Active",
-    };
-
-    const response = await getDesignation(JSON.stringify(payload)).unwrap();
-
-    console.log("Designation Response:", response);
-
-    if (response?.data) {
-      setDesignationList(response.data);
-    } else if (response?.result) {
-      setDesignationList(response.result);
-    } else {
-      setDesignationList([]);
-    }
-  } catch (error) {
-    console.error("Designation API Error:", error);
-  }
-};
 
 
 
@@ -836,9 +839,7 @@ const handlegotodashboard = () => {
       )
     }
   >
-    <MenuItem value="">
-      <em>All</em>
-    </MenuItem>
+  
 
     {categoryList.map((item) => (
       <MenuItem
@@ -851,88 +852,59 @@ const handlegotodashboard = () => {
   </Select>
 </FormControl>
 
-          <FormControl size="small" sx={{ width: 150 }}>
-            <InputLabel>User</InputLabel>
+<FormControl size="small" sx={{ width: 180 }}>
+  <InputLabel>User</InputLabel>
+
   <Select
-    value={designation}
-   
-    label="Designation"
-    onChange={(e) => setDesignation(e.target.value)}
-     endAdornment={
-      designation && (
-        <InputAdornment position="end" sx={{ mr: 2 }}>
-          <ClearIcon
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
+    value={user}
+    label="User"
+    onChange={(e) => {
+      setUser(e.target.value);
+
+      setPagination((prev) => ({
+        ...prev,
+        pageIndex: 0,
+      }));
+    }}
+    endAdornment={
+      user && (
+        <InputAdornment position="end">
+          <IconButton
+            size="small"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent Select from opening
-              setDesignation("");
+              e.stopPropagation();
+              setUser("");
             }}
-          />
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
         </InputAdornment>
       )
     }
-    MenuProps={{
-      PaperProps: {
-        sx: {
-          width: 70,      // Popup width
-          maxHeight: 150,  // Optional
-        },
-      },
-    }}
   >
     
 
-    {designationList.map((item) => (
+    {userList.map((item) => (
       <MenuItem
-        key={item.designation_id || item.id}
-        value={item.designation_id || item.id}
-         sx={{
-    width: 120,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    fontSize: "13px",
-  }}
-        
+        key={item.user_id}
+        value={item.user_id}
       >
-        {item.designation_name || item.designation}
+        {item.user_name}
       </MenuItem>
     ))}
   </Select>
 </FormControl>
 
-          <FormControl size="small" sx={{ width: 150 }}>
-            <InputLabel>Is Mandatory</InputLabel>
+   <FormControl size="small" sx={{ width: 180 }}>
+  <InputLabel>Is mandatory</InputLabel>
   <Select
-    value={category}
-    label="Category"
-    onChange={(e) => setCategory(e.target.value)}
-    endAdornment={
-      category && (
-        <InputAdornment position="end" sx={{ mr: 2 }}>
-          <ClearIcon
-            fontSize="small"
-            sx={{ cursor: "pointer" }}
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent Select from opening
-              setCategory("");
-            }}
-          />
-        </InputAdornment>
-      )
-    }
+    value={ismandatory}
+    label="Is Mandatory"
+    onChange={(e) => setIsMandatory(e.target.value)}
   >
-    
-
-    {categoryList.map((item) => (
-      <MenuItem
-        key={item.category_id}
-        value={item.category_id}
-      >
-        {item.category_name}
-      </MenuItem>
-    ))}
+    <MenuItem value="default">Default</MenuItem>
+    <MenuItem value="legaloption">LegalOption</MenuItem>
+    <MenuItem value="liasonoption">LiasonOption</MenuItem>
   </Select>
 </FormControl>
                 
