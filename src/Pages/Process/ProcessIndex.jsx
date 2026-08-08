@@ -2,11 +2,11 @@
 
 import React, { useMemo, useState } from "react";
 import Tooltip from '@mui/material/Tooltip';
-import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+
 import { useNavigate } from "react-router-dom";
 
 import ClearIcon from "@mui/icons-material/Clear";
-import AddOption from "../AppraisalQuestion/optionfiles/Option";
+
 import { useLocation } from "react-router-dom";
 
 
@@ -38,7 +38,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 
 
-
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { useEffect } from "react";
 
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -50,8 +50,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InfoIcon from "@mui/icons-material/Info";
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useGetAppraisalQuestionMutation } from "../../api/constructionApi";
-import { useGetAppraisalQuestionDepartmentFilterMutation } from "../../api/constructionApi";
+
 
 
 
@@ -73,19 +72,14 @@ import { useGetUserMutation } from "../../api/constructionApi";
 
 export default function LiaisonProcess() {
 
-  const [optionOpen, setOptionOpen] = useState(false);
-const [selectedQuestion, setSelectedQuestion] = useState(null);
-
 const [totalRecords, setTotalRecords] = useState(0);
 
   const [searchText, setSearchText] = useState("");
 
-  const [department, setDepartment] = useState("");
-  
-  const [designation, setDesignation] = useState("");
+
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("Active");
-  const [tableData, setTableData] = useState([]);
+
 
 const [data, setData] = useState([]);
 const [loading, setLoading] = useState(false);
@@ -150,7 +144,8 @@ useEffect(() => {
   pagination.pageSize,
   status,
   category,
-  designation,
+  user,
+  ismandatory,
 ]);
 
 // cat//
@@ -209,8 +204,8 @@ const fetchUsers = async () => {
 
     console.log("User Response", response);
 
-    if (response?.data) {
-      setUserList(response.data);
+    if (response?.user) {
+      setUserList(response?.user);
     } else {
       setUserList([]);
     }
@@ -222,44 +217,7 @@ const fetchUsers = async () => {
 
 
 
-
-//department//
-
-
-  const [getAppraisalQuestionDepartmentFilter] =
-  useGetAppraisalQuestionDepartmentFilterMutation();
-
-  useEffect(() => {
-  fetchDepartments();
-}, []);
-
-const fetchDepartments = async () => {
-  try {
-    const payload = {
-      userID: "169548080048036100",
-      categoryID: "",
-      departmentID: "",
-      designationID: "",
-      status: "Active",
-    };
-
-    const response = await getAppraisalQuestionDepartmentFilter(
-      JSON.stringify(payload)
-    ).unwrap();
-
-    console.log("Department Response:", response);
-
-    if (response?.data) {
-      setDepartmentList(response.data);
-    }
-  } catch (error) {
-    console.log("Department API Error:", error);
-  }
-};
-
-  const [departmentList, setDepartmentList] = useState([]);
-
-
+console.log("userList",userList)
 
 
 
@@ -359,17 +317,17 @@ const fetchDepartments = async () => {
   ];
 
 
-  const rows = data.map((item, index) => [
-    index + 1,
-    item.category_name,
-    item.question_title,
-    item.description,
-    item.designation,
-    item.option,
-    item.added_by,
-    item.added_on,
-    item.status,
-  ]);
+  // const rows = data.map((item, index) => [
+  //   index + 1,
+  //   item.category_name,
+  //   item.question_title,
+  //   item.description,
+  //   item.designation,
+  //   item.option,
+  //   item.added_by,
+  //   item.added_on,
+  //   item.status,
+  // ]);
 
   const csvContent = [
     headers.join(","),
@@ -623,9 +581,7 @@ pageCount: Math.ceil((totalRecords || 0) / pagination.pageSize),
 });
 
     const navigate = useNavigate();
-     const AddAppraisalQuestion = () => {
-        navigate('/AppraisalQuestion/index/Form')
-     }
+   
     
 
      const handleEdit = (rowData) => {
