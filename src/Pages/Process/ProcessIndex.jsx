@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { useLocation } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 
 
@@ -122,6 +123,11 @@ const getLiaisonProcess = async (
     };
 
     const response = await getLiaisonProcessApi(JSON.stringify(payload)).unwrap();
+
+    console.log("LIAISON API RESPONSE:", response);
+console.log("FIRST ROW:", response?.data?.[0]);
+
+setData(response.data || []);
 
     console.log(response);
 
@@ -316,41 +322,6 @@ console.log("userList",userList)
     "Status",
   ];
 
-
-  // const rows = data.map((item, index) => [
-  //   index + 1,
-  //   item.category_name,
-  //   item.question_title,
-  //   item.description,
-  //   item.designation,
-  //   item.option,
-  //   item.added_by,
-  //   item.added_on,
-  //   item.status,
-  // ]);
-
-  const csvContent = [
-    headers.join(","),
-    ...rows.map((row) =>
-      row.map((value) => `"${value ?? ""}"`).join(",")
-    ),
-  ].join("\n");
-
-  const blob = new Blob([csvContent], {
-    type: "text/csv;charset=utf-8;",
-  });
-
-  const url = window.URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", "AppraisalQuestion.csv");
-
-  document.body.appendChild(link);
-  link.click();
-
-  document.body.removeChild(link);
-  window.URL.revokeObjectURL(url);
 };
   
   const [selected, setSelected] = useState(allColumns);
@@ -498,10 +469,94 @@ const columns = useMemo(
   header: "Priority",
   size:100,
 },
+
+
 {
-  accessorKey: "",
+  accessorKey: "planning_authority",
   header: "Planning Authority",
+  size: 150,
+
+  cell: ({ row }) => {
+    const authorityList = row.original.planning_authority || [];  
+    
+
+    const firstAuthority =
+      authorityList.length > 0
+        ? authorityList[0].authority_name?.replace(/<[^>]*>/g, "")
+        : "";
+
+    // Get first letter of every word
+    const authorityShortName = firstAuthority
+      ? firstAuthority
+          .trim()
+          .split(/\s+/)
+          .map((word) => word.charAt(0).toUpperCase())
+          .join("")
+      : "";
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        {/* Authority Short Name */}
+        <Tooltip title={firstAuthority || "-"} arrow>
+          <Typography
+            fontSize={13}
+            fontWeight={500}
+            sx={{
+              maxWidth: 70,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+          >
+            {authorityShortName || "-"}
+          </Typography>
+        </Tooltip>
+
+        {/* Count */}
+        {authorityList.length > 1 && (
+          <Typography
+            fontSize={12}
+            fontWeight={600}
+            color="black"
+          >
+            +({authorityList.length - 1})
+          </Typography>
+        )}
+
+        {/* Edit Icon */}
+        <Tooltip >
+          <EditIcon
+            sx={{
+              color: "#1976d2",
+              fontSize: 18,
+              cursor: "pointer",
+              ml: 0.5,
+              "&:hover": {
+                color: "#0d47a1",
+              },
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit(row.original);
+            }}
+          />
+        </Tooltip>
+      </Box>
+    );
+  },
 },
+
+
+
+
 {
   accessorKey: "user_name",
   header: "Added By",
