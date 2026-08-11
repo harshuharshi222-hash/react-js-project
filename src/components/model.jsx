@@ -69,7 +69,7 @@ import UpdateOption from "../Pages/AppraisalQuestion/optionfiles/OptionEdit.jsx"
 
 
 import LiaisonProcess from '../Pages/Process/ProcessIndex.jsx';
-
+import AddLiaisonProcess from "../Pages/Process/ProcessForm.jsx"
 
 
 
@@ -352,6 +352,7 @@ export default function MiniDrawer() {
                     <Route path="/AppraisalQuestion/index/Edit" element={<UpdateAppraisalQuestion />} />
 
                     <Route path="/LiaisonProcess/Process" element={<LiaisonProcess />} />
+                     <Route path="/LiaisonProcess/Process/ProcessForm" element={<AddLiaisonProcess />} />
                     </Routes>
               
 

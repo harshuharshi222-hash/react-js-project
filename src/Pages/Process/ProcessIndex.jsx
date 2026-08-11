@@ -324,16 +324,24 @@ console.log("userList",userList)
 
 };
   
-  const [selected, setSelected] = useState(allColumns);
+
+
+
+const [selected, setSelected] = useState(allColumns);
 
 const [columnVisibility, setColumnVisibility] = useState({
   slNo: true,
-  category_name: true,
-  question_title: true,
-  description: true,
-  designation: true,
-  option: true,
-  added_by: true,
+  process_category_name: true,
+  process_name: true,
+  process_order: true,
+  process_lead_time: true,
+  owner_name: true,
+  execution_type: true,
+  is_mandatory: true,
+  completion_type: true,
+  task_priority: true,
+  planning_authority: true,
+  user_name: true,
   added_on: true,
   status: true,
 });
@@ -392,27 +400,34 @@ const StyledTableRow = styled(TableRow)(() => ({
   
 
 
-   const handleChange = (event) => {
+
+const handleChange = (event) => {
   const value =
     typeof event.target.value === "string"
       ? event.target.value.split(",")
       : event.target.value;
- 
+
   setSelected(value);
 
   setColumnVisibility({
     slNo: value.includes("SL/No"),
-    category_name: value.includes("Category Name"),
-    question_title: value.includes("Title"),
-    description: value.includes("Description"),
-    designation: value.includes("Designation"),
-    option: value.includes("Option"),
-    added_by: value.includes("Added By"),
+    process_category_name: value.includes("Category Name"),
+    process_name: value.includes("Process Name"),
+    process_order: value.includes("Order"),
+    process_lead_time: value.includes("Process Load Time"),
+    owner_name: value.includes("Owner"),
+    execution_type: value.includes("Execution Type"),
+    is_mandatory: value.includes("Is Mandatory"),
+    completion_type: value.includes("Completion Type"),
+    task_priority: value.includes("Priority"),
+    planning_authority: value.includes("Planning Authority"),
+    user_name: value.includes("Added By"),
     added_on: value.includes("Added On"),
     status: value.includes("Status"),
   });
 };
-  
+
+
 
 
 const columns = useMemo(
@@ -478,7 +493,7 @@ const columns = useMemo(
 
   cell: ({ row }) => {
     const authorityList = row.original.planning_authority || [];  
-    
+  
 
     const firstAuthority =
       authorityList.length > 0
@@ -569,42 +584,54 @@ const columns = useMemo(
 },
 
 
-    {
-  accessorKey: "processStatus",
+
+{
+  accessorKey: "status",
+  id: "status",
   header: "Status",
   size: 100,
+
   cell: ({ row }) => {
-    const rowStatus = row.original.status;
+    const rowStatus =
+      row.original.status ||
+      row.original.processStatus ||
+      row.original.process_status ||
+      "";
+
+    const normalizedStatus = String(rowStatus).toLowerCase();
+
+    const isActive = normalizedStatus === "active";
 
     return (
-    
+      <Chip
+        label={rowStatus || "-"}
+        onClick={() => handleEdit(row.original)}
+        sx={{
+          width: 90,
+          fontWeight: "bold",
+          color: "#fff",
+          cursor: "pointer",
 
+          backgroundColor: isActive
+            ? "#74BFD0"
+            : "#6C63FF",
 
+          "&:hover": {
+            backgroundColor: isActive
+              ? "#74BFD0"
+              : "#6C63FF",
+          },
 
-<Chip
-  label={rowStatus}
-
-  onClick={() => handleEdit(row.original)}
-  sx={{
-    width: 90,
-    fontWeight: "bold",
-    color: "#fff",
-    cursor: "pointer",
-    backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
-
-    "&:hover": {
-      backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
-    },
-
-    "&.MuiChip-clickable:hover": {
-      backgroundColor: rowStatus === "Active" ? "#74BFD0" : "#6C63FF",
-    },
-  }}
-/>
+          "&.MuiChip-clickable:hover": {
+            backgroundColor: isActive
+              ? "#74BFD0"
+              : "#6C63FF",
+          },
+        }}
+      />
     );
   },
 },
-
 
   ],
   [pagination.pageIndex, pagination.pageSize]);
@@ -637,7 +664,12 @@ pageCount: Math.ceil((totalRecords || 0) / pagination.pageSize),
 
     const navigate = useNavigate();
    
+     
     
+
+const handleAddLiaisonProcess = () => {
+  navigate("/LiaisonProcess/Process/ProcessForm");
+};
 
      const handleEdit = (rowData) => {
   navigate("/AppraisalQuestion/index/Edit", {
@@ -705,117 +737,48 @@ const handlegotodashboard = () => {
 
             <div>
             <FormControl size="small">
-              <Select
-                multiple
-                value={selected}
-                onChange={handleChange}
-                displayEmpty
-                IconComponent={() => null}
-          
-                renderValue={() => (
-                  <FilterListIcon
-                    sx={{
-                      color: "#6c6868",
-                      fontSize: 26,
-                    }}
-                  />
-                )}
-          
-                sx={{
-                  width: 45,
-                  height: 40,
-                  border: "1px solid #a5a8ad",
-                  borderRadius: "3px",
-                
-          
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    border: "none",
-                  },
-          
-                  "& .MuiSelect-select": {
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "0px !important",
-                  },
-          
-                  "&:hover": {
-                   
-                  },
-                }}
-              >
-                <MenuItem value="SL/No">
-                  <Checkbox checked={selected.indexOf("SL/No") > -1} />
-                  <ListItemText primary="SL/No" />
-                </MenuItem>
-          
-                <MenuItem value="Category Name">
-                  <Checkbox checked={selected.indexOf("Category Name") > -1} />
-                  <ListItemText primary="Category Name" />
-                </MenuItem>
-          
-                <MenuItem value="Precess Name ">
-                  <Checkbox checked={selected.indexOf("Precess Name") > -1} />
-                  <ListItemText primary="Precess Name" />
-                </MenuItem>
-          
-                <MenuItem value="Order">
-                  <Checkbox checked={selected.indexOf("Order") > -1} />
-                  <ListItemText primary="Order" />
-                </MenuItem>
+             
+<Select
+  multiple
+  value={selected}
+  onChange={handleChange}
+  displayEmpty
+  IconComponent={() => null}
+  renderValue={() => (
+    <FilterListIcon
+      sx={{
+        color: "#6c6868",
+        fontSize: 26,
+      }}
+    />
+  )}
+  sx={{
+    width: 45,
+    height: 40,
+    border: "1px solid #a5a8ad",
+    borderRadius: "3px",
 
-                 <MenuItem value="Process Load Time">
-                  <Checkbox checked={selected.indexOf("Process Load Time") > -1} />
-                  <ListItemText primary="Process Load Time" />
-                </MenuItem>
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
 
-                 <MenuItem value="Owner">
-                  <Checkbox checked={selected.indexOf("Owner") > -1} />
-                  <ListItemText primary="Owner" />
-                </MenuItem>
+    "& .MuiSelect-select": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "0px !important",
+    },
+  }}
+>
+  {allColumns.map((column) => (
+    <MenuItem key={column} value={column}>
+      <Checkbox checked={selected.includes(column)} />
+      <ListItemText primary={column} />
+    </MenuItem>
+  ))}
+</Select>
 
-                <MenuItem value="Execution Type">
-                  <Checkbox checked={selected.indexOf("Execution Type") > -1} />
-                  <ListItemText primary="Execution Type" />
-                </MenuItem>
 
-                <MenuItem value=" Is Mandatory">
-                  <Checkbox checked={selected.indexOf("Is Mandatory") > -1} />
-                  <ListItemText primary="Is Mandatory" />
-                </MenuItem>
-          
-                <MenuItem value="Completion Type">
-                  <Checkbox checked={selected.indexOf("Completion Type") > -1} />
-                  <ListItemText primary="Completion Type" />
-                </MenuItem>
-
-                <MenuItem value="Priority">
-                  <Checkbox checked={selected.indexOf("Priority") > -1} />
-                  <ListItemText primary="Priority" />
-                </MenuItem>
-
-                <MenuItem value="Planning Authority">
-                  <Checkbox checked={selected.indexOf("Planning Authority") > -1} />
-                  <ListItemText primary="Planning Authority" />
-                </MenuItem>
-
-                <MenuItem value="Added By">
-                  <Checkbox checked={selected.indexOf("Added By") > -1} />
-                  <ListItemText primary="Added By" />
-                </MenuItem>
-                
-                <MenuItem value="Added On">
-                  <Checkbox checked={selected.indexOf("Added On") > -1} />
-                  <ListItemText primary="Added On" />
-                </MenuItem>
-                
-                 <MenuItem value="Status">
-                  <Checkbox checked={selected.indexOf("Status") > -1} />
-                  <ListItemText primary="Status" />
-                </MenuItem>
-          
-                
-              </Select>
             </FormControl>
           </div>
 
@@ -999,13 +962,16 @@ const handlegotodashboard = () => {
           >
             Process
           </Typography>
-              <Tooltip title="Add">
-          <IconButton>
-            <AddCircleIcon sx={{ color: "#7a5af8" ,  fontSize:30,}} 
-            // onClick={AddAppraisalQuestion}
-            />
-          </IconButton>
-          </Tooltip>
+             <Tooltip title="Add">
+  <IconButton onClick={handleAddLiaisonProcess}>
+    <AddCircleIcon
+      sx={{
+        color: "#7a5af8",
+        fontSize: 30,
+      }}
+    />
+  </IconButton>
+</Tooltip>
 
 
           <Tooltip title="Export">
