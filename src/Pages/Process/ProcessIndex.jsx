@@ -492,8 +492,8 @@ const columns = useMemo(
   size: 150,
 
   cell: ({ row }) => {
-    const authorityList = row.original.planning_authority || [];  
-  
+    const authorityList = row?.original?.planningAuthority || [];  
+  console.log("list",authorityList)
 
     const firstAuthority =
       authorityList.length > 0
@@ -501,13 +501,9 @@ const columns = useMemo(
         : "";
 
     // Get first letter of every word
-    const authorityShortName = firstAuthority
-      ? firstAuthority
-          .trim()
-          .split(/\s+/)
-          .map((word) => word.charAt(0).toUpperCase())
-          .join("")
-      : "";
+   const authorityShortName = firstAuthority
+  ? firstAuthority.trim().split(/\s+/)[0]
+  : "";
 
     return (
       <Box
