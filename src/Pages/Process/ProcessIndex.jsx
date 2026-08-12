@@ -500,8 +500,8 @@ const columns = useMemo(
         ? authorityList[0].authority_name?.replace(/<[^>]*>/g, "")
         : "";
 
-    // Get first letter of every word
-   const authorityShortName = firstAuthority
+    
+    const authorityShortName = firstAuthority
   ? firstAuthority.trim().split(/\s+/)[0]
   : "";
 
