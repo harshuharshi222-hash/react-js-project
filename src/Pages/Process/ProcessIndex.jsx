@@ -113,7 +113,7 @@ const getLiaisonProcess = async (
       processStatus: status,
       processCategory: category,
      processOwner: user,
-      isMandatory: "",
+      isMandatory: ismandatory,
       completionType: "",
       executionType: "",
       generalSearch: searchText,
@@ -489,7 +489,7 @@ const columns = useMemo(
 {
   accessorKey: "planning_authority",
   header: "Planning Authority",
-  size: 150,
+  size: 100,
 
   cell: ({ row }) => {
     const authorityList = row?.original?.planningAuthority || [];  
@@ -822,6 +822,7 @@ const handlegotodashboard = () => {
   </Select>
 </FormControl>
 
+
 <FormControl size="small" sx={{ width: 180 }}>
   <InputLabel>User</InputLabel>
 
@@ -838,22 +839,40 @@ const handlegotodashboard = () => {
     }}
     endAdornment={
       user && (
-        <InputAdornment position="end">
+        <InputAdornment position="end" sx={{ mr: 1 }}>
           <IconButton
             size="small"
             onClick={(e) => {
               e.stopPropagation();
+
+              // Clear User filter
               setUser("");
+
+              // Reset to first page
+              setPagination((prev) => ({
+                ...prev,
+                pageIndex: 0,
+              }));
+            }}
+            sx={{
+              p: 0.5,
+              mr: 0.5,
             }}
           >
-            <ClearIcon fontSize="small" />
+            <ClearIcon
+              fontSize="small"
+              sx={{
+                color: "#666",
+                "&:hover": {
+                  color: "#000",
+                },
+              }}
+            />
           </IconButton>
         </InputAdornment>
       )
     }
   >
-    
-
     {userList.map((item) => (
       <MenuItem
         key={item.user_id}
@@ -865,12 +884,49 @@ const handlegotodashboard = () => {
   </Select>
 </FormControl>
 
-   <FormControl size="small" sx={{ width: 180 }}>
-  <InputLabel>Is mandatory</InputLabel>
+<FormControl size="small" sx={{ width: 180 }}>
+  <InputLabel>Is Mandatory</InputLabel>
+
   <Select
     value={ismandatory}
     label="Is Mandatory"
-    onChange={(e) => setIsMandatory(e.target.value)}
+    onChange={(e) => {
+      setIsMandatory(e.target.value);
+
+     
+      setPagination((prev) => ({
+        ...prev,
+        pageIndex: 0,
+      }));
+    }}
+    endAdornment={
+      ismandatory && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <ClearIcon
+            fontSize="small"
+            sx={{
+              cursor: "pointer",
+              color: "#666",
+              "&:hover": {
+                color: "#000",
+              },
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+
+            
+              setIsMandatory("");
+
+             
+              setPagination((prev) => ({
+                ...prev,
+                pageIndex: 0,
+              }));
+            }}
+          />
+        </InputAdornment>
+      )
+    }
   >
     <MenuItem value="default">Default</MenuItem>
     <MenuItem value="legaloption">LegalOption</MenuItem>
