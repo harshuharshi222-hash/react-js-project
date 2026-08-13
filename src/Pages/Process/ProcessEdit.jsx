@@ -98,7 +98,7 @@ export default function UpdateLiaisonProcess() {
         }}
       >
         <IconButton
-          onClick={handleBack}
+         
           sx={{
             width: "64px",
             height: "38px",
@@ -110,8 +110,8 @@ export default function UpdateLiaisonProcess() {
             },
           }}
         >
-           <MenuOpenIcon
-          onClick={handleBack}
+            <MenuOpenIcon
+           onClick={handleBack}
           sx={{
             fontSize: 30,
             color: "#1976d2",
@@ -491,9 +491,7 @@ export default function UpdateLiaisonProcess() {
               },
             }}
           >
-            <MenuItem value="">
-              
-            </MenuItem>
+          
 
             {statusOptions.map((item) => (
               <MenuItem key={item} value={item}>
