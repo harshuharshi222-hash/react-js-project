@@ -581,6 +581,54 @@ const columns = useMemo(
 
 
 
+// {
+//   accessorKey: "status",
+//   id: "status",
+//   header: "Status",
+//   size: 100,
+
+//   cell: ({ row }) => {
+//     const rowStatus =
+//       row.original.status ||
+//       row.original.processStatus ||
+//       row.original.process_status ||
+//       "";
+
+//     const normalizedStatus = String(rowStatus).toLowerCase();
+
+//     const isActive = normalizedStatus === "active";
+
+//     return (
+//       <Chip
+//         label={rowStatus || "-"}
+//         onClick={() => handleEdit(row.original)}
+//         sx={{
+//           width: 90,
+//           fontWeight: "bold",
+//           color: "#fff",
+//           cursor: "pointer",
+
+//           backgroundColor: isActive
+//             ? "#74BFD0"
+//             : "#6C63FF",
+
+//           "&:hover": {
+//             backgroundColor: isActive
+//               ? "#74BFD0"
+//               : "#6C63FF",
+//           },
+
+//           "&.MuiChip-clickable:hover": {
+//             backgroundColor: isActive
+//               ? "#74BFD0"
+//               : "#6C63FF",
+//           },
+//         }}
+//       />
+//     );
+//   },
+// },
+
 {
   accessorKey: "status",
   id: "status",
@@ -601,7 +649,11 @@ const columns = useMemo(
     return (
       <Chip
         label={rowStatus || "-"}
-        onClick={() => handleEdit(row.original)}
+        onClick={(e) => {
+          e.stopPropagation();
+
+          handleUpdateLiaisonProcess(row.original);
+        }}
         sx={{
           width: 90,
           fontWeight: "bold",
@@ -667,8 +719,8 @@ const handleAddLiaisonProcess = () => {
   navigate("/LiaisonProcess/Process/ProcessForm");
 };
 
-     const handleEdit = (rowData) => {
-  navigate("/AppraisalQuestion/index/Edit", {
+     const handleUpdateLiaisonProcess = (rowData) => {
+  navigate("/LiaisonProcess/Process/ProcessEdit", {
     state: {
       question: rowData,
     },
@@ -677,13 +729,6 @@ const handleAddLiaisonProcess = () => {
 
 
   
-  const handleOptionInfo = (row) => {
-  navigate("/AppraisalQuestion/index/Option", {
-    state: {
-      question: row.original,
-    },
-  });
-};  
 
 
 
