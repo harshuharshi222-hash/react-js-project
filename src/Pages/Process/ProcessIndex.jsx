@@ -59,7 +59,6 @@ import UpdatePlanningAuthority from "../../Pages/Process/PlanningUpdate";
 export default function LiaisonProcess() {
   const navigate = useNavigate();
 
- 
 
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -72,7 +71,6 @@ export default function LiaisonProcess() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-
 
 
   const [planningAuthorityOpen, setPlanningAuthorityOpen] =
@@ -594,12 +592,14 @@ export default function LiaisonProcess() {
   ),
 },
 
-      {
-  accessorKey: "process_name",
-  header: "Process Name",
-  size: 160,
 
-  cell: ({ getValue }) => (
+
+
+      {
+        accessorKey: "process_name",
+        header: "Process Name",
+        size: 160,
+       cell: ({ getValue }) => (
     <Tooltip title={getValue() || "-"} arrow>
       <Box
         sx={{
@@ -614,6 +614,7 @@ export default function LiaisonProcess() {
     </Tooltip>
   ),
 },
+
       {
         accessorKey: "process_order",
         header: "Order",
@@ -1347,6 +1348,8 @@ export default function LiaisonProcess() {
           borderRadius: 3,
           overflow:
             "hidden",
+            resize: "vertical",
+            overflow: "auto",
           border:
             "25px solid #ffffff",
         }}
@@ -1475,102 +1478,7 @@ export default function LiaisonProcess() {
 
               {/* TABLE BODY */}
 
-              {/* <TableBody>
-                {loading ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={
-                        columns.length
-                      }
-                      align="center"
-                    >
-                      Loading...
-                    </TableCell>
-                  </TableRow>
-                ) : table.getRowModel()
-                    .rows.length >
-                  0 ? (
-                  table
-                    .getRowModel()
-                    .rows.map(
-                      (row) => (
-                        <StyledTableRow
-                          key={
-                            row.id
-                          }
-                        >
-                          {row
-                            .getVisibleCells()
-                            .map(
-                              (
-                                cell
-                              ) => (
-                                <StyledTableCell
-                                  key={
-                                    cell.id
-                                  }
-                                  sx={{
-                                    width:
-                                      cell.column.getSize(),
-                                    minWidth:
-                                      cell.column.getSize(),
-                                    maxWidth:
-                                      cell.column.getSize(),
-                                    borderRight:
-                                      "1px solid #f0f0f0",
-                                    whiteSpace:
-                                      "normal",
-                                    wordBreak:
-                                      "break-word",
-                                  }}
-                                >
-                                  <Tooltip
-                                    title={
-                                      typeof cell.getValue() ===
-                                      "string"
-                                        ? cell.getValue()
-                                        : ""
-                                    }
-                                    arrow
-                                  >
-                                    <Box
-                                      sx={{
-                                        overflow:
-                                          "hidden",
-                                        textOverflow:
-                                          "ellipsis",
-                                        whiteSpace:
-                                          "nowrap",
-                                      }}
-                                    >
-                                      {flexRender(
-                                        cell
-                                          .column
-                                          .columnDef
-                                          .cell,
-                                        cell.getContext()
-                                      )}
-                                    </Box>
-                                  </Tooltip>
-                                </StyledTableCell>
-                              )
-                            )}
-                        </StyledTableRow>
-                      )
-                    )
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={
-                        columns.length
-                      }
-                      align="center"
-                    >
-                      No Data Found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody> */}
+             
 
               <TableBody>
   {loading ? (
@@ -1640,7 +1548,8 @@ export default function LiaisonProcess() {
               "space-between",
             alignItems:
               "center",
-            p: 2,
+            pt: 1,
+            pb:1,
             borderTop:
               "1px solid #ddd",
             bgcolor:
@@ -1666,7 +1575,7 @@ export default function LiaisonProcess() {
             }
             sx={{
               minWidth: 60,
-              width: 200,
+              width: 300,
               height: 50,
               textTransform:
                 "none",
@@ -1765,7 +1674,7 @@ export default function LiaisonProcess() {
             }
             sx={{
               minWidth: 80,
-              width: 200,
+              width: 300,
               height: 50,
               textTransform:
                 "none",
