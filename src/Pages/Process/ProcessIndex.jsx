@@ -59,9 +59,7 @@ import UpdatePlanningAuthority from "../../Pages/Process/PlanningUpdate";
 export default function LiaisonProcess() {
   const navigate = useNavigate();
 
-  // =========================================================
-  // BASIC STATES
-  // =========================================================
+ 
 
   const [totalRecords, setTotalRecords] = useState(0);
 
@@ -75,9 +73,7 @@ export default function LiaisonProcess() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // =========================================================
-  // PLANNING AUTHORITY POPUP STATES
-  // =========================================================
+
 
   const [planningAuthorityOpen, setPlanningAuthorityOpen] =
     useState(false);
