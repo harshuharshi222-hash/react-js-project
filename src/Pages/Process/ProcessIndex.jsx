@@ -70,6 +70,7 @@ import {
   useGetLiaisonProcessCategoryMutation,
 } from "../../api/constructionApi";
 import { useGetUserMutation } from "../../api/constructionApi";
+import UpdatePlanningAuthority from "../../Pages/Process/PlanningUpdate";
 
 export default function LiaisonProcess() {
 
@@ -538,28 +539,28 @@ const columns = useMemo(
             fontWeight={600}
             color="black"
           >
-            +({authorityList.length - 1})
+            +({authorityList.length - 1}) 
           </Typography>
         )}
 
         {/* Edit Icon */}
-        <Tooltip >
-          <EditIcon
-            sx={{
-              color: "#1976d2",
-              fontSize: 18,
-              cursor: "pointer",
-              ml: 0.5,
-              "&:hover": {
-                color: "#0d47a1",
-              },
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEdit(row.original);
-            }}
-          />
-        </Tooltip>
+        <Tooltip title="Edit Planning Authority">
+  <EditIcon
+    sx={{
+      color: "#1976d2",
+      fontSize: 18,
+      cursor: "pointer",
+      ml: 0.5,
+      "&:hover": {
+        color: "#0d47a1",
+      },
+    }}
+    onClick={(e) => {
+      e.stopPropagation();
+      handleProcessAuthority(row.original);
+    }}
+  />
+</Tooltip>
       </Box>
     );
   },
@@ -729,7 +730,16 @@ const handleAddLiaisonProcess = () => {
 
 
   
+const handleProcessAuthority = (rowData) => {
+  console.log("Planning Authority Edit Row:", rowData);
 
+  navigate("/LiaisonProcess/Process/PlanningUpdate", {
+    state: {
+      processData: rowData,
+      planningAuthority: rowData?.planningAuthority || [],
+    },
+  });
+};
 
 
 

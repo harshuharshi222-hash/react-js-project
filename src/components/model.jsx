@@ -356,7 +356,7 @@ export default function MiniDrawer() {
                     <Route path="/LiaisonProcess/Process" element={<LiaisonProcess />} />
                      <Route path="/LiaisonProcess/Process/ProcessForm" element={<AddLiaisonProcess />} />
                       <Route path="/LiaisonProcess/Process/ProcessEdit" element={<UpdateLiaisonProcess />} />
-                      <Route path="/LiasonProcess/Process/PlanningUpdate" element={<UpdatePlanningAuthority/>} />
+                      <Route path="/LiaisonProcess/Process/PlanningUpdate" element={<UpdatePlanningAuthority />} />
                     </Routes>
               
 
