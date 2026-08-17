@@ -1,4 +1,6 @@
+
 // import React, { useState } from "react";
+
 // import {
 //   Dialog,
 //   Box,
@@ -14,44 +16,138 @@
 // } from "@mui/material";
 
 // import CloseIcon from "@mui/icons-material/Close";
-// import { useLocation, useNavigate } from "react-router-dom";
+
+// import {
+//   useLocation,
+//   useNavigate,
+// } from "react-router-dom";
+
 
 
 // const authorityList = [
-//   { id: 1, name: "BBMP", applicable: false },
-//   { id: 2, name: "BDA", applicable: false },
-//   { id: 3, name: "BIAAPA", applicable: false },
-//   { id: 4, name: "BMICAPA", applicable: false },
-//   { id: 5, name: "BMRDA", applicable: false },
-//   { id: 6, name: "DTCP", applicable: false },
+//   {
+//     id: 1,
+//     name: "BBMP",
+//     applicable: false,
+//   },
+//   {
+//     id: 2,
+//     name: "BDA",
+//     applicable: false,
+//   },
+//   {
+//     id: 3,
+//     name: "BIAAPA",
+//     applicable: false,
+//   },
+//   {
+//     id: 4,
+//     name: "BMICAPA",
+//     applicable: false,
+//   },
+//   {
+//     id: 5,
+//     name: "BMRDA",
+//     applicable: false,
+//   },
+//   {
+//     id: 6,
+//     name: "DTCP",
+//     applicable: false,
+//   },
 //   {
 //     id: 7,
-//     name: "KPL (Kolar Planning Authority",
-//     applicable: true,
+//     name: "KPL (Kolar Planning Authority)",
+//     applicable: false,
 //   },
 //   {
 //     id: 8,
 //     name: "MALUR PLANNING AUTHORITY",
-//     applicable: true,
+//     applicable: false,
 //   },
-//   { id: 9, name: "MUDA", applicable: false },
-//   { id: 10, name: "STRR", applicable: false },
-//   { id: 11, name: "Temp", applicable: false },
-//   { id: 12, name: "TUDA", applicable: false },
+//   {
+//     id: 9,
+//     name: "MUDA",
+//     applicable: false,
+//   },
+//   {
+//     id: 10,
+//     name: "STRR",
+//     applicable: false,
+//   },
+//   {
+//     id: 11,
+//     name: "Temp",
+//     applicable: false,
+//   },
+//   {
+//     id: 12,
+//     name: "TUDA",
+//     applicable: false,
+//   },
 // ];
+
+
 // export default function UpdatePlanningAuthority() {
 //   const location = useLocation();
 //   const navigate = useNavigate();
 
-//   const processData = location.state?.processData;
+
+//   const processData =
+//     location.state?.processData || null;
+
 //   const planningAuthority =
 //     location.state?.planningAuthority || [];
 
-//   console.log("Process Data:", processData);
-//   console.log("Planning Authority:", planningAuthority);
-//   // Select all
+
+//   console.log(
+//     "===================================="
+//   );
+
+//   console.log(
+//     "Planning Authority Update Page"
+//   );
+
+//   console.log(
+//     "Process Data:",
+//     processData
+//   );
+
+//   console.log(
+//     "Planning Authority:",
+//     planningAuthority
+//   );
+
+//   console.log(
+//     "===================================="
+//   );
+
+
+ 
+//   const [authorities, setAuthorities] =
+//     useState(authorityList);
+
+
+
+//   const handleCheckbox = (id) => {
+//     setAuthorities((oldData) =>
+//       oldData.map((item) =>
+//         item.id === id
+//           ? {
+//               ...item,
+//               applicable:
+//                 !item.applicable,
+//             }
+//           : item
+//       )
+//     );
+//   };
+
+
+
 //   const handleSelectAll = (event) => {
-//     const checked = event.target.checked;
+//     const checked =
+//       event.target.checked;
 
 //     setAuthorities((oldData) =>
 //       oldData.map((item) => ({
@@ -61,25 +157,51 @@
 //     );
 //   };
 
-//   // Update button
+
+
 //   const handleUpdate = () => {
-//     const selectedAuthorities = authorities.filter(
-//       (item) => item.applicable
+//     const selectedAuthorities =
+//       authorities.filter(
+//         (item) => item.applicable
+//       );
+
+//     console.log(
+//       "Process Data:",
+//       processData
 //     );
 
-//     console.log("Selected Authorities:", selectedAuthorities);
+//     console.log(
+//       "Selected Authorities:",
+//       selectedAuthorities
+//     );
 
-//     // Later you can call your API here
+
+
+//     alert(
+//       "Planning Authority updated successfully"
+//     );
 //   };
+
+
 
 //   const allSelected =
 //     authorities.length > 0 &&
-//     authorities.every((item) => item.applicable);
+//     authorities.every(
+//       (item) => item.applicable
+//     );
+
+
+ 
+//   const handleClose = () => {
+//     navigate(-1);
+//   };
+
+
 
 //   return (
 //     <Dialog
-//       open={open}
-//       onClose={onClose}
+//       open={true}
+//       onClose={handleClose}
 //       maxWidth="md"
 //       fullWidth
 //       PaperProps={{
@@ -88,17 +210,22 @@
 //         },
 //       }}
 //     >
-//       {/* HEADER */}
+
+     
+
 //       <Box
 //         sx={{
 //           height: "54px",
 //           display: "flex",
 //           alignItems: "center",
-//           justifyContent: "space-between",
-//           borderBottom: "1px solid #ddd",
+//           justifyContent:
+//             "space-between",
+//           borderBottom:
+//             "1px solid #ddd",
 //           px: 2,
 //         }}
 //       >
+
 //         <Typography
 //           sx={{
 //             fontSize: "20px",
@@ -108,27 +235,34 @@
 //           Update Planning Authority
 //         </Typography>
 
+
 //         <IconButton
-//           onClick={onClose}
+//           onClick={handleClose}
 //           sx={{
 //             color: "red",
 //           }}
 //         >
 //           <CloseIcon />
 //         </IconButton>
+
 //       </Box>
 
-//       {/* BODY */}
+
+ 
+
 //       <Box sx={{ p: 2.5 }}>
 
-//         {/* PROCESS */}
+
+   
+
 //         <Box
 //           sx={{
 //             display: "flex",
 //             gap: "5px",
-//             mb: 0.5,
+//             mb: 1,
 //           }}
 //         >
+
 //           <Typography
 //             sx={{
 //               color: "green",
@@ -139,52 +273,75 @@
 //             Process :
 //           </Typography>
 
+
 //           <Typography
 //             sx={{
 //               fontWeight: 700,
 //               fontSize: "14px",
 //             }}
 //           >
-//             {processData?.process_name || "-"}
+//             {processData?.process_name ||
+//               "-"}
 //           </Typography>
+
 //         </Box>
 
-//         {/* TABLE */}
+
+        
+
 //         <Table
 //           sx={{
-//             border: "1px solid #ddd",
-//             tableLayout: "fixed",
+//             border:
+//               "1px solid #ddd",
+//             tableLayout:
+//               "fixed",
 //           }}
 //         >
+
+         
+
 //           <TableHead>
+
 //             <TableRow
 //               sx={{
-//                 backgroundColor: "#eef7fd",
+//                 backgroundColor:
+//                   "#eef7fd",
 //               }}
 //             >
+
+//               {/* SI NO */}
+
 //               <TableCell
 //                 sx={{
 //                   width: "12%",
 //                   fontWeight: 700,
 //                   fontSize: "16px",
-//                   borderRight: "1px solid #ddd",
+//                   borderRight:
+//                     "1px solid #ddd",
 //                   py: 0.7,
 //                 }}
 //               >
 //                 SI No
 //               </TableCell>
 
+
+//               {/* AUTHORITY */}
+
 //               <TableCell
 //                 sx={{
 //                   width: "55%",
 //                   fontWeight: 700,
 //                   fontSize: "16px",
-//                   borderRight: "1px solid #ddd",
+//                   borderRight:
+//                     "1px solid #ddd",
 //                   py: 0.7,
 //                 }}
 //               >
 //                 AUTHORITY
 //               </TableCell>
+
+
+//               {/* APPLICABILITY */}
 
 //               <TableCell
 //                 sx={{
@@ -194,103 +351,153 @@
 //                   py: 0.7,
 //                 }}
 //               >
+
 //                 <Box
 //                   sx={{
 //                     display: "flex",
-//                     alignItems: "center",
+//                     alignItems:
+//                       "center",
 //                   }}
 //                 >
+
 //                   APPLICABILITY
 
+
 //                   <Checkbox
 //                     size="small"
-//                     checked={allSelected}
-//                     onChange={handleSelectAll}
-//                   />
-//                 </Box>
-//               </TableCell>
-//             </TableRow>
-//           </TableHead>
-
-//           <TableBody>
-//             {authorities.map((item, index) => (
-//               <TableRow key={item.id}>
-
-//                 {/* SI NO */}
-//                 <TableCell
-//                   sx={{
-//                     borderRight: "1px solid #ddd",
-//                     py: 0.4,
-//                     fontSize: "16px",
-//                   }}
-//                 >
-//                   {index + 1}
-//                 </TableCell>
-
-//                 {/* AUTHORITY */}
-//                 <TableCell
-//                   sx={{
-//                     borderRight: "1px solid #ddd",
-//                     py: 0.4,
-//                     fontSize: "16px",
-//                   }}
-//                 >
-//                   {item.name}
-//                 </TableCell>
-
-//                 {/* CHECKBOX */}
-//                 <TableCell
-//                   sx={{
-//                     py: 0.4,
-//                   }}
-//                 >
-//                   <Checkbox
-//                     size="small"
-//                     checked={item.applicable}
-//                     onChange={() =>
-//                       handleCheckbox(item.id)
+//                     checked={
+//                       allSelected
+//                     }
+//                     onChange={
+//                       handleSelectAll
 //                     }
 //                   />
-//                 </TableCell>
 
-//               </TableRow>
-//             ))}
+//                 </Box>
+
+//               </TableCell>
+
+//             </TableRow>
+
+//           </TableHead>
+
+
+//           <TableBody>
+
+//             {authorities.map(
+//               (item, index) => (
+
+//                 <TableRow
+//                   key={item.id}
+//                 >
+
+//                   {/* SI NO */}
+
+//                   <TableCell
+//                     sx={{
+//                       borderRight:
+//                         "1px solid #ddd",
+//                       py: 0.4,
+//                       fontSize:
+//                         "16px",
+//                     }}
+//                   >
+//                     {index + 1}
+//                   </TableCell>
+
+
+//                   {/* AUTHORITY */}
+
+//                   <TableCell
+//                     sx={{
+//                       borderRight:
+//                         "1px solid #ddd",
+//                       py: 0.4,
+//                       fontSize:
+//                         "16px",
+//                     }}
+//                   >
+//                     {item.name}
+//                   </TableCell>
+
+
+//                   {/* CHECKBOX */}
+
+//                   <TableCell
+//                     sx={{
+//                       py: 0.4,
+//                     }}
+//                   >
+
+//                     <Checkbox
+//                       size="small"
+//                       checked={
+//                         item.applicable
+//                       }
+//                       onChange={() =>
+//                         handleCheckbox(
+//                           item.id
+//                         )
+//                       }
+//                     />
+
+//                   </TableCell>
+
+//                 </TableRow>
+
+//               )
+//             )}
+
 //           </TableBody>
+
 //         </Table>
 
-//         {/* UPDATE BUTTON */}
+
+
+
 //         <Box
 //           sx={{
 //             display: "flex",
-//             justifyContent: "center",
+//             justifyContent:
+//               "center",
 //             mt: 2,
 //           }}
 //         >
+
 //           <Button
 //             variant="contained"
-//             onClick={handleUpdate}
+//             onClick={
+//               handleUpdate
+//             }
 //             sx={{
-//               backgroundColor: "#1976d2",
+//               backgroundColor:
+//                 "#1976d2",
 //               fontWeight: 700,
 //               fontSize: "14px",
 //               px: 2,
 //               py: 0.8,
+//               "&:hover": {
+//                 backgroundColor:
+//                   "#1565c0",
+//               },
 //             }}
 //           >
 //             UPDATE
 //           </Button>
+
 //         </Box>
 
 //       </Box>
+
 //     </Dialog>
 //   );
 // }
 
 
-
-
-
-import React, { useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Dialog,
@@ -308,179 +515,215 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import {
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-
-
-// ============================================================
+// =========================================================
 // AUTHORITY MASTER LIST
-// ============================================================
+// =========================================================
 
 const authorityList = [
   {
     id: 1,
     name: "BBMP",
-    applicable: false,
   },
   {
     id: 2,
     name: "BDA",
-    applicable: false,
   },
   {
     id: 3,
     name: "BIAAPA",
-    applicable: false,
   },
   {
     id: 4,
     name: "BMICAPA",
-    applicable: false,
   },
   {
     id: 5,
     name: "BMRDA",
-    applicable: false,
   },
   {
     id: 6,
     name: "DTCP",
-    applicable: false,
   },
   {
     id: 7,
     name: "KPL (Kolar Planning Authority)",
-    applicable: false,
   },
   {
     id: 8,
     name: "MALUR PLANNING AUTHORITY",
-    applicable: false,
   },
   {
     id: 9,
     name: "MUDA",
-    applicable: false,
   },
   {
     id: 10,
     name: "STRR",
-    applicable: false,
   },
   {
     id: 11,
     name: "Temp",
-    applicable: false,
   },
   {
     id: 12,
     name: "TUDA",
-    applicable: false,
   },
 ];
 
-
-// ============================================================
+// =========================================================
 // COMPONENT
-// ============================================================
+// =========================================================
 
-export default function UpdatePlanningAuthority() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-
-  // ============================================================
-  // DATA RECEIVED FROM LIAISON PROCESS PAGE
-  // ============================================================
-
-  const processData =
-    location.state?.processData || null;
-
-  const planningAuthority =
-    location.state?.planningAuthority || [];
-
-
-  // ============================================================
-  // DEBUG
-  // ============================================================
-
-  console.log(
-    "===================================="
-  );
-
-  console.log(
-    "Planning Authority Update Page"
-  );
-
-  console.log(
-    "Process Data:",
-    processData
-  );
-
-  console.log(
-    "Planning Authority:",
-    planningAuthority
-  );
-
-  console.log(
-    "===================================="
-  );
-
-
-  // ============================================================
+export default function UpdatePlanningAuthority({
+  open,
+  onClose,
+  processData,
+  planningAuthority = [],
+  onUpdate,
+}) {
+  // =======================================================
   // AUTHORITY STATE
-  // ============================================================
+  // =======================================================
 
   const [authorities, setAuthorities] =
-    useState(authorityList);
+    useState([]);
 
+  // =======================================================
+  // WHEN POPUP OPENS
+  // LOAD EXISTING PLANNING AUTHORITY
+  // =======================================================
 
-  // ============================================================
-  // INDIVIDUAL CHECKBOX
-  // ============================================================
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    console.log(
+      "===================================="
+    );
+
+    console.log(
+      "Planning Authority Popup Open"
+    );
+
+    console.log(
+      "Process Data:",
+      processData
+    );
+
+    console.log(
+      "Planning Authority:",
+      planningAuthority
+    );
+
+    console.log(
+      "===================================="
+    );
+
+    // =====================================================
+    // CREATE AUTHORITY LIST
+    // =====================================================
+
+    const existingAuthorities =
+      planningAuthority || [];
+
+    const updatedAuthorities =
+      authorityList.map(
+        (authority) => {
+          const matchedAuthority =
+            existingAuthorities.find(
+              (item) => {
+                const apiName =
+                  item?.authority_name
+                    ?.replace(
+                      /<[^>]*>/g,
+                      ""
+                    )
+                    ?.trim()
+                    ?.toLowerCase();
+
+                return (
+                  apiName ===
+                  authority.name
+                    .trim()
+                    .toLowerCase()
+                );
+              }
+            );
+
+          return {
+            ...authority,
+
+            applicable:
+              Boolean(
+                matchedAuthority
+              ),
+          };
+        }
+      );
+
+    setAuthorities(
+      updatedAuthorities
+    );
+  }, [
+    open,
+    processData,
+    planningAuthority,
+  ]);
+
+  // =======================================================
+  // CHECK / UNCHECK INDIVIDUAL
+  // =======================================================
 
   const handleCheckbox = (id) => {
-    setAuthorities((oldData) =>
-      oldData.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              applicable:
-                !item.applicable,
-            }
-          : item
-      )
+    setAuthorities(
+      (oldData) =>
+        oldData.map(
+          (item) =>
+            item.id === id
+              ? {
+                  ...item,
+
+                  applicable:
+                    !item.applicable,
+                }
+              : item
+        )
     );
   };
 
-
-  // ============================================================
+  // =======================================================
   // SELECT ALL
-  // ============================================================
+  // =======================================================
 
-  const handleSelectAll = (event) => {
+  const handleSelectAll = (
+    event
+  ) => {
     const checked =
       event.target.checked;
 
-    setAuthorities((oldData) =>
-      oldData.map((item) => ({
-        ...item,
-        applicable: checked,
-      }))
+    setAuthorities(
+      (oldData) =>
+        oldData.map(
+          (item) => ({
+            ...item,
+
+            applicable:
+              checked,
+          })
+        )
     );
   };
 
-
-  // ============================================================
-  // UPDATE BUTTON
-  // ============================================================
+  // =======================================================
+  // UPDATE
+  // =======================================================
 
   const handleUpdate = () => {
     const selectedAuthorities =
       authorities.filter(
-        (item) => item.applicable
+        (item) =>
+          item.applicable
       );
 
     console.log(
@@ -493,272 +736,306 @@ export default function UpdatePlanningAuthority() {
       selectedAuthorities
     );
 
+    // Send selected authorities
+    // back to parent component.
 
-    // ========================================================
-    // API CALL WILL BE ADDED HERE
-    // ========================================================
-
-    // Example:
-    //
-    // const payload = {
-    //   processId: processData?.process_id,
-    //   authorities: selectedAuthorities,
-    // };
-    //
-    // console.log("UPDATE PAYLOAD:", payload);
-
-
-    alert(
-      "Planning Authority updated successfully"
-    );
+    if (onUpdate) {
+      onUpdate(
+        selectedAuthorities
+      );
+    } else {
+      alert(
+        "Planning Authority updated successfully"
+      );
+    }
   };
 
-
-  // ============================================================
-  // CHECK WHETHER ALL ARE SELECTED
-  // ============================================================
+  // =======================================================
+  // SELECT ALL CHECKBOX STATUS
+  // =======================================================
 
   const allSelected =
     authorities.length > 0 &&
     authorities.every(
-      (item) => item.applicable
+      (item) =>
+        item.applicable
     );
 
+  // =======================================================
+  // SOME SELECTED
+  // =======================================================
 
-  // ============================================================
-  // CLOSE PAGE
-  // ============================================================
+  const someSelected =
+    authorities.some(
+      (item) =>
+        item.applicable
+    ) &&
+    !allSelected;
 
-  const handleClose = () => {
-    navigate(-1);
-  };
-
-
-  // ============================================================
-  // UI
-  // ============================================================
+  // =======================================================
+  // RETURN
+  // =======================================================
 
   return (
     <Dialog
-      open={true}
-      onClose={handleClose}
+      open={open}
+      onClose={onClose}
       maxWidth="md"
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: "5px",
+          borderRadius:
+            "5px",
         },
       }}
     >
-
-      {/* ======================================================
+      {/* =================================================
           HEADER
-      ====================================================== */}
+      ================================================== */}
 
       <Box
         sx={{
           height: "54px",
-          display: "flex",
-          alignItems: "center",
+
+          display:
+            "flex",
+
+          alignItems:
+            "center",
+
           justifyContent:
             "space-between",
+
           borderBottom:
             "1px solid #ddd",
+
           px: 2,
         }}
       >
-
         <Typography
           sx={{
-            fontSize: "20px",
-            fontWeight: 600,
+            fontSize:
+              "20px",
+
+            fontWeight:
+              600,
           }}
         >
           Update Planning Authority
         </Typography>
 
-
         <IconButton
-          onClick={handleClose}
+          onClick={onClose}
           sx={{
             color: "red",
           }}
         >
           <CloseIcon />
         </IconButton>
-
       </Box>
 
+      {/* =================================================
+          CONTENT
+      ================================================== */}
 
-      {/* ======================================================
-          BODY
-      ====================================================== */}
-
-      <Box sx={{ p: 2.5 }}>
-
-
-        {/* ====================================================
-            PROCESS NAME
-        ==================================================== */}
+      <Box
+        sx={{
+          p: 2.5,
+        }}
+      >
+        {/* PROCESS NAME */}
 
         <Box
           sx={{
-            display: "flex",
+            display:
+              "flex",
+
             gap: "5px",
+
             mb: 1,
           }}
         >
-
           <Typography
             sx={{
-              color: "green",
-              fontWeight: 700,
-              fontSize: "15px",
+              color:
+                "green",
+
+              fontWeight:
+                700,
+
+              fontSize:
+                "15px",
             }}
           >
             Process :
           </Typography>
 
-
           <Typography
             sx={{
-              fontWeight: 700,
-              fontSize: "14px",
+              fontWeight:
+                700,
+
+              fontSize:
+                "14px",
             }}
           >
             {processData?.process_name ||
               "-"}
           </Typography>
-
         </Box>
 
-
-        {/* ====================================================
-            TABLE
-        ==================================================== */}
+        {/* =================================================
+            AUTHORITY TABLE
+        ================================================== */}
 
         <Table
           sx={{
             border:
               "1px solid #ddd",
+
             tableLayout:
               "fixed",
           }}
         >
-
-          {/* ==================================================
-              HEADER
-          ================================================== */}
+          {/* TABLE HEADER */}
 
           <TableHead>
-
             <TableRow
               sx={{
                 backgroundColor:
                   "#eef7fd",
               }}
             >
-
               {/* SI NO */}
 
               <TableCell
                 sx={{
-                  width: "12%",
-                  fontWeight: 700,
-                  fontSize: "16px",
+                  width:
+                    "12%",
+
+                  fontWeight:
+                    700,
+
+                  fontSize:
+                    "16px",
+
                   borderRight:
                     "1px solid #ddd",
+
                   py: 0.7,
                 }}
               >
                 SI No
               </TableCell>
 
-
               {/* AUTHORITY */}
 
               <TableCell
                 sx={{
-                  width: "55%",
-                  fontWeight: 700,
-                  fontSize: "16px",
+                  width:
+                    "55%",
+
+                  fontWeight:
+                    700,
+
+                  fontSize:
+                    "16px",
+
                   borderRight:
                     "1px solid #ddd",
+
                   py: 0.7,
                 }}
               >
                 AUTHORITY
               </TableCell>
 
-
               {/* APPLICABILITY */}
 
               <TableCell
                 sx={{
-                  width: "33%",
-                  fontWeight: 700,
-                  fontSize: "16px",
+                  width:
+                    "33%",
+
+                  fontWeight:
+                    700,
+
+                  fontSize:
+                    "16px",
+
                   py: 0.7,
                 }}
               >
-
                 <Box
                   sx={{
-                    display: "flex",
+                    display:
+                      "flex",
+
                     alignItems:
                       "center",
+
+                    justifyContent:
+                      "space-between",
                   }}
                 >
+                  <Typography
+                    sx={{
+                      fontWeight:
+                        700,
 
-                  APPLICABILITY
-
+                      fontSize:
+                        "16px",
+                    }}
+                  >
+                    APPLICABILITY
+                  </Typography>
 
                   <Checkbox
                     size="small"
                     checked={
                       allSelected
                     }
+                    indeterminate={
+                      someSelected
+                    }
                     onChange={
                       handleSelectAll
                     }
                   />
-
                 </Box>
-
               </TableCell>
-
             </TableRow>
-
           </TableHead>
 
-
-          {/* ==================================================
-              BODY
-          ================================================== */}
+          {/* TABLE BODY */}
 
           <TableBody>
-
             {authorities.map(
-              (item, index) => (
-
+              (
+                item,
+                index
+              ) => (
                 <TableRow
-                  key={item.id}
+                  key={
+                    item.id
+                  }
                 >
-
                   {/* SI NO */}
 
                   <TableCell
                     sx={{
                       borderRight:
                         "1px solid #ddd",
+
                       py: 0.4,
+
                       fontSize:
                         "16px",
                     }}
                   >
-                    {index + 1}
+                    {index +
+                      1}
                   </TableCell>
-
 
                   {/* AUTHORITY */}
 
@@ -766,14 +1043,17 @@ export default function UpdatePlanningAuthority() {
                     sx={{
                       borderRight:
                         "1px solid #ddd",
+
                       py: 0.4,
+
                       fontSize:
                         "16px",
                     }}
                   >
-                    {item.name}
+                    {
+                      item.name
+                    }
                   </TableCell>
-
 
                   {/* CHECKBOX */}
 
@@ -782,44 +1062,41 @@ export default function UpdatePlanningAuthority() {
                       py: 0.4,
                     }}
                   >
-
                     <Checkbox
                       size="small"
+
                       checked={
                         item.applicable
                       }
+
                       onChange={() =>
                         handleCheckbox(
                           item.id
                         )
                       }
                     />
-
                   </TableCell>
-
                 </TableRow>
-
               )
             )}
-
           </TableBody>
-
         </Table>
 
-
-        {/* ====================================================
+        {/* =================================================
             UPDATE BUTTON
-        ==================================================== */}
+        ================================================== */}
 
         <Box
           sx={{
-            display: "flex",
+            display:
+              "flex",
+
             justifyContent:
               "center",
+
             mt: 2,
           }}
         >
-
           <Button
             variant="contained"
             onClick={
@@ -828,10 +1105,17 @@ export default function UpdatePlanningAuthority() {
             sx={{
               backgroundColor:
                 "#1976d2",
-              fontWeight: 700,
-              fontSize: "14px",
+
+              fontWeight:
+                700,
+
+              fontSize:
+                "14px",
+
               px: 2,
+
               py: 0.8,
+
               "&:hover": {
                 backgroundColor:
                   "#1565c0",
@@ -840,11 +1124,8 @@ export default function UpdatePlanningAuthority() {
           >
             UPDATE
           </Button>
-
         </Box>
-
       </Box>
-
     </Dialog>
   );
 }
