@@ -62,12 +62,21 @@ export default function LiaisonProcess() {
 
   const [totalRecords, setTotalRecords] = useState(0);
 
-  const [searchText, setSearchText] = useState("");
 
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("Active");
-  const [user, setUser] = useState("");
-  const [ismandatory, setIsMandatory] = useState("");
+
+  // Filter values currently selected in the UI
+const [searchText, setSearchText] = useState("");
+const [category, setCategory] = useState("");
+const [status, setStatus] = useState("Active");
+const [user, setUser] = useState("");
+const [ismandatory, setIsMandatory] = useState("");
+
+// Filter values actually applied after clicking Search
+const [appliedSearchText, setAppliedSearchText] = useState("");
+const [appliedCategory, setAppliedCategory] = useState("");
+const [appliedStatus, setAppliedStatus] = useState("Active");
+const [appliedUser, setAppliedUser] = useState("");
+const [appliedIsMandatory, setAppliedIsMandatory] = useState("");
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -110,20 +119,25 @@ export default function LiaisonProcess() {
     try {
       setLoading(true);
 
-      const payload = {
-        userID: "169548080048036100",
-        processStatus: status,
-        processCategory: category,
-        processOwner: user,
-        isMandatory: ismandatory,
-        completionType: "",
-        executionType: "",
-        generalSearch: searchText,
-        sortOrder: "",
-        iDisplayStart: pageIndex * pageSize,
-        iDisplayLength: pageSize,
-      };
+        const payload = {
+  userID: "169548080048036100",
 
+  // Only use filters after Search button is clicked
+  processStatus: appliedStatus,
+  processCategory: appliedCategory,
+  processOwner: appliedUser,
+  isMandatory: appliedIsMandatory,
+
+  completionType: "",
+  executionType: "",
+
+  generalSearch: appliedSearchText,
+
+  sortOrder: "",
+
+  iDisplayStart: pageIndex * pageSize,
+  iDisplayLength: pageSize,
+};
       const response =
         await getLiaisonProcessApi(
           JSON.stringify(payload)
@@ -160,21 +174,22 @@ export default function LiaisonProcess() {
   };
 
 
-  useEffect(() => {
-    getLiaisonProcess(
-      pagination.pageIndex,
-      pagination.pageSize
-    );
-  }, [
+ 
+
+useEffect(() => {
+  getLiaisonProcess(
     pagination.pageIndex,
-    pagination.pageSize,
-    status,
-    category,
-    user,
-    ismandatory,
-  ]);
-
-
+    pagination.pageSize
+  );
+}, [
+  pagination.pageIndex,
+  pagination.pageSize,
+  appliedSearchText,
+  appliedCategory,
+  appliedStatus,
+  appliedUser,
+  appliedIsMandatory,
+]);
 
   useEffect(() => {
     fetchCategory();
@@ -983,18 +998,10 @@ export default function LiaisonProcess() {
             <Select
               value={category}
               label="Category"
+            
               onChange={(e) => {
-                setCategory(
-                  e.target.value
-                );
-
-                setPagination(
-                  (prev) => ({
-                    ...prev,
-                    pageIndex: 0,
-                  })
-                );
-              }}
+  setCategory(e.target.value);
+}}
               endAdornment={
                 category && (
                   <InputAdornment
@@ -1067,18 +1074,10 @@ export default function LiaisonProcess() {
             <Select
               value={user}
               label="User"
+             
               onChange={(e) => {
-                setUser(
-                  e.target.value
-                );
-
-                setPagination(
-                  (prev) => ({
-                    ...prev,
-                    pageIndex: 0,
-                  })
-                );
-              }}
+  setUser(e.target.value);
+}}
               endAdornment={
                 user && (
                   <InputAdornment
@@ -1152,19 +1151,10 @@ export default function LiaisonProcess() {
                 ismandatory
               }
               label="Is Mandatory"
+             
               onChange={(e) => {
-                setIsMandatory(
-                  e.target.value
-                );
-
-                setPagination(
-                  (prev) => ({
-                    ...prev,
-                    pageIndex: 0,
-                  })
-                );
-              }}
-              
+  setIsMandatory(e.target.value);
+}}
             >
              
               <MenuItem value="default">
@@ -1238,25 +1228,31 @@ export default function LiaisonProcess() {
 
           {/* SEARCH BUTTON */}
 
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => {
-              setPagination(
-                (prev) => ({
-                  ...prev,
-                  pageIndex: 0,
-                })
-              );
+         
 
-              getLiaisonProcess(
-                0,
-                pagination.pageSize
-              );
-            }}
-          >
-            Search
-          </Button>
+          <Button
+  variant="contained"
+  size="small"
+  onClick={() => {
+    // Apply currently selected filters
+    setAppliedSearchText(searchText);
+    setAppliedCategory(category);
+    setAppliedStatus(status);
+    setAppliedUser(user);
+    setAppliedIsMandatory(ismandatory);
+
+    // Go back to first page
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: 0,
+    }));
+
+    // setCategory("");
+    // setUser("");
+  }}
+>
+  Search
+</Button>
         </Box>
       </Paper>
 
