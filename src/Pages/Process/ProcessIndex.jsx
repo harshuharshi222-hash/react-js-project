@@ -1172,8 +1172,8 @@ export default function LiaisonProcess() {
                 LegalOption
               </MenuItem>
 
-              <MenuItem value="liasonoption">
-                LiasonOption
+              <MenuItem value="liaisonoption">
+                LiaisonOption
               </MenuItem>
             </Select>
           </FormControl>
@@ -1256,9 +1256,7 @@ export default function LiaisonProcess() {
         </Box>
       </Paper>
 
-      {/* =====================================================
-          PAGE HEADER
-      ====================================================== */}
+ 
 
       <Paper
         elevation={0}
@@ -1339,9 +1337,7 @@ export default function LiaisonProcess() {
         </Box>
       </Paper>
 
-      {/* =====================================================
-          TABLE
-      ====================================================== */}
+      {/* TABLE */}
 
       <Paper
         sx={{
@@ -1536,9 +1532,9 @@ export default function LiaisonProcess() {
           </TableContainer>
         </div>
 
-        {/* ===================================================
+        {/* 
             PAGINATION
-        ==================================================== */}
+        */}
 
         <Box
           sx={{
