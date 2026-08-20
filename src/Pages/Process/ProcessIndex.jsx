@@ -1003,12 +1003,9 @@ export default function LiaisonProcess() {
                       mr: 2,
                     }}
                   >
-                    <ClearIcon
+                    <IconButton
                       fontSize="small"
-                      sx={{
-                        cursor:
-                          "pointer",
-                      }}
+                      
                       onClick={(
                         e
                       ) => {
@@ -1027,7 +1024,11 @@ export default function LiaisonProcess() {
                           })
                         );
                       }}
-                    />
+                    >
+                       <ClearIcon
+                        fontSize="small"
+                      />
+                      </IconButton>
                   </InputAdornment>
                 )
               }
@@ -1036,10 +1037,10 @@ export default function LiaisonProcess() {
                 (item) => (
                   <MenuItem
                     key={
-                      item.process_category_id
+                      item.id
                     }
                     value={
-                      item.process_category_id
+                      item.id
                     }
                   >
                     {
