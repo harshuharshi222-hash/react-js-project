@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -14,6 +14,12 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
+
+
+import {
+  useGetUserMutation,
+  useGetLiaisonProcessCategoryMutation,
+} from "../../api/constructionApi";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
@@ -33,6 +39,14 @@ export default function AddLiaisonProcess() {
 
   const [formData, setFormData] = useState(initialForm);
 
+  const [userList, setUserList] = useState([]);
+const [categoryList, setCategoryList] = useState([]);
+
+const [getUser] = useGetUserMutation();
+
+const [getLiaisonProcessCategory] =
+  useGetLiaisonProcessCategoryMutation();
+
   // Handle form changes
   const handleChange = (field) => (event) => {
     setFormData((prev) => ({
@@ -40,6 +54,75 @@ export default function AddLiaisonProcess() {
       [field]: event.target.value,
     }));
   };
+
+
+useEffect(() => {
+  fetchUsers();
+  fetchCategories();
+}, []);
+
+const fetchUsers = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      departmentID: "",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
+    };
+
+    const response = await getUser(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("User API Response:", response);
+
+    if (response?.data) {
+      setUserList(response.data);
+    } else if (response?.user) {
+      setUserList(response.user);
+    } else {
+      setUserList([]);
+    }
+  } catch (error) {
+    console.error("User API Error:", error);
+    setUserList([]);
+  }
+};
+
+const fetchCategories = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+    };
+
+    const response = await getLiaisonProcessCategory(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log(
+      "Liaison Process Category API Response:",
+      response
+    );
+
+    if (response?.data) {
+      setCategoryList(response.data);
+    } else {
+      setCategoryList([]);
+    }
+  } catch (error) {
+    console.error(
+      "Liaison Process Category API Error:",
+      error
+    );
+
+    setCategoryList([]);
+  }
+};
+
+
+
 
   // Reset form
   const handleReset = () => {
@@ -108,64 +191,74 @@ export default function AddLiaisonProcess() {
         }}
       >
        
-        <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-          <Select
-            value={formData.categoryName}
-            onChange={handleChange("categoryName")}
-            displayEmpty
-            sx={{
-              height: 40,
-              fontSize: "16px",
-              color: "#526477",
+       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
+  <Select
+    value={formData.categoryName}
+    onChange={handleChange("categoryName")}
+    displayEmpty
+    sx={{
+      height: 40,
+      fontSize: "16px",
+      color: "#526477",
 
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#c7c7c7",
-              },
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#c7c7c7",
+      },
 
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#999",
-              },
-            }}
-          >
-            <MenuItem value="">
-              <span>Category Name</span>
-            </MenuItem>
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#999",
+      },
+    }}
+  >
+    <MenuItem value="">
+      <span>Category Name</span>
+    </MenuItem>
 
-            <MenuItem value="Category 1">Category 1</MenuItem>
-            <MenuItem value="Category 2">Category 2</MenuItem>
-            <MenuItem value="Category 3">Category 3</MenuItem>
-          </Select>
-        </FormControl>
+    {categoryList.map((item) => (
+      <MenuItem
+        key={item.category_id}
+        value={item.category_id}
+      >
+        {item.category_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
        
         <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-          <Select
-            value={formData.ownerName}
-            onChange={handleChange("ownerName")}
-            displayEmpty
-            sx={{
-              height: 40,
-              fontSize: "16px",
-              color: "#526477",
+  <Select
+    value={formData.ownerName}
+    onChange={handleChange("ownerName")}
+    displayEmpty
+    sx={{
+      height: 40,
+      fontSize: "16px",
+      color: "#526477",
 
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#c7c7c7",
-              },
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#c7c7c7",
+      },
 
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#999",
-              },
-            }}
-          >
-            <MenuItem value="">
-              <span>Owner Name</span>
-            </MenuItem>
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#999",
+      },
+    }}
+  >
+    <MenuItem value="">
+      <span>Owner Name</span>
+    </MenuItem>
 
-            <MenuItem value="Owner 1">Owner 1</MenuItem>
-            <MenuItem value="Owner 2">Owner 2</MenuItem>
-            <MenuItem value="Owner 3">Owner 3</MenuItem>
-          </Select>
-        </FormControl>
+    {userList.map((item) => (
+      <MenuItem
+        key={item.user_id || item.id}
+        value={item.user_id || item.id}
+      >
+        {item.user_name || item.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
        
         <FormControl fullWidth size="small" sx={{ mb: 2 }}>
