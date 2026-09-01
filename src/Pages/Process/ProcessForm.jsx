@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import InputAdornment from "@mui/material/InputAdornment";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Button,
+    InputLabel,
   FormControl,
   MenuItem,
   Select,
+  IconButton,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -25,7 +29,8 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function AddLiaisonProcess() {
   const navigate = useNavigate();
-
+const [category, setCategory] = useState("");
+const [ownerName, setOwnername] = useState("");
   const initialForm = {
     categoryName: "",
     ownerName: "",
@@ -118,9 +123,9 @@ const fetchCategories = async () => {
     );
 
     setCategoryList([]);
-  }
+  } 
 };
-
+  
 
 
 
@@ -191,63 +196,113 @@ const fetchCategories = async () => {
         }}
       >
        
-       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-  <Select
-    value={formData.categoryName}
-    onChange={handleChange("categoryName")}
-    displayEmpty
-    sx={{
-      height: 40,
-      fontSize: "16px",
-      color: "#526477",
+      
 
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#c7c7c7",
-      },
 
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#999",
-      },
-    }}
-  >
-    <MenuItem value="">
-      <span>Category Name</span>
-    </MenuItem>
+<FormControl fullWidth size="small" sx={{ mb: 2 }}>
+            <InputLabel>
+              Category
+            </InputLabel>
 
-    {categoryList.map((item) => (
-      <MenuItem
-        key={item.category_id}
-        value={item.category_id}
-      >
-        {item.category_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+            <Select
+              value={category}
+              label="Category"
+            
+              onChange={(e) => {
+  setCategory(e.target.value);
+}}
+              endAdornment={
+                category && (
+                  <InputAdornment
+                    position="end"
+                    sx={{
+                      mr: 2,
+                    }}
+                  >
+                    <IconButton
+                      fontSize="small"
+                      
+                      onClick={(
+                        e
+                      ) => {
+                        e.stopPropagation();
+
+                        setCategory(
+                          ""
+                        );
+
+                        
+                      }}
+                    >
+                       <ClearIcon
+                        fontSize="small"
+                      />
+                      </IconButton>
+                  </InputAdornment>
+                )
+              }
+            >
+              {categoryList.map(
+                (item) => (
+                  <MenuItem
+                    key={
+                      item.id
+                    }
+                    value={
+                      item.id
+                    }
+                  >
+                    {
+                      item.process_category_name
+                    }
+                  </MenuItem>
+                )
+              )}
+            </Select>
+          </FormControl>
 
        
         <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-  <Select
-    value={formData.ownerName}
-    onChange={handleChange("ownerName")}
-    displayEmpty
-    sx={{
-      height: 40,
-      fontSize: "16px",
-      color: "#526477",
+ <InputLabel>
+             Owner Name
+            </InputLabel>
+ <Select
+    value={ownerName}
+    label="Owner Name"
+     onChange={(e) => {
+  setOwnername(e.target.value);}}
 
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#c7c7c7",
-      },
+   endAdornment={
+                ownerName && (
+                  <InputAdornment
+                    position="end"
+                    sx={{
+                      mr: 2,
+                    }}
+                  >
+                    <IconButton
+                      fontSize="small"
+                      
+                      onClick={(
+                        e
+                      ) => {
+                        e.stopPropagation();
 
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#999",
-      },
-    }}
-  >
-    <MenuItem value="">
-      <span>Owner Name</span>
-    </MenuItem>
+                        setOwnername(
+                          ""
+                        );
+
+                        
+                      }}
+                    >
+                       <ClearIcon
+                        fontSize="small"
+                      />
+                      </IconButton>
+                  </InputAdornment>
+                )
+              }
+            >
 
     {userList.map((item) => (
       <MenuItem
@@ -264,6 +319,7 @@ const fetchCategories = async () => {
         <FormControl fullWidth size="small" sx={{ mb: 2 }}>
           <Select
             value={formData.isMandatory}
+            
             onChange={handleChange("isMandatory")}
             displayEmpty
             sx={{
@@ -283,9 +339,13 @@ const fetchCategories = async () => {
             <MenuItem value="">
               <span>Is Mandatory</span>
             </MenuItem>
-
-            <MenuItem value="Yes">Yes</MenuItem>
-            <MenuItem value="No">No</MenuItem>
+            <MenuItem value="">
+              <span>Is Mandatory</span>
+            </MenuItem>
+            <MenuItem value="">
+              <span>Is Mandatory</span>
+            </MenuItem>
+            
           </Select>
         </FormControl>
 

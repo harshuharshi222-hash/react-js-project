@@ -136,7 +136,7 @@ const [appliedIsMandatory, setAppliedIsMandatory] = useState("");
   sortOrder: "",
 
   iDisplayStart: pageIndex * pageSize,
-   iDisplayLength: pageSize,
+    iDisplayLength: pageSize,
 };
       const response =
         await getLiaisonProcessApi(
