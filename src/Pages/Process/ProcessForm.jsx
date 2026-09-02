@@ -29,6 +29,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function AddLiaisonProcess() {
   const navigate = useNavigate();
+  const [ismandatory, setIsMandatory] = useState("");
 const [category, setCategory] = useState("");
 const [ownerName, setOwnername] = useState("");
   const initialForm = {
@@ -316,60 +317,84 @@ const fetchCategories = async () => {
 </FormControl>
 
        
-        <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-          <Select
-            value={formData.isMandatory}
-            
-            onChange={handleChange("isMandatory")}
-            displayEmpty
-            sx={{
-              height: 40,
-              fontSize: "16px",
-              color: "#526477",
+       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
+ 
+                    <InputLabel>
+                      Is Mandatory
+                    </InputLabel>
+        
+                    <Select
+                      value={
+                        ismandatory
+                      }
+                      label="Is Mandatory"
+                     
+                      onChange={(e) => {
+          setIsMandatory(e.target.value);
+        }}
+                    >
+                     
+                      <MenuItem value="default">
+                        Default
+                      </MenuItem>
+        
+                      <MenuItem value="legaloption">
+                        LegalOption
+                      </MenuItem>
+        
+                      <MenuItem value="liaisonoption">
+                        LiaisonOption
+                      </MenuItem>
 
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#c7c7c7",
-              },
+                       
 
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#999",
-              },
-            }}
-          >
-            <MenuItem value="">
-              <span>Is Mandatory</span>
-            </MenuItem>
-            <MenuItem value="">
-              <span>Is Mandatory</span>
-            </MenuItem>
-            <MenuItem value="">
-              <span>Is Mandatory</span>
-            </MenuItem>
-            
-          </Select>
-        </FormControl>
+                    </Select>
+                    
+                    
+                  </FormControl>
 
        
         <TextField
-          fullWidth
+  fullWidth
+  size="small"
+  label="Process Name"
+  placeholder="Process Name"
+  value={formData.processName}
+  onChange={handleChange("processName")}
+  InputProps={{
+    endAdornment: formData.processName && (
+      <InputAdornment position="end">
+        <IconButton
           size="small"
-          placeholder="Process Name"
-          value={formData.processName}
-          onChange={handleChange("processName")}
-          sx={{
-            mb: 2,
+          onClick={() =>
+            handleChange("processName")({
+              target: { value: "" },
+            })
+          }
+          edge="end"
+        >
+          <ClearIcon fontSize="small" />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+  sx={{
+    mb: 2,
 
-            "& .MuiOutlinedInput-root": {
-              height: 40,
-            },
+    "& .MuiOutlinedInput-root": {
+      height: 40,
+    },
 
-            "& .MuiOutlinedInput-input": {
-              fontSize: "16px",
-              color: "#526477",
-            },
-          }}
-        />
+    "& .MuiOutlinedInput-input": {
+      fontSize: "16px",
+      color: "#526477",
+    },
 
+    "& .MuiInputLabel-root": {
+      fontSize: "14px",
+    },
+  }}
+/>
        
         <Box sx={{ mb: 2 }}>
           <Typography
@@ -559,25 +584,58 @@ const fetchCategories = async () => {
         </Box>
 
       
+     
+
         <TextField
-          fullWidth
+  fullWidth
+  size="small"
+  label="Process Order"
+  placeholder="Process Order"
+  value={formData.processOrder}
+  onChange={(e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    handleChange("processOrder")({
+      target: { value },
+    });
+  }}
+  inputProps={{
+    inputMode: "numeric",
+    pattern: "[0-9]*",
+  }}
+  InputProps={{
+    endAdornment: formData.processOrder && (
+      <InputAdornment position="end">
+        <IconButton
           size="small"
-          placeholder="Process Order"
-          value={formData.processOrder}
-          onChange={handleChange("processOrder")}
-          sx={{
-            mt: 1,
+          onClick={() =>
+            handleChange("processOrder")({
+              target: { value: "" },
+            })
+          }
+          edge="end"
+        >
+          <ClearIcon fontSize="small" />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+  sx={{
+    mt: 1,
 
-            "& .MuiOutlinedInput-root": {
-              height: 40,
-            },
+    "& .MuiOutlinedInput-root": {
+      height: 40,
+    },
 
-            "& .MuiOutlinedInput-input": {
-              fontSize: "16px",
-              color: "#526477",
-            },
-          }}
-        />
+    "& .MuiOutlinedInput-input": {
+      fontSize: "16px",
+      color: "#526477",
+    },
+
+    "& .MuiInputLabel-root": {
+      fontSize: "14px",
+    },
+  }}
+/>
       </Box>
 
     
