@@ -214,6 +214,22 @@ getUser: builder.mutation({
   }),
 }),
 
+createLiaisonProcess: builder.mutation({
+  query: (payload) => ({
+    url: "/dev/RestAPI_V1/v2/createLiaisonProcess",
+    method: "POST",
+    body: payload,
+  }),
+}),
+
+
+getLiaisonProcessAuthorityMap: builder.mutation({
+  query: (payload) => ({
+    url: "/dev/RestAPI_V1/v2/getLiaisonProcessAuthorityMap",
+    method: "POST",
+    body: payload,
+  }),
+}),
 
 
 
@@ -246,6 +262,8 @@ export const {
     useGetLiaisonProcessMutation,
     useGetLiaisonProcessCategoryMutation,
     useGetUserMutation,
+    useCreateLiaisonProcessMutation,
+    useGetLiaisonProcessAuthorityMapMutation
 
   
    

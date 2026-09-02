@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import InputAdornment from "@mui/material/InputAdornment";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useFormik } from "formik";
 import {
   Box,
   Button,
@@ -17,12 +18,15 @@ import {
   FormControlLabel,
   Typography,
   TextField,
+   Snackbar,
+  Alert,
 } from "@mui/material";
 
 
 import {
   useGetUserMutation,
   useGetLiaisonProcessCategoryMutation,
+    useCreateLiaisonProcessMutation,
 } from "../../api/constructionApi";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -32,6 +36,7 @@ export default function AddLiaisonProcess() {
   const [ismandatory, setIsMandatory] = useState("");
 const [category, setCategory] = useState("");
 const [ownerName, setOwnername] = useState("");
+const [successMessage, setSuccessMessage] = useState(false);
   const initialForm = {
     categoryName: "",
     ownerName: "",
@@ -52,6 +57,9 @@ const [getUser] = useGetUserMutation();
 
 const [getLiaisonProcessCategory] =
   useGetLiaisonProcessCategoryMutation();
+
+const [createLiaisonProcess, { isLoading: isSaving }] =
+  useCreateLiaisonProcessMutation();
 
   // Handle form changes
   const handleChange = (field) => (event) => {
@@ -127,7 +135,13 @@ const fetchCategories = async () => {
   } 
 };
   
-
+const [errors, setErrors] = useState({
+  category: "",
+  ownerName: "",
+  ismandatory: "",
+  processName: "",
+  processOrder: "",
+});
 
 
   // Reset form
@@ -141,12 +155,107 @@ const fetchCategories = async () => {
   };
 
   // Save form
-  const handleSave = () => {
-    console.log("Form Data:", formData);
 
-    // API call can be added here
-    // createLiaisonProcess(formData);
+
+const handleSave = async () => {
+  const newErrors = {
+    category: "",
+    ownerName: "",
+    ismandatory: "",
+    processName: "",
+    processOrder: "",
   };
+
+  let isValid = true;
+
+  // Category
+  if (!category || category.trim() === "") {
+    newErrors.category = "Category Name is required";
+    isValid = false;
+  }
+
+  // Owner
+  if (!ownerName || ownerName.trim() === "") {
+    newErrors.ownerName = "Owner Name is required";
+    isValid = false;
+  }
+
+  // Is Mandatory
+  if (!ismandatory || ismandatory.trim() === "") {
+    newErrors.ismandatory = "Is Mandatory is required";
+    isValid = false;
+  }
+
+  // Process Name
+  if (!formData.processName || formData.processName.trim() === "") {
+    newErrors.processName = "Process Name is required";
+    isValid = false;
+  }
+
+  // Process Order
+  if (!formData.processOrder || formData.processOrder.trim() === "") {
+    newErrors.processOrder = "Process Order is required";
+    isValid = false;
+  }
+
+  setErrors(newErrors);
+
+  // Stop if validation fails
+  if (!isValid) {
+    return;
+  }
+
+  // API Payload
+  const payload = {
+    userID: "169548080048036100",
+    processName: formData.processName,
+    processCategoryID: category,
+    processOrder: Number(formData.processOrder),
+    processOwnerID: ownerName,
+    isMandatory:
+      ismandatory === "default"
+        ? "Default"
+        : ismandatory === "legaloption"
+        ? "LegalOption"
+        : "LiaisonOption",
+    completionType: formData.completionType,
+    executionType: formData.executionType,
+    taskPriority:
+      formData.taskPriority === "Non Critical"
+        ? "NonCritical"
+        : "Critical",
+  };
+
+  console.log("Create Liaison Process Payload:", payload);
+
+  try {
+    const response = await createLiaisonProcess(
+      JSON.stringify(payload)
+    ).unwrap();
+
+ console.log("Create Liaison Process Response:", response);
+
+// Show success message
+setSuccessMessage(true);
+
+// Reset form
+handleReset();
+
+// Go back to process list after 1.5 seconds
+setTimeout(() => {
+  navigate("/LiaisonProcess/Process");
+}, 1500);
+
+  } catch (error) {
+    console.error("Create Liaison Process API Error:", error);
+
+    alert(
+      error?.data?.message ||
+      error?.data?.error ||
+      "Failed to create Liaison Process"
+    );
+  }
+};
 
   return (
     <Box
@@ -175,6 +284,25 @@ const fetchCategories = async () => {
           }}
         />
 
+        <Snackbar
+  open={successMessage}
+  autoHideDuration={1500}
+  onClose={() => setSuccessMessage(false)}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={() => setSuccessMessage(false)}
+    severity="success"
+    variant="filled"
+    sx={{ width: "100%" }}
+  >
+    Liaison Process created successfully!
+  </Alert>
+</Snackbar>
+
         <Typography
           sx={{
             fontSize: "18px",
@@ -200,111 +328,109 @@ const fetchCategories = async () => {
       
 
 
-<FormControl fullWidth size="small" sx={{ mb: 2 }}>
-            <InputLabel>
-              Category
-            </InputLabel>
 
-            <Select
-              value={category}
-              label="Category"
-            
-              onChange={(e) => {
-  setCategory(e.target.value);
-}}
-              endAdornment={
-                category && (
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      mr: 2,
-                    }}
-                  >
-                    <IconButton
-                      fontSize="small"
-                      
-                      onClick={(
-                        e
-                      ) => {
-                        e.stopPropagation();
 
-                        setCategory(
-                          ""
-                        );
+          <FormControl
+  fullWidth
+  size="small"
+  sx={{ mb: 2 }}
+  error={Boolean(errors.category)}
+>
+  <InputLabel>Category Name</InputLabel>
 
-                        
-                      }}
-                    >
-                       <ClearIcon
-                        fontSize="small"
-                      />
-                      </IconButton>
-                  </InputAdornment>
-                )
-              }
-            >
-              {categoryList.map(
-                (item) => (
-                  <MenuItem
-                    key={
-                      item.id
-                    }
-                    value={
-                      item.id
-                    }
-                  >
-                    {
-                      item.process_category_name
-                    }
-                  </MenuItem>
-                )
-              )}
-            </Select>
-          </FormControl>
+  <Select
+    value={category}
+    label="Category Name"
+    onChange={(e) => {
+      setCategory(e.target.value);
+
+      if (e.target.value) {
+        setErrors((prev) => ({
+          ...prev,
+          category: "",
+        }));
+      }
+    }}
+    endAdornment={
+      category && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              setCategory("");
+            }}
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        </InputAdornment>
+      )
+    }
+  >
+    {categoryList.map((item) => (
+      <MenuItem
+        key={item.id}
+        value={item.id}
+      >
+        {item.process_category_name}
+      </MenuItem>
+    ))}
+  </Select>
+
+  {errors.category && (
+    <Typography
+      sx={{
+        color: "#d32f2f",
+        fontSize: "12px",
+        mt: 0.5,
+        ml: 1.5,
+      }}
+    >
+      {errors.category}
+    </Typography>
+  )}
+</FormControl>
 
        
-        <FormControl fullWidth size="small" sx={{ mb: 2 }}>
- <InputLabel>
-             Owner Name
-            </InputLabel>
- <Select
+
+
+<FormControl
+  fullWidth
+  size="small"
+  sx={{ mb: 2 }}
+  error={Boolean(errors.ownerName)}
+>
+  <InputLabel>Owner Name</InputLabel>
+
+  <Select
     value={ownerName}
     label="Owner Name"
-     onChange={(e) => {
-  setOwnername(e.target.value);}}
+    onChange={(e) => {
+      setOwnername(e.target.value);
 
-   endAdornment={
-                ownerName && (
-                  <InputAdornment
-                    position="end"
-                    sx={{
-                      mr: 2,
-                    }}
-                  >
-                    <IconButton
-                      fontSize="small"
-                      
-                      onClick={(
-                        e
-                      ) => {
-                        e.stopPropagation();
-
-                        setOwnername(
-                          ""
-                        );
-
-                        
-                      }}
-                    >
-                       <ClearIcon
-                        fontSize="small"
-                      />
-                      </IconButton>
-                  </InputAdornment>
-                )
-              }
-            >
-
+      if (e.target.value) {
+        setErrors((prev) => ({
+          ...prev,
+          ownerName: "",
+        }));
+      }
+    }}
+    endAdornment={
+      ownerName && (
+        <InputAdornment position="end" sx={{ mr: 2 }}>
+          <IconButton
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOwnername("");
+            }}
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        </InputAdornment>
+      )
+    }
+  >
     {userList.map((item) => (
       <MenuItem
         key={item.user_id || item.id}
@@ -314,53 +440,83 @@ const fetchCategories = async () => {
       </MenuItem>
     ))}
   </Select>
+
+  {errors.ownerName && (
+    <Typography
+      sx={{
+        color: "#d32f2f",
+        fontSize: "12px",
+        mt: 0.5,
+        ml: 1.5,
+      }}
+    >
+      {errors.ownerName}
+    </Typography>
+  )}
+</FormControl>
+
+
+
+                  <FormControl
+  fullWidth
+  size="small"
+  sx={{ mb: 2 }}
+  error={Boolean(errors.ismandatory)}
+>
+  <InputLabel>Is Mandatory</InputLabel>
+
+  <Select
+    value={ismandatory}
+    label="Is Mandatory"
+    onChange={(e) => {
+      setIsMandatory(e.target.value);
+
+      if (e.target.value) {
+        setErrors((prev) => ({
+          ...prev,
+          ismandatory: "",
+        }));
+      }
+    }}
+  >
+    <MenuItem value="default">Default</MenuItem>
+    <MenuItem value="legaloption">LegalOption</MenuItem>
+    <MenuItem value="liaisonoption">LiaisonOption</MenuItem>
+  </Select>
+
+  {errors.ismandatory && (
+    <Typography
+      sx={{
+        color: "#d32f2f",
+        fontSize: "12px",
+        mt: 0.5,
+        ml: 1.5,
+      }}
+    >
+      {errors.ismandatory}
+    </Typography>
+  )}
 </FormControl>
 
        
-       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
- 
-                    <InputLabel>
-                      Is Mandatory
-                    </InputLabel>
-        
-                    <Select
-                      value={
-                        ismandatory
-                      }
-                      label="Is Mandatory"
-                     
-                      onChange={(e) => {
-          setIsMandatory(e.target.value);
-        }}
-                    >
-                     
-                      <MenuItem value="default">
-                        Default
-                      </MenuItem>
-        
-                      <MenuItem value="legaloption">
-                        LegalOption
-                      </MenuItem>
-        
-                      <MenuItem value="liaisonoption">
-                        LiaisonOption
-                      </MenuItem>
 
-                       
-
-                    </Select>
-                    
-                    
-                  </FormControl>
-
-       
-        <TextField
+<TextField
   fullWidth
   size="small"
   label="Process Name"
-  placeholder="Process Name"
   value={formData.processName}
-  onChange={handleChange("processName")}
+  onChange={(e) => {
+    handleChange("processName")(e);
+
+    if (e.target.value.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        processName: "",
+      }));
+    }
+  }}
+  error={Boolean(errors.processName)}
+  helperText={errors.processName}
   InputProps={{
     endAdornment: formData.processName && (
       <InputAdornment position="end">
@@ -586,18 +742,29 @@ const fetchCategories = async () => {
       
      
 
-        <TextField
+ 
+
+  <TextField
   fullWidth
   size="small"
   label="Process Order"
-  placeholder="Process Order"
   value={formData.processOrder}
   onChange={(e) => {
     const value = e.target.value.replace(/\D/g, "");
+
     handleChange("processOrder")({
       target: { value },
     });
+
+    if (value) {
+      setErrors((prev) => ({
+        ...prev,
+        processOrder: "",
+      }));
+    }
   }}
+  error={Boolean(errors.processOrder)}
+  helperText={errors.processOrder}
   inputProps={{
     inputMode: "numeric",
     pattern: "[0-9]*",
@@ -636,6 +803,7 @@ const fetchCategories = async () => {
     },
   }}
 />
+
       </Box>
 
     
@@ -672,6 +840,7 @@ const fetchCategories = async () => {
         <Button
           variant="contained"
           onClick={handleSave}
+           disabled={isSaving}
           sx={{
             backgroundColor: "#1976d2",
             minWidth: 70,

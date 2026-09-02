@@ -52,6 +52,7 @@ import {
   useGetLiaisonProcessMutation,
   useGetLiaisonProcessCategoryMutation,
   useGetUserMutation,
+   useGetLiaisonProcessAuthorityMapMutation,
 } from "../../api/constructionApi";
 
 import UpdatePlanningAuthority from "../../Pages/Process/PlanningUpdate";
@@ -99,6 +100,9 @@ const [appliedIsMandatory, setAppliedIsMandatory] = useState("");
     useGetLiaisonProcessCategoryMutation();
 
   const [getUser] = useGetUserMutation();
+
+  const [getLiaisonProcessAuthorityMap] =
+  useGetLiaisonProcessAuthorityMapMutation();
 
 
 
@@ -352,21 +356,68 @@ useEffect(() => {
   };
 
 
+const handleProcessAuthority = async (rowData) => {
+  console.log(
+    "Planning Authority Edit Row:",
+    rowData
+  );
 
-  const handleProcessAuthority = (rowData) => {
+  try {
+    // Get Liaison Process ID from selected row
+    const liaisonProcessID =
+      rowData?.liaisonProcessID ||
+      rowData?.liaison_process_id ||
+      rowData?.process_id ||
+      rowData?.id;
+
     console.log(
-      "Planning Authority Edit Row:",
-      rowData
+      "Liaison Process ID:",
+      liaisonProcessID
     );
 
+    const payload = {
+      userID: "169548080048036100",
+      liaisonProcessID: String(liaisonProcessID),
+    };
+
+    console.log(
+      "Authority Map Payload:",
+      payload
+    );
+
+    // Call Authority Map API
+    const response =
+      await getLiaisonProcessAuthorityMap(JSON.stringify(payload)).unwrap();
+
+    console.log(
+      "Authority Map API Response:",
+      response
+    );
+
+    // Save selected process
     setSelectedProcessData(rowData);
 
+    // Save API response
     setSelectedPlanningAuthority(
-      rowData?.planningAuthority || []
+      response?.data || []
     );
 
+    // Open popup
     setPlanningAuthorityOpen(true);
-  };
+
+  } catch (error) {
+    console.error(
+      "Authority Map API Error:",
+      error
+    );
+
+    alert(
+      error?.data?.message ||
+      error?.data?.error ||
+      "Failed to load Planning Authority"
+    );
+  }
+};
 
 
   const handleClosePlanningAuthority = () => {
