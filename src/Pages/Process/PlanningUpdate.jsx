@@ -1,9 +1,5 @@
 
-
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Dialog,
@@ -22,56 +18,22 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 
+
 const authorityList = [
-  {
-    id: 1,
-    name: "BBMP",
-  },
-  {
-    id: 2,
-    name: "BDA",
-  },
-  {
-    id: 3,
-    name: "BIAAPA",
-  },
-  {
-    id: 4,
-    name: "BMICAPA",
-  },
-  {
-    id: 5,
-    name: "BMRDA",
-  },
-  {
-    id: 6,
-    name: "DTCP",
-  },
-  {
-    id: 7,
-    name: "KPL (Kolar Planning Authority)",
-  },
-  {
-    id: 8,
-    name: "MALUR PLANNING AUTHORITY",
-  },
-  {
-    id: 9,
-    name: "MUDA",
-  },
-  {
-    id: 10,
-    name: "STRR",
-  },
-  {
-    id: 11,
-    name: "Temp",
-  },
-  {
-    id: 12,
-    name: "TUDA",
-  },
+  { id: 1, name: "BBMP" },
+  { id: 2, name: "BDA" },
+  { id: 3, name: "BIAAPA" },
+  { id: 4, name: "BMICAPA" },
+  { id: 5, name: "BMRDA" },
+  { id: 6, name: "DTCP" },
+  { id: 7, name: "KPL (Kolar Planning Authority)" },
+  { id: 8, name: "MALUR PLANNING AUTHORITY" },
+  { id: 9, name: "MUDA" },
+  { id: 10, name: "STRR" },
+  { id: 11, name: "Temp" },
+  { id: 12, name: "TUDA" },
 ];
+
 
 
 export default function UpdatePlanningAuthority({
@@ -81,263 +43,156 @@ export default function UpdatePlanningAuthority({
   planningAuthority = [],
   onUpdate,
 }) {
-
-  const [authorities, setAuthorities] =
-    useState([]);
+  const [authorities, setAuthorities] = useState([]);
 
 
 
-// useEffect(() => {
-//   if (!open) {
-//     return;
-//   }
+  useEffect(() => {
+    if (!open) {
+      setAuthorities([]);
+      return;
+    }
 
-//   console.log("====================================");
-//   console.log("Planning Authority Popup Open");
-//   console.log("Process Data:", processData);
-//   console.log("API Planning Authority:", planningAuthority);
-//   console.log("====================================");
+    console.log("====================================");
+    console.log("UPDATE PLANNING AUTHORITY");
+    console.log("PROCESS DATA:", processData);
+    console.log("PLANNING AUTHORITY API:", planningAuthority);
+    console.log("====================================");
 
-//   const existingAuthorities = Array.isArray(planningAuthority)
-//     ? planningAuthority
-//     : [];
+    const apiAuthorities = Array.isArray(planningAuthority)
+      ? planningAuthority
+      : [];
 
-//   const updatedAuthorities = authorityList.map((authority) => {
-//     const matchedAuthority = existingAuthorities.find((item) => {
-//       const apiName = item?.authority_name
-//         ?.replace(/<[^>]*>/g, "")
-//         ?.trim()
-//         ?.toLowerCase();
+   
 
-//       const masterName = authority.name
-//         ?.trim()
-//         ?.toLowerCase();
+    const updatedAuthorities = authorityList.map((authority) => {
+     
+      const matchedAuthority = apiAuthorities.find((item) => {
+        const apiId =
+          item?.authority_id ??
+          item?.authorityID ??
+          item?.authorityId ??
+          item?.planning_authority_id ??
+          item?.planningAuthorityId ??
+          item?.planningAuthorityID ??
+          item?.id;
 
-//       return apiName === masterName;
-//     });
-
-//     console.log(
-//       "Authority:",
-//       authority.name,
-//       "API Match:",
-//       matchedAuthority
-//     );
-
-//     // IMPORTANT:
-//     // Only check if API says this authority is applicable.
-//     const isApplicable =
-//       matchedAuthority &&
-//       (
-//         matchedAuthority.applicable === true ||
-//         matchedAuthority.applicable === "true" ||
-//         matchedAuthority.applicable === "Yes" ||
-//         matchedAuthority.applicable === "yes" ||
-//         matchedAuthority.applicable === "1" ||
-//         matchedAuthority.applicable === 1
-//       );
-
-//     return {
-//       ...authority,
-//       applicable: Boolean(isApplicable),
-//     };
-//   });
-
-//   console.log(
-//     "FINAL CHECKBOX DATA:",
-//     updatedAuthorities
-//   );
-
-//   setAuthorities(updatedAuthorities);
-// }, [
-//   open,
-//   processData,
-//   planningAuthority,
-// ]);
-
-useEffect(() => {
-  if (!open) return;
-
-  console.log("====================================");
-  console.log("Planning Authority Popup Open");
-  console.log("Process Data:", processData);
-  console.log("API Planning Authority:", planningAuthority);
-  console.log("====================================");
-
-  const existingAuthorities = Array.isArray(planningAuthority)
-    ? planningAuthority
-    : [];
-
-  const updatedAuthorities = authorityList.map((authority) => {
-    const matchedAuthority = existingAuthorities.find((item) => {
-
-      const apiId =
-        item?.authority_id ??
-        item?.planning_authority_id ??
-        item?.id;
-
-      if (
-        apiId !== undefined &&
-        apiId !== null &&
-        String(apiId) === String(authority.id)
-      ) {
-        return true;
-      }
+        return (
+          apiId !== undefined &&
+          apiId !== null &&
+          String(apiId).trim() === String(authority.id).trim()
+        );
+      });
 
 
-      const apiName = String(
-        item?.authority_name ??
-        item?.planning_authority_name ??
-        item?.name ??
-        ""
-      )
-        .replace(/<[^>]*>/g, "")
-        .trim()
-        .toLowerCase();
 
-      const masterName = String(authority.name)
-        .replace(/<[^>]*>/g, "")
-        .trim()
-        .toLowerCase();
+      const mapStatus =
+        matchedAuthority?.map_status ??
+        matchedAuthority?.mapStatus ??
+        null;
 
-      return apiName === masterName;
+ 
+
+      const checked = String(mapStatus) === "1";
+
+      console.log({
+        authorityId: authority.id,
+        authorityName: authority.name,
+        matchedAuthority,
+        mapStatus,
+        checked,
+      });
+
+      return {
+        id: authority.id,
+        name: authority.name,
+
+        // Checkbox UI state
+        checked: checked,
+
+        // API value
+        map_status: checked ? 1 : null,
+      };
     });
 
     console.log(
-      "Authority:",
-      authority.name,
-      "Matched API:",
-      matchedAuthority
+      "FINAL CHECKBOX DATA:",
+      updatedAuthorities
     );
 
-
-    const applicableValue =
-      matchedAuthority?.applicable ??
-      matchedAuthority?.isApplicable ??
-      matchedAuthority?.is_applicable ??
-      matchedAuthority?.selected ??
-      matchedAuthority?.checked;
-
-    const isApplicable =
-      applicableValue === true ||
-      applicableValue === "true" ||
-      applicableValue === "TRUE" ||
-      applicableValue === "True" ||
-      applicableValue === "yes" ||
-      applicableValue === "Yes" ||
-      applicableValue === "YES" ||
-      applicableValue === "1" ||
-      applicableValue === 1;
-
-    return {
-      ...authority,
-      applicable: Boolean(isApplicable),
-    };
-  });
-
-  console.log(
-    "FINAL CHECKBOX DATA:",
-    updatedAuthorities
-  );
-
-  setAuthorities(updatedAuthorities);
-}, [
-  open,
-  planningAuthority,
-  processData,
-]);
+    setAuthorities(updatedAuthorities);
+  }, [open, planningAuthority]);
 
 
 
   const handleCheckbox = (id) => {
-    setAuthorities(
-      (oldData) =>
-        oldData.map(
-          (item) =>
-            item.id === id
-              ? {
-                  ...item,
+    setAuthorities((oldData) =>
+      oldData.map((item) => {
+        if (item.id !== id) {
+          return item;
+        }
 
-                  applicable:
-                    !item.applicable,
-                }
-              : item
-        )
+        const newChecked = !item.checked;
+
+        return {
+          ...item,
+
+          // Checkbox state
+          checked: newChecked,
+
+          // API value
+          map_status: newChecked ? 1 : null,
+        };
+      })
     );
   };
 
 
 
-  const handleSelectAll = (
-    event
-  ) => {
-    const checked =
-      event.target.checked;
+  const handleSelectAll = (event) => {
+    const checked = event.target.checked;
 
-    setAuthorities(
-      (oldData) =>
-        oldData.map(
-          (item) => ({
-            ...item,
+    setAuthorities((oldData) =>
+      oldData.map((item) => ({
+        ...item,
 
-            applicable:
-              checked,
-          })
-        )
+        checked: checked,
+        map_status: checked ? 1 : null,
+      }))
     );
   };
 
 
 
   const handleUpdate = () => {
-    const selectedAuthorities =
-      authorities.filter(
-        (item) =>
-          item.applicable
-      );
 
-    console.log(
-      "Process Data:",
-      processData
-    );
 
-    console.log(
-      "Selected Authorities:",
-      selectedAuthorities
-    );
+    const authorityData = authorities.map((item) => ({
+      id: item.id,
+      map_status: item.checked ? 1 : null,
+    }));
 
-    // Send selected authorities
-    // back to parent component.
+    console.log("====================================");
+    console.log("UPDATE AUTHORITY PAYLOAD:");
+    console.log(authorityData);
+    console.log("====================================");
 
     if (onUpdate) {
-      onUpdate(
-        selectedAuthorities
-      );
-    } else {
-      alert(
-        "Planning Authority updated successfully"
-      );
+      onUpdate(authorityData);
     }
   };
 
- 
+
 
   const allSelected =
     authorities.length > 0 &&
-    authorities.every(
-      (item) =>
-        item.applicable
-    );
-
+    authorities.every((item) => item.checked === true);
 
   const someSelected =
-    authorities.some(
-      (item) =>
-        item.applicable
-    ) &&
+    authorities.some((item) => item.checked === true) &&
     !allSelected;
 
-
-
+ 
   return (
     <Dialog
       open={open}
@@ -346,8 +201,7 @@ useEffect(() => {
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius:
-            "5px",
+          borderRadius: "5px",
         },
       }}
     >
@@ -355,29 +209,17 @@ useEffect(() => {
       <Box
         sx={{
           height: "54px",
-
-          display:
-            "flex",
-
-          alignItems:
-            "center",
-
-          justifyContent:
-            "space-between",
-
-          borderBottom:
-            "1px solid #ddd",
-
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: "1px solid #ddd",
           px: 2,
         }}
       >
         <Typography
           sx={{
-            fontSize:
-              "20px",
-
-            fontWeight:
-              600,
+            fontSize: "20px",
+            fontWeight: 600,
           }}
         >
           Update Planning Authority
@@ -393,35 +235,24 @@ useEffect(() => {
         </IconButton>
       </Box>
 
-  
 
-      <Box
-        sx={{
-          p: 2.5,
-        }}
-      >
-        {/* PROCESS NAME */}
+
+      <Box sx={{ p: 2.5 }}>
+
+
 
         <Box
           sx={{
-            display:
-              "flex",
-
+            display: "flex",
             gap: "5px",
-
             mb: 1,
           }}
         >
           <Typography
             sx={{
-              color:
-                "green",
-
-              fontWeight:
-                700,
-
-              fontSize:
-                "15px",
+              color: "green",
+              fontWeight: 700,
+              fontSize: "15px",
             }}
           >
             Process :
@@ -429,15 +260,11 @@ useEffect(() => {
 
           <Typography
             sx={{
-              fontWeight:
-                700,
-
-              fontSize:
-                "14px",
+              fontWeight: 700,
+              fontSize: "14px",
             }}
           >
-            {processData?.process_name ||
-              "-"}
+            {processData?.process_name || "-"}
           </Typography>
         </Box>
 
@@ -445,38 +272,24 @@ useEffect(() => {
 
         <Table
           sx={{
-            border:
-              "1px solid #ddd",
-
-            tableLayout:
-              "fixed",
+            border: "1px solid #ddd",
+            tableLayout: "fixed",
           }}
         >
-          {/* TABLE HEADER */}
-
           <TableHead>
             <TableRow
               sx={{
-                backgroundColor:
-                  "#eef7fd",
+                backgroundColor: "#eef7fd",
               }}
             >
               {/* SI NO */}
 
               <TableCell
                 sx={{
-                  width:
-                    "12%",
-
-                  fontWeight:
-                    700,
-
-                  fontSize:
-                    "16px",
-
-                  borderRight:
-                    "1px solid #ddd",
-
+                  width: "12%",
+                  fontWeight: 700,
+                  fontSize: "16px",
+                  borderRight: "1px solid #ddd",
                   py: 0.7,
                 }}
               >
@@ -487,18 +300,10 @@ useEffect(() => {
 
               <TableCell
                 sx={{
-                  width:
-                    "55%",
-
-                  fontWeight:
-                    700,
-
-                  fontSize:
-                    "16px",
-
-                  borderRight:
-                    "1px solid #ddd",
-
+                  width: "55%",
+                  fontWeight: 700,
+                  fontSize: "16px",
+                  borderRight: "1px solid #ddd",
                   py: 0.7,
                 }}
               >
@@ -509,37 +314,23 @@ useEffect(() => {
 
               <TableCell
                 sx={{
-                  width:
-                    "33%",
-
-                  fontWeight:
-                    700,
-
-                  fontSize:
-                    "16px",
-
+                  width: "33%",
+                  fontWeight: 700,
+                  fontSize: "16px",
                   py: 0.7,
                 }}
               >
                 <Box
                   sx={{
-                    display:
-                      "flex",
-
-                    alignItems:
-                      "center",
-
-                    justifyContent:
-                      "space-between",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Typography
                     sx={{
-                      fontWeight:
-                        700,
-
-                      fontSize:
-                        "16px",
+                      fontWeight: 700,
+                      fontSize: "16px",
                     }}
                   >
                     APPLICABILITY
@@ -547,93 +338,63 @@ useEffect(() => {
 
                   <Checkbox
                     size="small"
-                    checked={
-                      allSelected
-                    }
-                    indeterminate={
-                      someSelected
-                    }
-                    onChange={
-                      handleSelectAll
-                    }
+                    checked={allSelected}
+                    indeterminate={someSelected}
+                    onChange={handleSelectAll}
                   />
                 </Box>
               </TableCell>
             </TableRow>
           </TableHead>
 
-          {/* TABLE BODY */}
+
 
           <TableBody>
-            {authorities.map(
-              (
-                item,
-                index
-              ) => (
-                <TableRow
-                  key={
-                    item.id
-                  }
+            {authorities.map((item, index) => (
+              <TableRow key={item.id}>
+
+                {/* SI NO */}
+
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    py: 0.4,
+                    fontSize: "16px",
+                  }}
                 >
-                  {/* SI NO */}
+                  {index + 1}
+                </TableCell>
 
-                  <TableCell
-                    sx={{
-                      borderRight:
-                        "1px solid #ddd",
+                {/* AUTHORITY */}
 
-                      py: 0.4,
+                <TableCell
+                  sx={{
+                    borderRight: "1px solid #ddd",
+                    py: 0.4,
+                    fontSize: "16px",
+                  }}
+                >
+                  {item.name}
+                </TableCell>
 
-                      fontSize:
-                        "16px",
-                    }}
-                  >
-                    {index +
-                      1}
-                  </TableCell>
+                {/* CHECKBOX */}
 
-                  {/* AUTHORITY */}
-
-                  <TableCell
-                    sx={{
-                      borderRight:
-                        "1px solid #ddd",
-
-                      py: 0.4,
-
-                      fontSize:
-                        "16px",
-                    }}
-                  >
-                    {
-                      item.name
+                <TableCell
+                  sx={{
+                    py: 0.4,
+                  }}
+                >
+                  <Checkbox
+                    size="small"
+                    checked={item.checked === true}
+                    onChange={() =>
+                      handleCheckbox(item.id)
                     }
-                  </TableCell>
+                  />
+                </TableCell>
 
-                  {/* CHECKBOX */}
-
-                  <TableCell
-                    sx={{
-                      py: 0.4,
-                    }}
-                  >
-                    <Checkbox
-                      size="small"
-
-                      checked={
-                        item.applicable
-                      }
-
-                      onChange={() =>
-                        handleCheckbox(
-                          item.id
-                        )
-                      }
-                    />
-                  </TableCell>
-                </TableRow>
-              )
-            )}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
 
@@ -641,43 +402,30 @@ useEffect(() => {
 
         <Box
           sx={{
-            display:
-              "flex",
-
-            justifyContent:
-              "center",
-
+            display: "flex",
+            justifyContent: "center",
             mt: 2,
           }}
         >
           <Button
             variant="contained"
-            onClick={
-              handleUpdate
-            }
+            onClick={handleUpdate}
             sx={{
-              backgroundColor:
-                "#1976d2",
-
-              fontWeight:
-                700,
-
-              fontSize:
-                "14px",
-
+              backgroundColor: "#1976d2",
+              fontWeight: 700,
+              fontSize: "14px",
               px: 2,
-
               py: 0.8,
 
               "&:hover": {
-                backgroundColor:
-                  "#1565c0",
+                backgroundColor: "#1565c0",
               },
             }}
           >
             UPDATE
           </Button>
         </Box>
+
       </Box>
     </Dialog>
   );

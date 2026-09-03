@@ -356,69 +356,146 @@ useEffect(() => {
   };
 
 
-const handleProcessAuthority = async (rowData) => {
-  console.log(
-    "Planning Authority Edit Row:",
-    rowData
-  );
 
+
+// const handleProcessAuthority = async (rowData) => {
+//   console.log("====================================");
+//   console.log("Planning Authority Edit Row:", rowData);
+//   console.log("====================================");
+
+//   try {
+//     const liaisonProcessID =
+//       rowData?.liaisonProcessID ??
+//       rowData?.liaison_process_id ??
+//       rowData?.process_id ??
+//       rowData?.id;
+
+//     console.log("Liaison Process ID:", liaisonProcessID);
+
+//     const payload = {
+//       userID: "169548080048036100",
+//       liaisonProcessID: String(liaisonProcessID),
+//     };
+
+//     console.log("Authority Map Payload:", payload);
+
+//     const response =
+//       await getLiaisonProcessAuthorityMap(
+//         JSON.stringify(payload)
+//       ).unwrap();
+
+//     console.log("Authority Map API Response:", response);
+
+//     // --------------------------------------------------
+//     // IMPORTANT
+//     // Get authority list from API response
+//     // --------------------------------------------------
+//     const apiAuthorities = Array.isArray(response?.data)
+//       ? response.data
+//       : [];
+
+//     console.log(
+//       "API AUTHORITIES:",
+//       apiAuthorities
+//     );
+
+//     // --------------------------------------------------
+//     // Save process
+//     // --------------------------------------------------
+//     setSelectedProcessData(rowData);
+
+//     // --------------------------------------------------
+//     // Pass API authority list to popup
+//     // --------------------------------------------------
+//     setSelectedPlanningAuthority(apiAuthorities);
+
+//     // --------------------------------------------------
+//     // Open popup only after API data is available
+//     // --------------------------------------------------
+//     setPlanningAuthorityOpen(true);
+
+//   } catch (error) {
+//     console.error(
+//       "Authority Map API Error:",
+//       error
+//     );
+
+//     alert(
+//       error?.data?.message ||
+//       error?.data?.error ||
+//       "Failed to load Planning Authority"
+//     );
+//   }
+// };
+
+const handleProcessAuthority = async (rowData) => {
   try {
-    // Get Liaison Process ID from selected row
+    console.log("=================================");
+    console.log("EDIT CLICKED");
+    console.log("ROW DATA:", rowData);
+    console.log("=================================");
+
     const liaisonProcessID =
-      rowData?.liaisonProcessID ||
-      rowData?.liaison_process_id ||
-      rowData?.process_id ||
+      rowData?.liaisonProcessID ??
+      rowData?.liaison_process_id ??
+      rowData?.process_id ??
       rowData?.id;
 
-    console.log(
-      "Liaison Process ID:",
-      liaisonProcessID
-    );
+    if (!liaisonProcessID) {
+      console.error("Process ID not found:", rowData);
+      return;
+    }
 
     const payload = {
       userID: "169548080048036100",
       liaisonProcessID: String(liaisonProcessID),
     };
 
-    console.log(
-      "Authority Map Payload:",
-      payload
-    );
+    console.log("AUTHORITY API PAYLOAD:", payload);
 
-    // Call Authority Map API
     const response =
-      await getLiaisonProcessAuthorityMap(JSON.stringify(payload)).unwrap();
+      await getLiaisonProcessAuthorityMap(
+        JSON.stringify(payload)
+      ).unwrap();
 
-    console.log(
-      "Authority Map API Response:",
-      response
-    );
+    console.log("=================================");
+    console.log("AUTHORITY API RESPONSE:");
+    console.log(response);
+    console.log("=================================");
 
-    // Save selected process
+    /*
+     * IMPORTANT:
+     * Store the clicked process first.
+     */
     setSelectedProcessData(rowData);
 
-    // Save API response
-    setSelectedPlanningAuthority(
-      response?.data || []
+    /*
+     * Store ONLY the authorities returned
+     * for this process.
+     */
+    const authoritiesForProcess =
+      Array.isArray(response?.data)
+        ? response.data
+        : [];
+
+    console.log(
+      "AUTHORITIES FOR CURRENT PROCESS:",
+      authoritiesForProcess
     );
 
-    // Open popup
+    setSelectedPlanningAuthority(
+      authoritiesForProcess
+    );
+
     setPlanningAuthorityOpen(true);
 
   } catch (error) {
     console.error(
-      "Authority Map API Error:",
+      "GET PLANNING AUTHORITY ERROR:",
       error
     );
-
-    alert(
-      error?.data?.message ||
-      error?.data?.error ||
-      "Failed to load Planning Authority"
-    );
   }
-};
-
+};  
 
   const handleClosePlanningAuthority = () => {
     setPlanningAuthorityOpen(false);
