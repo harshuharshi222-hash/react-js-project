@@ -28,6 +28,8 @@ import {
   TableRow,
   TextField,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
@@ -62,7 +64,7 @@ export default function LiaisonProcess() {
 
 
   const [totalRecords, setTotalRecords] = useState(0);
-
+const [updateSuccess, setUpdateSuccess] = useState(false);
 
 
   // Filter values currently selected in the UI
@@ -358,75 +360,6 @@ useEffect(() => {
 
 
 
-// const handleProcessAuthority = async (rowData) => {
-//   console.log("====================================");
-//   console.log("Planning Authority Edit Row:", rowData);
-//   console.log("====================================");
-
-//   try {
-//     const liaisonProcessID =
-//       rowData?.liaisonProcessID ??
-//       rowData?.liaison_process_id ??
-//       rowData?.process_id ??
-//       rowData?.id;
-
-//     console.log("Liaison Process ID:", liaisonProcessID);
-
-//     const payload = {
-//       userID: "169548080048036100",
-//       liaisonProcessID: String(liaisonProcessID),
-//     };
-
-//     console.log("Authority Map Payload:", payload);
-
-//     const response =
-//       await getLiaisonProcessAuthorityMap(
-//         JSON.stringify(payload)
-//       ).unwrap();
-
-//     console.log("Authority Map API Response:", response);
-
-//     // --------------------------------------------------
-//     // IMPORTANT
-//     // Get authority list from API response
-//     // --------------------------------------------------
-//     const apiAuthorities = Array.isArray(response?.data)
-//       ? response.data
-//       : [];
-
-//     console.log(
-//       "API AUTHORITIES:",
-//       apiAuthorities
-//     );
-
-//     // --------------------------------------------------
-//     // Save process
-//     // --------------------------------------------------
-//     setSelectedProcessData(rowData);
-
-//     // --------------------------------------------------
-//     // Pass API authority list to popup
-//     // --------------------------------------------------
-//     setSelectedPlanningAuthority(apiAuthorities);
-
-//     // --------------------------------------------------
-//     // Open popup only after API data is available
-//     // --------------------------------------------------
-//     setPlanningAuthorityOpen(true);
-
-//   } catch (error) {
-//     console.error(
-//       "Authority Map API Error:",
-//       error
-//     );
-
-//     alert(
-//       error?.data?.message ||
-//       error?.data?.error ||
-//       "Failed to load Planning Authority"
-//     );
-//   }
-// };
 
 const handleProcessAuthority = async (rowData) => {
   try {
@@ -500,23 +433,21 @@ const handleProcessAuthority = async (rowData) => {
   };
 
 
-  const handlePlanningAuthorityUpdate = (
-    selectedAuthorities
-  ) => {
-    console.log(
-      "Updated Planning Authorities:",
-      selectedAuthorities
-    );
+  const handlePlanningAuthorityUpdate = () => {
+  console.log("Planning Authority updated successfully");
 
-    
+  // Close update popup
+  handleClosePlanningAuthority();
 
-    handleClosePlanningAuthority();
+  // Show success message on TABLE PAGE
+  setUpdateSuccess(true);
 
-    getLiaisonProcess(
-      pagination.pageIndex,
-      pagination.pageSize
-    );
-  };
+  // Refresh table data
+  getLiaisonProcess(
+    pagination.pageIndex,
+    pagination.pageSize
+  );
+};
 
 
 
@@ -1454,6 +1385,28 @@ const handleProcessAuthority = async (rowData) => {
           </Tooltip>
         </Box>
       </Paper>
+
+
+      <Snackbar
+  open={updateSuccess}
+  autoHideDuration={3000}
+  onClose={() => setUpdateSuccess(false)}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    onClose={() => setUpdateSuccess(false)}
+    severity="success"
+    variant="filled"
+    sx={{
+      width: "100%",
+    }}
+  >
+    Planning Authority updated successfully!
+  </Alert>
+</Snackbar>
 
       {/* TABLE */}
 

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   Button,
@@ -17,38 +18,189 @@ import {
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
+
+
+import {
+  useGetLiaisonProcessCategory1Mutation,
+   useGetUserMutation,
+     useGetLiaisonProcessDetailMutation,
+} from "../../api/constructionApi";
+
 export default function UpdateLiaisonProcess() {
-  const [formData, setFormData] = useState({
-    categoryName: "Amalgamation/ Bifurcation of Sites",
-    ownerName: "ABHINANDAN KM",
-    isMandatory: "LiaisonOption",
-    processName: "BDA-AMALGAMATION",
-    completionType: "Survey Number",
-    executionType: "Single",
-    taskPriority: "Non Critical",
-    processOrder: "1",
-    status: "",
-  });
+const [formData, setFormData] = useState({
+  categoryName: "",
+  ownerName: "",
+  isMandatory: "",
+  processName: "",
+  completionType: "",
+  executionType: "",
+  taskPriority: "",
+  processOrder: "",
+  status: "",
+});
+
+
+const location = useLocation();
+
+const liaisonProcessID = location.state?.liaisonProcessID;
 
   const [statusError, setStatusError] = useState(false);
 
-  const categoryOptions = [
-    "Amalgamation/ Bifurcation of Sites",
-    "Building Plan Approval",
-    "Land Conversion",
-    "Layout Approval",
-  ];
+const [categoryList, setCategoryList] = useState([]);
 
-  const ownerOptions = [
-    "ABHINANDAN KM",
-    "ANAND KUMAR",
-    "RAJESH KUMAR",
-  ];
+const [getLiaisonProcessCategory1] =
+  useGetLiaisonProcessCategory1Mutation();
+
+useEffect(() => {
+  fetchCategory();
+}, []);
+
+const fetchCategory = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+    };
+
+    const response = await getLiaisonProcessCategory1(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("Category Response:", response);
+
+    if (response?.data) {
+      setCategoryList(response.data);
+    }
+
+  } catch (error) {
+    console.log("Category API Error:", error);
+  }
+};
+
+
+const [ownerList, setOwnerList] = useState([]);
+
+const [getUser] = useGetUserMutation();
+
+useEffect(() => {
+  fetchOwner();
+}, []);
+
+const fetchOwner = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      departmentID: "",
+      generalSearch: "",
+      sortOrder: "",
+      iDisplayStart: 0,
+      iDisplayLength: -1,
+    };
+
+    console.log("OWNER PAYLOAD:", payload);
+
+    const response = await getUser(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("OWNER FULL RESPONSE:", response);
+    console.log("OWNER DATA:", response?.data);
+    console.log("OWNER USER:", response?.user);
+
+    const users = response?.data || response?.user || [];
+
+    console.log("FINAL OWNER LIST:", users);
+
+    setOwnerList(users);
+
+  } catch (error) {
+    console.log("OWNER API ERROR:", error);
+  }
+};
+
+
+const [getLiaisonProcessDetail] =
+  useGetLiaisonProcessDetailMutation();
+
+useEffect(() => {
+  fetchProcessDetail();
+}, []);
+
+const fetchProcessDetail = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
+      liaisonProcessID: "35",
+    };
+
+    console.log("PROCESS DETAIL PAYLOAD:", payload);
+
+    const response = await getLiaisonProcessDetail(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("PROCESS DETAIL FULL RESPONSE:", response);
+    console.log("PROCESS DETAIL DATA:", response?.data);
+
+    const detail = Array.isArray(response?.data)
+      ? response.data[0]
+      : response?.data;
+
+    console.log("PROCESS DETAIL OBJECT:", detail);
+
+    if (detail) {
+      setFormData({
+        categoryName:
+          detail.process_category_name ||
+          detail.category_name ||
+          "",
+
+        ownerName:
+          detail.user_name ||
+          detail.owner_name ||
+          "",
+
+        isMandatory:
+          detail.is_mandatory ||
+          detail.isMandatory ||
+          "",
+
+        processName:
+          detail.process_name ||
+          detail.liaison_process_name ||
+          "",
+
+        completionType:
+          detail.completion_type ||
+          "",
+
+        executionType:
+          detail.execution_type ||
+          "",
+
+        taskPriority:
+          detail.task_priority ||
+          "",
+
+        processOrder:
+          detail.process_order ||
+          "",
+
+        status:
+          detail.status ||
+          "",
+      });
+    }
+
+  } catch (error) {
+    console.log("PROCESS DETAIL API ERROR:", error);
+  }
+};
 
   const mandatoryOptions = [
+    
+    "Default",
+    "LegalOption",
     "LiaisonOption",
-    "Mandatory",
-    "Non Mandatory",
   ];
 
   const statusOptions = ["Active", "Inactive"];
@@ -143,84 +295,126 @@ export default function UpdateLiaisonProcess() {
           pb: 3,
         }}
       >
-        {/* Category Name */}
-        <FormControl
-          fullWidth
-          size="small"
-          sx={{
-            mb: 2,
-          }}
-        >
-          <InputLabel
-            shrink
-            sx={{
-              backgroundColor: "#fff",
-              px: 0.5,
-              color: "#555",
-            }}
-          >
-            Category Name
-          </InputLabel>
+       
+       {/* Category Name */}
+<FormControl
+  fullWidth
+  size="small"
+  sx={{
+    mb: 2,
+  }}
+>
+  <InputLabel
+    shrink
+    sx={{
+      backgroundColor: "#fff",
+      px: 0.5,
+      color: "#555",
+    }}
+  >
+    Category Name
+  </InputLabel>
 
-          <Select
-            value={formData.categoryName}
-            onChange={handleChange("categoryName")}
-            label="Category Name"
-            sx={{
-              height: "41px",
-              "& .MuiSelect-select": {
-                padding: "9px 13px",
-                fontSize: "16px",
-              },
-            }}
-          >
-            {categoryOptions.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+  <Select
+    value={formData.categoryName}
+    onChange={handleChange("categoryName")}
+    label="Category Name"
+    sx={{
+      height: "41px",
+      "& .MuiSelect-select": {
+        padding: "9px 13px",
+        fontSize: "16px",
+      },
+    }}
+  >
+    {categoryList.map((item) => (
+      <MenuItem
+        key={item.id}
+        value={item.process_category_name}
+      >
+        {item.process_category_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
         {/* Owner Name */}
-        <FormControl
-          fullWidth
-          size="small"
-          sx={{
-            mb: 2,
-          }}
-        >
-          <InputLabel
-            shrink
-            sx={{
-              backgroundColor: "#fff",
-              px: 0.5,
-              color: "#555",
-            }}
-          >
-            Owner Name
-          </InputLabel>
+        {/* <FormControl
+  fullWidth
+  size="small"
+  sx={{ mb: 2 }}
+>
+  <InputLabel
+    shrink
+    sx={{
+      backgroundColor: "#fff",
+      px: 0.5,
+      color: "#555",
+    }}
+  >
+    Owner Name
+  </InputLabel>
 
-          <Select
-            value={formData.ownerName}
-            onChange={handleChange("ownerName")}
-            label="Owner Name"
-            sx={{
-              height: "41px",
-              "& .MuiSelect-select": {
-                padding: "9px 13px",
-                fontSize: "16px",
-              },
-            }}
-          >
-            {ownerOptions.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+  <Select
+    value={formData.ownerName}
+    onChange={handleChange("ownerName")}
+    label="Owner Name"
+    sx={{
+      height: "41px",
+      "& .MuiSelect-select": {
+        padding: "9px 13px",
+        fontSize: "16px",
+      },
+    }}
+  >
+    {ownerList.map((item) => (
+      <MenuItem
+        key={item.user_id}
+        value={item.user_name}
+      >
+        {item.user_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl> */}
+<FormControl
+  fullWidth
+  size="small"
+  sx={{ mb: 2 }}
+>
+  <InputLabel
+    shrink
+    sx={{
+      backgroundColor: "#fff",
+      px: 0.5,
+      color: "#555",
+    }}
+  >
+    Owner Name
+  </InputLabel>
 
+  <Select
+    value={formData.ownerName}
+    onChange={handleChange("ownerName")}
+    label="Owner Name"
+    sx={{
+      height: "41px",
+      "& .MuiSelect-select": {
+        padding: "9px 13px",
+        fontSize: "16px",
+      },
+    }}
+  >
+    {ownerList.map((item, index) => (
+      <MenuItem
+        key={item.user_id }
+        value={item.user_name }
+      >
+        {item.user_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
         {/* Is Mandatory */}
         <FormControl
           fullWidth
@@ -261,20 +455,20 @@ export default function UpdateLiaisonProcess() {
         </FormControl>
 
         {/* Process Name */}
-        <TextField
-          fullWidth
-          size="small"
-          label="Process Name"
-          value={formData.processName}
-          onChange={handleChange("processName")}
-          sx={{
-            mb: 2,
-            "& .MuiInputBase-root": {
-              height: "41px",
-              fontSize: "16px",
-            },
-          }}
-        />
+<TextField
+  fullWidth
+  size="small"
+  label="Process Name"
+  value={formData.processName}
+  onChange={handleChange("processName")}
+  sx={{
+    mb: 2,
+    "& .MuiInputBase-root": {
+      height: "41px",
+      fontSize: "16px",
+    },
+  }}
+/>
 
         {/* Completion Type */}
         <Box sx={{ mb: 2.8 }}>

@@ -21,21 +21,22 @@ import {
   useUpdateLiaisonProcessPlanningAuthorityMutation,
 } from "../../api/constructionApi";
 
-const authorityList = [
-  { id: 1, name: "BBMP" },
-  { id: 2, name: "BDA" },
-  { id: 3, name: "BIAAPA" },
-  { id: 4, name: "BMICAPA" },
-  { id: 5, name: "BMRDA" },
-  { id: 6, name: "DTCP" },
-  { id: 7, name: "KPL (Kolar Planning Authority)" },
-  { id: 8, name: "MALUR PLANNING AUTHORITY" },
-  { id: 9, name: "MUDA" },
-  { id: 10, name: "STRR" },
-  { id: 11, name: "Temp" },
-  { id: 12, name: "TUDA" },
-];
 
+// ];
+const authorityList = [
+  { id: 6, authority_name: "BBMP" },
+  { id: 1, authority_name: "BDA" },
+  { id: 3, authority_name: "BIAAPA" },
+  { id: 2, authority_name: "BMICAPA" },
+  { id: 4, authority_name: "BMRDA" },
+  { id: 13, authority_name: "DTCP" },
+  { id: 14, authority_name: "KPL (Kolar Planning Authority)" },
+  { id: 9, authority_name: "MALUR PLANNING AUTHORITY" },
+  { id: 5, authority_name: "MUDA" },
+  { id: 10, authority_name: "STRR" },
+  { id: 11, authority_name: "Temp" },
+  { id: 12, authority_name: "TUDA" },
+];
 
 
 export default function UpdatePlanningAuthority({
@@ -54,106 +55,101 @@ export default function UpdatePlanningAuthority({
 
 
 
-  useEffect(() => {
-    if (!open) {
-      setAuthorities([]);
-      return;
-    }
 
-    console.log("====================================");
-    console.log("UPDATE PLANNING AUTHORITY");
-    console.log("PROCESS DATA:", processData);
-    console.log("PLANNING AUTHORITY API:", planningAuthority);
-    console.log("====================================");
+  
+useEffect(() => {
+  if (!open) {
+    setAuthorities([]);
+    return;
+  }
 
-    const apiAuthorities = Array.isArray(planningAuthority)
-      ? planningAuthority
-      : [];
+  const apiAuthorities = Array.isArray(planningAuthority)
+    ? planningAuthority
+    : [];
 
-   
+  console.log("====================================");
+  console.log("PLANNING AUTHORITY FROM API:");
+  console.log(apiAuthorities);
+  console.log("====================================");
 
-    const updatedAuthorities = authorityList.map((authority) => {
-     
-      const matchedAuthority = apiAuthorities.find((item) => {
-        const apiId =
-          item?.authority_id ??
-          item?.authorityID ??
-          item?.authorityId ??
-          item?.planning_authority_id ??
-          item?.planningAuthorityId ??
-          item?.planningAuthorityID ??
-          item?.id;
+  const updatedAuthorities = authorityList.map((authority) => {
+    const matchedAuthority = apiAuthorities.find((item) => {
 
-        return (
-          apiId !== undefined &&
-          apiId !== null &&
-          String(apiId).trim() === String(authority.id).trim()
-        );
-      });
+      // API ID
+      const apiId =
+        item?.authority?.id ??
+        item?.authority_id ??
+        item?.authorityID ??
+        item?.authorityId ??
+        item?.planning_authority_id ??
+        item?.planningAuthorityId ??
+        item?.planningAuthorityID ??
+        item?.id;
 
+      // API NAME
+      const apiName =
+        item?.authority?.authority_name ??
+        item?.authority?.name ??
+        item?.authority_name ??
+        item?.authorityName ??
+        item?.planning_authority_name ??
+        item?.planningAuthorityName ??
+        item?.name;
 
+      // Match ID
+      const idMatch =
+        apiId !== undefined &&
+        apiId !== null &&
+        String(apiId).trim() === String(authority.id).trim();
 
-      const mapStatus =
-        matchedAuthority?.map_status ??
-        matchedAuthority?.mapStatus ??
-        null;
+      // Match NAME
+      const nameMatch =
+        apiName &&
+        String(apiName).trim().toLowerCase() ===
+          String(authority.authority_name).trim().toLowerCase();
 
- 
-
-      const checked = String(mapStatus).trim() === "1";
-
-      console.log({
-        authorityId: authority.id,
-        authorityName: authority.name,
-        matchedAuthority,
-        mapStatus,
-        checked,
-      });
-
-      return {
-        id: authority.id,
-        name: authority.name,
-
-        // Checkbox UI state
-        checked: checked,
-
-        // API value
-        map_status: checked ? 1 : null,
-      };
+      return idMatch || nameMatch;
     });
 
-    console.log(
-      "FINAL CHECKBOX DATA:",
-      updatedAuthorities
-    );
+    const checked = !!matchedAuthority;
 
-    setAuthorities(updatedAuthorities);
-  }, [open, planningAuthority]);
+    console.log({
+      masterId: authority.id,
+      masterName: authority.authority_name,
+      matchedAPIData: matchedAuthority,
+      checked: checked,
+    });
 
+    return {
+      id: authority.id,
+      authority_name: authority.authority_name,
+      checked: checked,
+      map_status: checked ? 1 : 0,
+    };
+  });
 
+  console.log("FINAL CHECKBOX DATA:", updatedAuthorities);
 
-  const handleCheckbox = (id) => {
-    setAuthorities((oldData) =>
-      oldData.map((item) => {
-        if (item.id !== id) {
-          return item;
-        }
+  setAuthorities(updatedAuthorities);
+}, [open, planningAuthority]);
 
-        const newChecked = !item.checked;
+ const handleCheckbox = (id) => {
+  setAuthorities((oldData) =>
+    oldData.map((item) => {
+      if (item.id !== id) {
+        return item;
+      }
 
-        return {
-          ...item,
+      const newChecked = !item.checked;
 
-          // Checkbox state
-          checked: newChecked,
-
-          // API value
-          map_status: newChecked ? 1 : null,
-        };
-      })
-    );
-  };
-
+      return {
+        ...item,
+        checked: newChecked,
+        map_status: newChecked ? 1 : 0,
+      };
+    })
+  );
+};
 
 
   const handleSelectAll = (event) => {
@@ -179,15 +175,15 @@ const handleUpdate = async () => {
       planningAuthorityID: authorities.map((item) => ({
         id: String(item.id),
         isSelected: item.checked === true,
-        authority_name: item.name,
-        map_status: null,
+        authority_name: item.authority_name,
+        map_status: item.checked ? 1 : 0,
       })),
 
       liaisonProcessID: String(
         processData?.liaisonProcessID ??
-        processData?.liaison_process_id ??
-        processData?.id ??
-        ""
+          processData?.liaison_process_id ??
+          processData?.id ??
+          ""
       ),
     };
 
@@ -200,24 +196,21 @@ const handleUpdate = async () => {
 
     console.log("UPDATE RESPONSE:", response);
 
-    alert("Planning Authority updated successfully");
-
-    // IMPORTANT
-    // Send updated data back to parent
+    // Tell parent/table page that update was successful
     if (onUpdate) {
       onUpdate(authorities);
     }
 
-    // Close popup
-    onClose();
-
   } catch (error) {
-    console.error("UPDATE PLANNING AUTHORITY API ERROR:", error);
+    console.error(
+      "UPDATE PLANNING AUTHORITY API ERROR:",
+      error
+    );
 
-    alert(
+    setErrorMessage(
       error?.data?.message ||
-      error?.data?.error ||
-      "Failed to update Planning Authority"
+        error?.data?.error ||
+        "Failed to update Planning Authority"
     );
   }
 };
@@ -413,7 +406,7 @@ const handleUpdate = async () => {
                     fontSize: "16px",
                   }}
                 >
-                  {item.name}
+                  {item.authority_name}
                 </TableCell>
 
                 {/* CHECKBOX */}
