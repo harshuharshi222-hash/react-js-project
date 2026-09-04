@@ -463,16 +463,10 @@ const handleProcessAuthority = async (rowData) => {
     console.log(response);
     console.log("=================================");
 
-    /*
-     * IMPORTANT:
-     * Store the clicked process first.
-     */
+    
     setSelectedProcessData(rowData);
 
-    /*
-     * Store ONLY the authorities returned
-     * for this process.
-     */
+    
     const authoritiesForProcess =
       Array.isArray(response?.data)
         ? response.data
@@ -803,80 +797,76 @@ const handleProcessAuthority = async (rowData) => {
       },
 
 
-      {
-   accessorKey: "planning_authority",
+
+
+{
+  accessorKey: "planning_authority",
   header: "Planning Authority",
-  size: 100,
+  size: 150,
 
   cell: ({ row }) => {
-    const authorityList = row?.original?.planningAuthority || [];  
-  console.log("list",authorityList)
+    const authorityList =
+      row?.original?.planningAuthority || [];
 
-    const firstAuthority =
-      authorityList.length > 0
-        ? authorityList[0].authority_name?.replace(/<[^>]*>/g, "")
-        : "";
-
-    
-    const authorityShortName = firstAuthority
-  ? firstAuthority.trim().split(/\s+/)[0]
-  : "";
+    const authorityNames = authorityList
+      .map((item) =>
+        item?.authority_name
+          ?.replace(/<[^>]*>/g, "")
+          .trim()
+      )
+      .filter(Boolean);
 
     return (
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
           width: "100%",
+          gap: 1,
         }}
       >
-        {/* Authority Short Name */}
-        <Tooltip title={firstAuthority || "-"} arrow>
+        <Tooltip
+          title={
+            authorityNames.length > 0
+              ? authorityNames.join(", ")
+              : "-"
+          }
+          arrow
+        >
           <Typography
             fontSize={13}
             fontWeight={500}
             sx={{
-              maxWidth: 70,
+              flex: 1,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               cursor: "pointer",
             }}
           >
-            {authorityShortName || "-"}
+            {authorityNames.length > 0
+              ? authorityNames.join(", ")
+              : "-"}
           </Typography>
         </Tooltip>
 
-        {/* Count */}
-        {authorityList.length > 1 && (
-          <Typography
-            fontSize={12}
-            fontWeight={600}
-            color="black"
-          >
-            +({authorityList.length - 1}) 
-          </Typography>
-        )}
-
-        {/* Edit Icon */}
-        <Tooltip title="Edit Planning Authority">
-  <EditIcon
-    sx={{
-      color: "#1976d2",
-      fontSize: 18,
-      cursor: "pointer",
-      ml: 0.5,
-      "&:hover": {
-        color: "#0d47a1",
-      },
-    }}
-    onClick={(e) => {
-      e.stopPropagation();
-      handleProcessAuthority(row.original);
-    }}
-  />
-</Tooltip>
+        <Tooltip title="Edit Planning Authority" arrow>
+          <EditIcon
+            sx={{
+              color: "#1976d2",
+              fontSize: 18,
+              cursor: "pointer",
+              flexShrink: 0,
+              "&:hover": {
+                color: "#0d47a1",
+              },
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleProcessAuthority(row.original);
+            }}
+          />
+        </Tooltip>
       </Box>
     );
   },

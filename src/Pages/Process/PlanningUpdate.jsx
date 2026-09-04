@@ -17,7 +17,9 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
-
+import {
+  useUpdateLiaisonProcessPlanningAuthorityMutation,
+} from "../../api/constructionApi";
 
 const authorityList = [
   { id: 1, name: "BBMP" },
@@ -44,6 +46,11 @@ export default function UpdatePlanningAuthority({
   onUpdate,
 }) {
   const [authorities, setAuthorities] = useState([]);
+
+  const [
+  updateLiaisonProcessPlanningAuthority,
+  { isLoading: isUpdating },
+] = useUpdateLiaisonProcessPlanningAuthorityMutation();
 
 
 
@@ -93,7 +100,7 @@ export default function UpdatePlanningAuthority({
 
  
 
-      const checked = String(mapStatus) === "1";
+      const checked = String(mapStatus).trim() === "1";
 
       console.log({
         authorityId: authority.id,
@@ -164,24 +171,56 @@ export default function UpdatePlanningAuthority({
 
 
 
-  const handleUpdate = () => {
+const handleUpdate = async () => {
+  try {
+    const payload = {
+      userID: "169548080048036100",
 
+      planningAuthorityID: authorities.map((item) => ({
+        id: String(item.id),
+        isSelected: item.checked === true,
+        authority_name: item.name,
+        map_status: null,
+      })),
 
-    const authorityData = authorities.map((item) => ({
-      id: item.id,
-      map_status: item.checked ? 1 : null,
-    }));
+      liaisonProcessID: String(
+        processData?.liaisonProcessID ??
+        processData?.liaison_process_id ??
+        processData?.id ??
+        ""
+      ),
+    };
 
-    console.log("====================================");
-    console.log("UPDATE AUTHORITY PAYLOAD:");
-    console.log(authorityData);
-    console.log("====================================");
+    console.log("UPDATE PAYLOAD:", payload);
 
+    const response =
+      await updateLiaisonProcessPlanningAuthority(
+        JSON.stringify(payload)
+      ).unwrap();
+
+    console.log("UPDATE RESPONSE:", response);
+
+    alert("Planning Authority updated successfully");
+
+    // IMPORTANT
+    // Send updated data back to parent
     if (onUpdate) {
-      onUpdate(authorityData);
+      onUpdate(authorities);
     }
-  };
 
+    // Close popup
+    onClose();
+
+  } catch (error) {
+    console.error("UPDATE PLANNING AUTHORITY API ERROR:", error);
+
+    alert(
+      error?.data?.message ||
+      error?.data?.error ||
+      "Failed to update Planning Authority"
+    );
+  }
+};
 
 
   const allSelected =
@@ -407,23 +446,24 @@ export default function UpdatePlanningAuthority({
             mt: 2,
           }}
         >
-          <Button
-            variant="contained"
-            onClick={handleUpdate}
-            sx={{
-              backgroundColor: "#1976d2",
-              fontWeight: 700,
-              fontSize: "14px",
-              px: 2,
-              py: 0.8,
+      <Button
+  variant="contained"
+  onClick={handleUpdate}
+  disabled={isUpdating}
+  sx={{
+    backgroundColor: "#1976d2",
+    fontWeight: 700,
+    fontSize: "14px",
+    px: 2,
+    py: 0.8,
 
-              "&:hover": {
-                backgroundColor: "#1565c0",
-              },
-            }}
-          >
-            UPDATE
-          </Button>
+    "&:hover": {
+      backgroundColor: "#1565c0",
+    },
+  }}
+>
+  {isUpdating ? "UPDATING..." : "UPDATE"}
+</Button>
         </Box>
 
       </Box>
