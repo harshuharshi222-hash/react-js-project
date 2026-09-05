@@ -459,18 +459,29 @@ const handleProcessAuthority = async (rowData) => {
 
 
 
-  const handleUpdateLiaisonProcess = (
-    rowData
-  ) => {
-    navigate(
-      "/LiaisonProcess/Process/ProcessEdit",
-      {
-        state: {
-          question: rowData,
-        },
-      }
-    );
-  };
+ const handleUpdateLiaisonProcess = (rowData) => {
+  console.log("EDIT ROW DATA:", rowData);
+
+  const liaisonProcessID =
+    rowData?.liaisonProcessID ??
+    rowData?.liaison_process_id ??
+    rowData?.process_id ??
+    rowData?.id;
+
+  if (!liaisonProcessID) {
+    console.error("Liaison Process ID not found:", rowData);
+    return;
+  }
+
+  console.log("SELECTED LIAISON PROCESS ID:", liaisonProcessID);
+
+  navigate("/LiaisonProcess/Process/ProcessEdit", {
+    state: {
+      liaisonProcessID: String(liaisonProcessID),
+      processData: rowData,
+    },
+  });
+};
 
  
 

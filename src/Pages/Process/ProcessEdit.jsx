@@ -52,8 +52,12 @@ const [getLiaisonProcessCategory1] =
   useGetLiaisonProcessCategory1Mutation();
 
 useEffect(() => {
-  fetchCategory();
-}, []);
+  if (liaisonProcessID) {
+    fetchCategory();
+    fetchOwner();
+    fetchProcessDetail();
+  }
+}, [liaisonProcessID]);
 
 const fetchCategory = async () => {
   try {
@@ -65,14 +69,18 @@ const fetchCategory = async () => {
       JSON.stringify(payload)
     ).unwrap();
 
-    console.log("Category Response:", response);
+    console.log("CATEGORY RESPONSE:", response);
 
-    if (response?.data) {
-      setCategoryList(response.data);
-    }
+    const categories = Array.isArray(response?.data)
+      ? response.data
+      : [];
 
+    console.log("CATEGORY LIST:", categories);
+
+    setCategoryList(categories);
   } catch (error) {
-    console.log("Category API Error:", error);
+    console.error("CATEGORY API ERROR:", error);
+    setCategoryList([]);
   }
 };
 
@@ -103,17 +111,19 @@ const fetchOwner = async () => {
     ).unwrap();
 
     console.log("OWNER FULL RESPONSE:", response);
-    console.log("OWNER DATA:", response?.data);
-    console.log("OWNER USER:", response?.user);
 
-    const users = response?.data || response?.user || [];
+    const users = Array.isArray(response?.data)
+      ? response.data
+      : Array.isArray(response?.user)
+      ? response.user
+      : [];
 
     console.log("FINAL OWNER LIST:", users);
 
     setOwnerList(users);
-
   } catch (error) {
-    console.log("OWNER API ERROR:", error);
+    console.error("OWNER API ERROR:", error);
+    setOwnerList([]);
   }
 };
 
@@ -127,12 +137,20 @@ useEffect(() => {
 
 const fetchProcessDetail = async () => {
   try {
+    if (!liaisonProcessID) {
+      console.error("Liaison Process ID is missing");
+      return;
+    }
+
     const payload = {
       userID: "169548080048036100",
-      liaisonProcessID: "35",
+      liaisonProcessID: String(liaisonProcessID),
     };
 
+    console.log("=================================");
     console.log("PROCESS DETAIL PAYLOAD:", payload);
+    console.log("EDITING PROCESS ID:", liaisonProcessID);
+    console.log("=================================");
 
     const response = await getLiaisonProcessDetail(
       JSON.stringify(payload)
@@ -147,52 +165,56 @@ const fetchProcessDetail = async () => {
 
     console.log("PROCESS DETAIL OBJECT:", detail);
 
-    if (detail) {
-      setFormData({
-        categoryName:
-          detail.process_category_name ||
-          detail.category_name ||
-          "",
-
-        ownerName:
-          detail.user_name ||
-          detail.owner_name ||
-          "",
-
-        isMandatory:
-          detail.is_mandatory ||
-          detail.isMandatory ||
-          "",
-
-        processName:
-          detail.process_name ||
-          detail.liaison_process_name ||
-          "",
-
-        completionType:
-          detail.completion_type ||
-          "",
-
-        executionType:
-          detail.execution_type ||
-          "",
-
-        taskPriority:
-          detail.task_priority ||
-          "",
-
-        processOrder:
-          detail.process_order ||
-          "",
-
-        status:
-          detail.status ||
-          "",
-      });
+    if (!detail) {
+      console.error("No process detail found");
+      return;
     }
 
+    setFormData({
+      categoryName:
+        detail.process_category_name ||
+        detail.category_name ||
+        "",
+
+      ownerName:
+        detail.owner_name ||
+        "",
+
+      isMandatory:
+        detail.is_mandatory ||
+        detail.isMandatory ||
+        "",
+
+      processName:
+        detail.process_name ||
+        detail.liaison_process_name ||
+        "",
+
+      completionType:
+        detail.completion_type ||
+        "",
+
+      executionType:
+        detail.execution_type ||
+        "",
+
+      taskPriority:
+        detail.task_priority ||  
+        "",
+
+      processOrder:
+        detail.process_order ||
+        "",
+
+      status:
+        detail.status ||
+        "",
+    });
   } catch (error) {
-    console.log("PROCESS DETAIL API ERROR:", error);
+    console.error(
+      "PROCESS DETAIL API ERROR:",
+      error
+    );
   }
 };
 
@@ -338,45 +360,7 @@ const fetchProcessDetail = async () => {
   </Select>
 </FormControl>
 
-        {/* Owner Name */}
-        {/* <FormControl
-  fullWidth
-  size="small"
-  sx={{ mb: 2 }}
->
-  <InputLabel
-    shrink
-    sx={{
-      backgroundColor: "#fff",
-      px: 0.5,
-      color: "#555",
-    }}
-  >
-    Owner Name
-  </InputLabel>
 
-  <Select
-    value={formData.ownerName}
-    onChange={handleChange("ownerName")}
-    label="Owner Name"
-    sx={{
-      height: "41px",
-      "& .MuiSelect-select": {
-        padding: "9px 13px",
-        fontSize: "16px",
-      },
-    }}
-  >
-    {ownerList.map((item) => (
-      <MenuItem
-        key={item.user_id}
-        value={item.user_name}
-      >
-        {item.user_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl> */}
 <FormControl
   fullWidth
   size="small"
