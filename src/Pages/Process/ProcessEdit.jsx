@@ -250,7 +250,8 @@ taskPriority: normalizeTaskPriority(
         "",
 
       status:
-        detail.status ||
+        detail.process_status
+ ||
         "",
     });
   } catch (error) {
