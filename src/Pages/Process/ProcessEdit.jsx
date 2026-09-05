@@ -127,6 +127,50 @@ const fetchOwner = async () => {
   }
 };
 
+const normalizeCompletionType = (value) => {
+  if (!value) return "";
+
+  const normalized = String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]/g, "");
+
+  if (normalized === "project") {
+    return "Project";
+  }
+
+  if (
+    normalized === "surveynumber" ||
+    normalized === "survey"
+  ) {
+    return "Survey Number";
+  }
+
+  return "";
+};
+
+const normalizeTaskPriority = (value) => {
+  if (!value) return "";
+
+  const normalized = String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]/g, "");
+
+  if (normalized === "critical") {
+    return "Critical";
+  }
+
+  if (
+    normalized === "noncritical" ||
+    normalized === "noncriticaltask"
+  ) {
+    return "Non Critical";
+  }
+
+  return "";
+};
+
 
 const [getLiaisonProcessDetail] =
   useGetLiaisonProcessDetailMutation();
@@ -190,17 +234,16 @@ const fetchProcessDetail = async () => {
         detail.liaison_process_name ||
         "",
 
-      completionType:
-        detail.completion_type ||
-        "",
+     completionType: normalizeCompletionType(
+  detail.completion_type
+),
 
-      executionType:
-        detail.execution_type ||
-        "",
+executionType:
+  detail.execution_type || "",
 
-      taskPriority:
-        detail.task_priority ||  
-        "",
+taskPriority: normalizeTaskPriority(
+  detail.task_priority
+),
 
       processOrder:
         detail.process_order ||
