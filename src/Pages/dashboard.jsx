@@ -29,17 +29,66 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 const Dashboard = () => {
   const [user, setUser] = useState("Sadanand");
 
-  const calendarDays = [
-    ["", "", "", "", "", "1", "2"],
-    ["3", "4", "5", "6", "7", "8", "9"],
-    ["10", "11", "12", "13", "14", "15", "16"],
-    ["17", "18", "19", "20", "21", "22", "23"],
-    ["24", "25", "26", "27", "28", "29", "30"],
-    ["31", "", "", "", "", "", ""],
-  ];
+ const [currentDate, setCurrentDate] = useState(new Date());
+    const month = currentDate.toLocaleString("default", {
+    month: "long",
+  });
+
+  const year = currentDate.getFullYear();
+
+  // Total days in month
+  const daysInMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate();
+
+  // First day of month
+  const firstDay = new Date(year, currentDate.getMonth(), 1).getDay();
+
+  // Previous Month
+  const handlePrevMonth = () => {
+    setCurrentDate(
+      new Date(year, currentDate.getMonth() - 1, 1)
+    );
+  };
+
+  // Next Month
+  const handleNextMonth = () => {
+    setCurrentDate(
+      new Date(year, currentDate.getMonth() + 1, 1)
+    );
+  };
+
+  // Calendar Array
+  const calendarDays = [];
+
+  let week = [];
+
+  // Empty boxes before first day
+  for (let i = 0; i < firstDay; i++) {
+    week.push("");
+  }
+
+  // Add all dates
+  for (let day = 1; day <= daysInMonth; day++) {
+    week.push(day);
+
+    if (week.length === 7) {
+      calendarDays.push(week);
+      week = [];
+    }
+  }
+
+  // Fill remaining boxes
+  while (week.length < 7) {
+    week.push("");
+  }
+
+  if (week.length > 0) {
+    calendarDays.push(week);
+  }
+
+  const today = new Date();
 
   return (
-    <Box sx={{ background: "#f5f5f5", minHeight: "100vh", p: 2 }}>
+    <Box sx={{ background: "#f5f5f5", minHeight: "80vh", p: 2 }}>
       {/* Top Header */}
       <Box
         sx={{
@@ -93,7 +142,7 @@ const Dashboard = () => {
       />
 
       {/* Main Card */}
-      <Card sx={{ borderRadius: 3 }}>
+      <Card sx={{ borderRadius: 2 }}>
         <CardContent>
           {/* Card Header */}
           <Box
@@ -113,6 +162,7 @@ const Dashboard = () => {
                 sx={{
                   color: "#6c4ce3",
                   fontSize: 36,
+                  padding:"5px",
                 }}
               />
             </IconButton>
@@ -197,86 +247,109 @@ const Dashboard = () => {
             </TableContainer>
 
             {/* Calendar Section */}
-            <Paper
-              sx={{
-                width: 360,
-                p: 3,
-                borderRadius: 3,
-                boxShadow: "none",
-              }}
-            >
-              {/* Calendar Header */}
+             <Paper
+      sx={{
+        width: 360,
+        p: 2,
+        borderRadius: 3,
+        boxShadow: "none",
+      }}  
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <IconButton onClick={handlePrevMonth}>
+          <ChevronLeftIcon />
+        </IconButton>
+
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 700 }}
+        >
+          {month} {year}
+        </Typography>
+
+        <IconButton onClick={handleNextMonth}>
+          <ChevronRightIcon />
+        </IconButton>
+      </Box>
+
+      {/* Week Days */}
+     
+      <Box
+  sx={{
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    textAlign: "center",
+    mb: 2,
+    color: "#666",
+    fontSize: "18px",
+    fontWeight: 600,
+  }}
+>
+  {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+    <Box key={`${day}-${index}`}>
+      {day}
+    </Box>
+  ))}
+</Box>
+
+      {/* Dates */}
+      {calendarDays.map((week, index) => (
+        <Box
+          key={index}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            textAlign: "center",
+            mb: 1.5,
+          }}
+        >
+          {week.map((date, i) => {
+            const isToday =
+              date === today.getDate() &&
+              currentDate.getMonth() === today.getMonth() &&
+              currentDate.getFullYear() === today.getFullYear();
+
+            return (
               <Box
+                key={i}
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: 3,
+                  height: 45,
+                  width: 45,
+                  lineHeight: "45px",
+                  margin: "auto",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  fontSize: "18px",
+
+                  backgroundColor: isToday
+                    ? "#6C63FF"
+                    : "transparent",
+
+                  color: isToday ? "#fff" : "#000",
+
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                  },
                 }}
               >
-                <IconButton>
-                  <ChevronLeftIcon />
-                </IconButton>
-
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  May 2026
-                </Typography>
-
-                <IconButton>
-                  <ChevronRightIcon />
-                </IconButton>
+                {date}
               </Box>
+            );
+          })}
+        </Box>
+      ))}
+    </Paper>
 
-              {/* Days */}
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(7, 1fr)",
-                  textAlign: "center",
-                  mb: 2,
-                  color: "#666",
-                  fontSize: "20px",
-                }}
-              >
-                {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
-                  <Box key={day}>{day}</Box>
-                ))}
-              </Box>
 
-              {/* Dates */}
-              {calendarDays.map((week, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(7, 1fr)",
-                    textAlign: "center",
-                    mb: 1.5,
-                  }}
-                >
-                  {week.map((date, i) => (
-                    <Box
-                      key={i}
-                      sx={{
-                        height: 45,
-                        width: 45,
-                        lineHeight: "45px",
-                        margin: "auto",
-                        borderRadius: "50%",
-                        border:
-                          date === "14"
-                            ? "1px solid #444"
-                            : "1px solid transparent",
-                        cursor: "pointer",
-                        fontSize: "20px",
-                      }}
-                    >
-                      {date}
-                    </Box>
-                  ))}
-                </Box>
-              ))}
-            </Paper>
+
           </Box>
         </CardContent>
       </Card>

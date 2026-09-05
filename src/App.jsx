@@ -1,9 +1,21 @@
+
+import MiniDrawer from './components/model'
+
 import './App.css'
-import MiniDrawer from './components/sideBar.jsx'
+import { BrowserRouter } from "react-router-dom";
 
+ 
 
-export default function App(){
-    return(
+export default function App() {
+
+  return (
+    <>
+      <BrowserRouter>
+       
         <MiniDrawer/>
-    )
+ 
+      </BrowserRouter>
+
+    </>
+  )
 }

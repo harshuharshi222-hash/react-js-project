@@ -1,0 +1,206 @@
+ .formComponentContainer{
+    background-color: azure;
+    padding: 10px;
+}
+
+.menuopenIconandComponentTitleContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.menuOpenIconAlignment{
+    text-align: center;
+    margin-right: 15px;
+    margin-top: 10.72px;
+}
+
+.title{
+    color:white;
+    font-size: 16px;
+    margin-left: 40px;
+}
+
+.toolbarStyle{
+background-color: aliceblue ;
+}
+
+.formDataContainer{
+    background-color: white;
+    border-width: 0px;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.selectE1{
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.buttonStyle,
+.buttonStyle1{
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(128, 128, 240);
+    border-radius: 2px;
+    border-width: 0px;
+    margin-right: 8px;
+}
+
+.inputEl{
+    padding: 0px;
+    border-radius: 2px;
+    margin-bottom: 15px;
+    width: 100%;
+
+}
+
+.inputElu{
+padding: 1px !important;
+    border-radius: 2px;
+    margin-bottom: 15px !important;
+    
+   
+    width: 100%;
+
+}
+
+.inputElt{
+    
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+  
+   
+}
+
+.buttonsAlignment{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.toolbarStyle{
+    background-color: aliceblue;
+    color: black;
+}
+.drowColor{
+    background-color:rgb(3, 3, 53) !important;
+    color: aliceblue;
+    max-height: 100vh;
+}
+.styleColor{
+background-color:rgb(3, 3, 53); 
+    color: aliceblue;
+}
+
+.errorpercentage{
+    margin: 10px;
+} 
+
+
+
+
+
+
+/* .formComponentContainer {
+  background-color: azure;
+  padding: 10px;
+
+  .menuopenIconandComponentTitleContainer {
+    display: flex;
+    flex-direction: row;
+
+    .menuOpenIconAlignment {
+      text-align: center;
+      margin-right: 15px;
+      margin-top: 10.72px;
+    }
+
+    .title {
+      color: white;
+      font-size: 16px;
+      margin-left: 40px;
+    }
+  }
+
+  .formDataContainer {
+    background-color: white;
+    border-width: 0;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+  }
+
+  .selectE1 {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .inputEl {
+    padding: 0;
+    border-radius: 2px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .inputElu {
+    padding: 1px !important;
+    border-radius: 2px;
+    margin-bottom: 15px !important;
+    width: 100%;
+  }
+
+  .inputElt {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .buttonsAlignment {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    .buttonStyle,
+    .buttonStyle1 {
+      padding: 12px;
+      color: white;
+      font-weight: bold;
+      background-color: rgb(128, 128, 240);
+      border-radius: 2px;
+      border-width: 0;
+      margin-right: 8px;
+    }
+
+    .buttonStyle1 {
+      width: 4%;
+    }
+  }
+
+  .errorpercentage {
+    margin: 10px;
+  }
+}
+
+.toolbarStyle {
+  background-color: aliceblue;
+  color: black;
+}
+
+.drowColor {
+  background-color: rgb(3, 3, 53) !important;
+  color: aliceblue;
+  max-height: 100vh;
+}
+
+.styleColor {
+  color: aliceblue;
+} */

@@ -1,5 +1,380 @@
+import React, { useState } from "react";
+import {
+  AppBar,
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Card,
+  Divider,
+  Drawer,
+  FormControl,
+  IconButton,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Toolbar,
+  Typography,
+  Paper,
+} from "@mui/material";
 
-//tanstack table explore this
+import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import GavelIcon from "@mui/icons-material/Gavel";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+
+const drawerWidth = 300;
+
+const rows = [
+  {
+    id: 1,
+    project: "",
+    category: "",
+    title: "",
+    description: "",
+  },
+];
+
+export default function DashboardUI() {
+  const [user, setUser] = useState("Sadanand");
+
+  return (
+    <Box sx={{ display: "flex", bgcolor: "#f4f4f4", minHeight: "100vh" }}>
+      
+      {/* TOPBAR */}
+      <AppBar
+        position="fixed"
+        elevation={1}
+        sx={{
+          bgcolor: "white",
+          color: "black",
+          zIndex: 1201,
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          
+          {/* LEFT */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <IconButton>
+              <MenuIcon sx={{ fontSize: 35 }} />
+            </IconButton>
+
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: "bold", color: "#1f2347" }}
+            >
+              KNS
+            </Typography>
+          </Box>
+
+          {/* RIGHT */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+            <Badge badgeContent="99+" color="secondary">
+              <NotificationsIcon />
+            </Badge>
+
+            <Typography variant="h6">Sadanand</Typography>
+
+            <Avatar />
+
+            <Typography
+              sx={{ color: "green", fontWeight: "bold", fontSize: 28 }}
+            >
+              TEST
+            </Typography>
+
+            <Box
+              sx={{
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                bgcolor: "#9be28c",
+              }}
+            />
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {/* SIDEBAR */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            bgcolor: "#171d47",
+            color: "white",
+            mt: "64px",
+          },
+        }}
+      >
+        <List>
+          <ListItem button sx={{ py: 3 }}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <GavelIcon />
+            </ListItemIcon>
+
+            <ListItemText
+              primary="Legal"
+              primaryTypographyProps={{ fontSize: 20 }}
+            />
+
+            <KeyboardArrowDownIcon />
+          </ListItem>
+
+          <ListItem button sx={{ py: 3 }}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <AdminPanelSettingsIcon />
+            </ListItemIcon>
+
+            <ListItemText
+              primary="Admin"
+              primaryTypographyProps={{ fontSize: 20 }}
+            />
+
+            <KeyboardArrowDownIcon />
+          </ListItem>
+
+          <ListItem button sx={{ py: 3 }}>
+            <ListItemIcon sx={{ color: "white" }}>
+              <FormatAlignLeftIcon />
+            </ListItemIcon>
+
+            <ListItemText
+              primary="Master"
+              primaryTypographyProps={{ fontSize: 20 }}
+            />
+
+            <KeyboardArrowDownIcon />
+          </ListItem>
+        </List>
+      </Drawer>
+
+      {/* MAIN CONTENT */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          mt: "64px",
+        }}
+      >
+        {/* HEADER */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
+          <Typography variant="h4">Welcome</Typography>
+
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <FormControl sx={{ minWidth: 400 }} size="small">
+              <InputLabel>User</InputLabel>
+
+              <Select
+                value={user}
+                label="User"
+                onChange={(e) => setUser(e.target.value)}
+              >
+                <MenuItem value="Sadanand">Sadanand</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#1976d2",
+                px: 4,
+              }}
+            >
+              SEARCH
+            </Button>
+          </Box>
+        </Box>
+
+        {/* EMPTY BAR */}
+        <Box
+          sx={{
+            height: 45,
+            bgcolor: "#efefef",
+            borderRadius: 5,
+            mb: 4,
+          }}
+        />
+
+        {/* CARD */}
+        <Card
+          sx={{
+            p: 3,
+            borderRadius: 3,
+            boxShadow: 2,
+          }}
+        >
+          {/* TITLE */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              To Do
+            </Typography>
+
+            <AddCircleIcon
+              sx={{
+                color: "#7d5fff",
+                fontSize: 35,
+              }}
+            />
+          </Box>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* CONTENT */}
+          <Box sx={{ display: "flex", gap: 3 }}>
+            
+            {/* TABLE */}
+            <TableContainer
+              component={Paper}
+              sx={{
+                flex: 1,
+                maxHeight: 500,
+              }}
+            >
+              <Table stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    {[
+                      "Sl.No",
+                      "Project",
+                      "Category",
+                      "Title",
+                      "Description",
+                    ].map((head) => (
+                      <TableCell
+                        key={head}
+                        sx={{
+                          fontWeight: "bold",
+                          bgcolor: "#f7f7f7",
+                          fontSize: 18,
+                        }}
+                      >
+                        {head}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow key={row.id} hover>
+                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{row.project}</TableCell>
+                      <TableCell>{row.category}</TableCell>
+                      <TableCell>{row.title}</TableCell>
+                      <TableCell>{row.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              {/* MESSAGE */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 250,
+                }}
+              >
+                <Typography
+                  sx={{
+                    bgcolor: "#efefef",
+                    px: 4,
+                    py: 2,
+                    borderRadius: 1,
+                    fontSize: 28,
+                    color: "gray",
+                  }}
+                >
+                  You don't have permission to view the data
+                </Typography>
+              </Box>
+            </TableContainer>
+
+            {/* CALENDAR */}
+            <Paper
+              sx={{
+                width: 320,
+                p: 3,
+                borderRadius: 2,
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  textAlign: "center",
+                  mb: 4,
+                }}
+              >
+                May 2026
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(7,1fr)",
+                  gap: 3,
+                  textAlign: "center",
+                }}
+              >
+                {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
+                  <Typography key={day} fontWeight="bold">
+                    {day}
+                  </Typography>
+                ))}
+
+                {Array.from({ length: 31 }, (_, i) => (
+                  <Typography
+                    key={i}
+                    sx={{
+                      p: 1,
+                      borderRadius: "50%",
+                      border:
+                        i + 1 === 25 ? "1px solid black" : "none",
+                    }}
+                  >
+                    {i + 1}
+                  </Typography>
+                ))}
+              </Box>
+            </Paper>
+          </Box>
+        </Card>
+      </Box>
+    </Box>
+  );
+}
+
+
+
+////table 
+
+
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
@@ -94,18 +469,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-  
+ 
+const [debouncedSearch, setDebouncedSearch] = useState("");
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(searchText);
+  }, 500); // API after 500ms stop typing
+
+  return () => clearTimeout(timer);
+}, [searchText]);
+
 // const [searchText, setSearchText] = useState("");
 const [searchText, setSearchText] = useState(
   localStorage.getItem("clpSearchText") || ""
 );
-console.log("Searching:", searchText);
-
 
 useEffect(() => {
   localStorage.setItem("clpSearchText", searchText);
 }, [searchText]);
-
 const [tableData, setTableData] = useState([]);
 const [status, setStatus] = useState("Active");
 
@@ -155,7 +537,7 @@ const handleDownload = () => {
    
 useEffect(() => {
   loadData();
-}, [status]);
+}, [status, searchText ]);
 
  
 
@@ -167,7 +549,8 @@ const loadData = async () => {
       userID: "171903551052335600",
       milestoneName: "",
       status: status,
-      generalSearch: searchText,
+      // generalSearch: searchText,
+      generalSearch: debouncedSearch,
       sortOrder: "",
       iDisplayStart: 0,
       iDisplayLength: 50,
@@ -186,7 +569,7 @@ const loadData = async () => {
       [];
 
     const formattedData = apiData.map((item) => ({
-      clpID: item.id,
+      clpID:  item.id,
       milestone_name:
         item.milestone_name || item.milestoneName,
       display_order:
@@ -226,6 +609,9 @@ console.log("response Data",data)
   console.log("first row =", tableData?.[0]);
 
 
+// console.log("tableData =", tableData);
+// console.log("first row =", tableData[0]);
+
 
 
 const filteredData = tableData.filter((row) => {
@@ -247,12 +633,12 @@ const filteredData = tableData.filter((row) => {
 
      const navigate = useNavigate();
    const handlegotocreate = () => {
-      navigate('/dashboard/table/create')
+      navigate('/create')
    }
 
       //  const navigate1 = useNavigate();
    const handlegotodashboard = () => {
-      navigate('/dashboard')
+      navigate1('/dashboard')
    }
 
     // const navigate2 = useNavigate();
@@ -261,14 +647,26 @@ const filteredData = tableData.filter((row) => {
         // }
 
         const handlegotoupdate = (row) => {
-          console.log(row,"row")
-  navigate("/dashboard/table/update", {
+  navigate2("/update", {
     state: row,
   });
 };
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
+
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
+
+  // const adornmentId = React.useId();
+  // const textFieldId = React.useId();
+  // const sxId = React.useId();
 
   
 
@@ -312,7 +710,6 @@ const [columnWidths, setColumnWidths] = useState({
 });
 
 
-
 const startResize = (e, column) => {
   e.preventDefault();
 
@@ -336,6 +733,8 @@ const startResize = (e, column) => {
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("mouseup", handleMouseUp);
 };
+// console.log("tableData =", tableData);
+// console.log("First Row =", tableData?.[0]);
 
 const totalPages = Math.ceil(
   filteredData.length / rowsPerPage
@@ -520,7 +919,7 @@ const totalPages = Math.ceil(
   value={status}
   label="Status"
   onChange={(e) => setStatus(e.target.value)}
-  
+  // onChange={handleStatusChange}
 >
   <MenuItem value="Active">Active</MenuItem>
   <MenuItem value="inActive">In-Active</MenuItem>
@@ -814,4 +1213,257 @@ const totalPages = Math.ceil(
 
     </Box>
   );
+}
+
+////    update 
+
+// 
+import React from "react";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { TextField, Button ,
+   Box ,
+   Typography ,
+   Paper , 
+   FormControl , 
+    InputLabel , 
+    Select , 
+    MenuItem } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Margin, WidthFull } from "@mui/icons-material";
+import {
+  useUpdateConstructionLinkPaymentMutation,
+} from "../api/constructionApi";
+
+
+
+
+
+export default function Update() {
+//   const navigate = useNavigate();
+
+
+//   const rowData = location.state || {};
+//    console.log(rowData,"rowdatadata");
+//   const [updateConstructionLinkPayment] =
+//   useUpdateConstructionLinkPaymentMutation();
+
+
+  
+// const location = useLocation();
+
+const navigate = useNavigate();
+
+const location = useLocation();
+
+const rowData = location?.state || {};
+
+console.log("Location State:", location?.state);
+console.log("Row Data:", rowData);
+
+const [updateConstructionLinkPayment] =
+  useUpdateConstructionLinkPaymentMutation();
+
+  if (!location?.state) {
+    return (
+      <Box p={3}>
+        <Typography color="error">
+          No record selected. Please go back and select a row.
+        </Typography>
+      </Box>
+    );
+  }
+
+console.log("Received Data:", location.state);
+console.log("Received CLP ID:", location.state?.clpID);
+
+
+  const formik = useFormik({
+    enableReinitialize: true,
+
+    initialValues: {
+      
+    
+      
+
+      milestoneName: rowData.milestone_name || "",
+      percentage: rowData.percentage || "",
+      displayOrder: rowData.display_order || "",
+      description: rowData.description || "",
+      status: rowData.status || "",
+    },
+
+    validationSchema: Yup.object({
+      status: Yup.string().required("Required"),
+    }),
+
+   
+    onSubmit: async (values) => {
+  try {
+    const payload = {
+      userID: "171903551052335600",
+      clpID: rowData.id || rowData.id,
+      milestoneName: values.milestoneName,
+      percentage: values.percentage,
+      displayOrder: values.displayOrder,
+      description: values.description,
+      status: values.status,
+    };
+
+    console.log("Update Payload:", payload);
+
+    const response =
+      await updateConstructionLinkPayment(payload).unwrap();
+
+    console.log("Update Response:", response);
+
+    alert("Updated Successfully");
+
+    navigate("/dashboard/table");
+  } catch (error) {
+    console.error("Update Error:", error);
+    alert("Update Failed");
+  }
+},
+  });
+
+  const handlegototable = () => {
+    navigate("/dashboard/table");
+  };
+
+
+
+  return (
+    <>
+      
+
+
+<Box
+  sx={{
+    minHeight: "100vh",
+    background: "#f5f5f5",
+    p: 3,
+  }}
+>
+  {/* Header */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      mb: 4,
+    }}
+  >
+    <IconButton onClick={handlegototable}>
+      <MenuOpenIcon  sx={{
+                  color: "#1273ea",
+                  fontSize: 30,
+                  mr: 1,
+                }} />
+    </IconButton>
+
+    <Typography
+      variant="h4"
+      sx={{
+        ml: 2,
+        fontWeight: 700,
+      }}
+    >
+      Update CLP Milestone
+    </Typography>
+  </Box>
+
+  <form onSubmit={formik.handleSubmit}>
+    <Paper
+      elevation={0}
+      sx={{
+        p: 4,
+        borderRadius: 3,
+        background: "#fafafa",
+
+      }}
+    >
+      <TextField
+        fullWidth
+        label="Milestone Name"
+        value={formik.values.milestoneName}
+        // InputProps={{ readOnly: true }}
+        disabled
+        sx={{ mb: 3 }}
+
+      />
+
+      <TextField
+        fullWidth
+        label="Percentage"
+        value={formik.values.percentage}
+        // InputProps={{ readOnly: true }}
+        disabled
+        sx={{ mb: 3 }}
+
+      />
+
+      <TextField
+        fullWidth
+        label="Display Order"
+        value={formik.values.displayOrder}
+        // InputProps={{ readOnly: true }}
+        disabled
+        sx={{ mb: 3 }}
+   
+      />
+
+      
+                  <TextField
+                    fullWidth
+                    label="Description"
+                    name="description"
+                    sx={{ mb: 2 }}
+                    multiline
+                    rows={3}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                  />
+
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel>Status</InputLabel>
+
+        <Select
+          name="status"
+          value={formik.values.status}
+          label="Status"
+          onChange={formik.handleChange}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="inActive">In-Active</MenuItem>
+        </Select>
+      </FormControl>
+    </Paper>
+
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        mt: 3,
+      }}
+    >
+      <Button
+        type="submit"
+        variant="contained"
+        size="large"
+        sx={{
+          minWidth: 120,
+          height: 50,
+          fontWeight: 600,
+        }}
+      >
+        SAVE
+      </Button>
+    </Box>
+  </form>
+</Box>
+  </>
+  );
+
 }
