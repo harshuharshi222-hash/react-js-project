@@ -3,8 +3,7 @@
 
 import React, { useMemo, useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
@@ -61,10 +60,12 @@ import UpdatePlanningAuthority from "../../Pages/Process/PlanningUpdate";
 
 export default function LiaisonProcess() {
   const navigate = useNavigate();
+   const location = useLocation();
 
 
   const [totalRecords, setTotalRecords] = useState(0);
 const [updateSuccess, setUpdateSuccess] = useState(false);
+const [successMessage, setSuccessMessage] = useState("");
 
 
   // Filter values currently selected in the UI
@@ -179,7 +180,21 @@ const [appliedIsMandatory, setAppliedIsMandatory] = useState("");
     }
   };
 
+useEffect(() => {
+  const message = sessionStorage.getItem(
+    "liaisonProcessUpdateSuccess"
+  );
 
+  if (message) {
+    setSuccessMessage(message);
+    setUpdateSuccess(true);
+
+    // Remove it so Snackbar does not appear again
+    sessionStorage.removeItem(
+      "liaisonProcessUpdateSuccess"
+    );
+  }
+}, [location.key]);
  
 
 useEffect(() => {
@@ -1119,6 +1134,8 @@ const handleProcessAuthority = async (rowData) => {
             </Select>
           </FormControl>
 
+          
+
           {/* USER */}
 
           <FormControl
@@ -1398,7 +1415,7 @@ const handleProcessAuthority = async (rowData) => {
       </Paper>
 
 
-      <Snackbar
+<Snackbar
   open={updateSuccess}
   autoHideDuration={3000}
   onClose={() => setUpdateSuccess(false)}
@@ -1415,10 +1432,9 @@ const handleProcessAuthority = async (rowData) => {
       width: "100%",
     }}
   >
-    Planning Authority updated successfully!
+    {successMessage || "Update successful!"}
   </Alert>
 </Snackbar>
-
       {/* TABLE */}
 
       <Paper

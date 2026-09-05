@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
   Typography,
   Paper,
   IconButton,
+  
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
@@ -24,6 +25,7 @@ import {
   useGetLiaisonProcessCategory1Mutation,
    useGetUserMutation,
      useGetLiaisonProcessDetailMutation,
+      useUpdateLiaisonProcessMutation,
 } from "../../api/constructionApi";
 
 export default function UpdateLiaisonProcess() {
@@ -41,6 +43,7 @@ const [formData, setFormData] = useState({
 
 
 const location = useLocation();
+const navigate = useNavigate();
 
 const liaisonProcessID = location.state?.liaisonProcessID;
 
@@ -50,6 +53,9 @@ const [categoryList, setCategoryList] = useState([]);
 
 const [getLiaisonProcessCategory1] =
   useGetLiaisonProcessCategory1Mutation();
+
+const [updateLiaisonProcess, { isLoading: isUpdating }] =
+  useUpdateLiaisonProcessMutation();
 
 useEffect(() => {
   if (liaisonProcessID) {
@@ -282,16 +288,184 @@ taskPriority: normalizeTaskPriority(
     }
   };
 
-  const handleSave = () => {
-    if (!formData.status) {
-      setStatusError(true);
+// const handleSave = async () => {
+//   if (!formData.status) {
+//     setStatusError(true);
+//     return;
+//   }
+
+//   try {
+//     // Find selected category object
+//     const selectedCategory = categoryList.find(
+//       (item) =>
+//         item.process_category_name === formData.categoryName
+//     );
+
+//     // Find selected owner object
+//     const selectedOwner = ownerList.find(
+//       (item) =>
+//         item.user_name === formData.ownerName
+//     );
+
+//     console.log("SELECTED CATEGORY:", selectedCategory);
+//     console.log("SELECTED OWNER:", selectedOwner);
+
+//     if (!selectedCategory) {
+//       alert("Please select a valid Category Name");
+//       return;
+//     }
+
+//     if (!selectedOwner) {
+//       alert("Please select a valid Owner Name");
+//       return;
+//     }
+
+//     const payload = {
+//       userID: "169548080048036100",
+
+//       liaisonProcessID: String(liaisonProcessID),
+
+//       processName: formData.processName,
+
+//       processCategoryID: String(
+//         selectedCategory.process_category_id ||
+//         selectedCategory.id ||
+//         ""
+//       ),
+
+//       processOrder: String(formData.processOrder),
+
+//       processOwnerID: String(
+//         selectedOwner.user_id
+//       ),
+
+//       isMandatory: formData.isMandatory,
+
+//       completionType: formData.completionType,
+
+//       executionType: formData.executionType,
+
+//       taskPriority: formData.taskPriority,
+
+//       processStatus: formData.status,
+//     };
+
+//     console.log("UPDATE PAYLOAD:", payload);
+
+//     const response = await updateLiaisonProcess(
+//       JSON.stringify(payload)
+//     ).unwrap();
+
+//     console.log("UPDATE RESPONSE:", response);
+
+//     alert("Liaison Process updated successfully!");
+
+//   } catch (error) {
+//     console.error(
+//       "UPDATE LIAISON PROCESS API ERROR:",
+//       error
+//     );
+
+//     alert(
+//       error?.data?.message ||
+//       error?.message ||
+//       "Failed to update Liaison Process"
+//     );
+//   }
+// };
+
+const handleSave = async () => {
+  if (!formData.status) {
+    setStatusError(true);
+    return;
+  }
+
+  try {
+    // Find selected category object
+    const selectedCategory = categoryList.find(
+      (item) =>
+        item.process_category_name === formData.categoryName
+    );
+
+    // Find selected owner object
+    const selectedOwner = ownerList.find(
+      (item) =>
+        item.user_name === formData.ownerName
+    );
+
+    console.log("SELECTED CATEGORY:", selectedCategory);
+    console.log("SELECTED OWNER:", selectedOwner);
+
+    if (!selectedCategory) {
+      alert("Please select a valid Category Name");
       return;
     }
 
-    console.log("Form Data:", formData);
+    if (!selectedOwner) {
+      alert("Please select a valid Owner Name");
+      return;
+    }
 
-    alert("Liaison Process updated successfully!");
-  };
+    const payload = {
+      userID: "169548080048036100",
+
+      liaisonProcessID: String(liaisonProcessID),
+
+      processName: formData.processName,
+
+      processCategoryID: String(
+        selectedCategory.process_category_id ||
+        selectedCategory.id ||
+        ""
+      ),
+
+      processOrder: String(formData.processOrder),
+
+      processOwnerID: String(
+        selectedOwner.user_id
+      ),
+
+      isMandatory: formData.isMandatory,
+
+      completionType: formData.completionType,
+
+      executionType: formData.executionType,
+
+      taskPriority: formData.taskPriority,
+
+      processStatus: formData.status,
+    };
+
+    console.log("UPDATE PAYLOAD:", payload);
+
+    const response = await updateLiaisonProcess(
+      JSON.stringify(payload)
+    ).unwrap();
+
+    console.log("UPDATE RESPONSE:", response);
+
+    // Store success message for Index page
+sessionStorage.setItem(
+  "liaisonProcessUpdateSuccess",
+  "Liaison Process updated successfully!"
+);
+
+// Go back to Index page
+window.history.back();
+
+  } catch (error) {
+    console.error(
+      "UPDATE LIAISON PROCESS API ERROR:",
+      error
+    );
+
+    alert(
+      error?.data?.message ||
+      error?.message ||
+      "Failed to update Liaison Process"
+    );
+  }
+};
 
   const handleBack = () => {
     window.history.back();
