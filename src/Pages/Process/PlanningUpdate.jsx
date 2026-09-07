@@ -22,7 +22,7 @@ import {
 } from "../../api/constructionApi";
 
 
-// ];
+
 const authorityList = [
   { id: 6, authority_name: "BBMP" },
   { id: 1, authority_name: "BDA" },
@@ -58,10 +58,10 @@ export default function UpdatePlanningAuthority({
 
   
 useEffect(() => {
-  if (!open) {
-    setAuthorities([]);
-    return;
-  }
+  // if (!open) {
+  //   setAuthorities([]);
+  //   return;
+  // }
 
   const apiAuthorities = Array.isArray(planningAuthority)
     ? planningAuthority
@@ -77,24 +77,26 @@ useEffect(() => {
 
       // API ID
       const apiId =
-        item?.authority?.id ??
-        item?.authority_id ??
-        item?.authorityID ??
-        item?.authorityId ??
-        item?.planning_authority_id ??
-        item?.planningAuthorityId ??
-        item?.planningAuthorityID ??
+        // item?.authority?.id ??
+        // item?.authority_id ??
+        // item?.authorityID ??
+        // item?.authorityId ??
+        // item?.planning_authority_id ??
+        // item?.planningAuthorityId ??
+        // item?.planningAuthorityID ??
         item?.id;
+                item?.authority_name;
+
 
       // API NAME
       const apiName =
-        item?.authority?.authority_name ??
-        item?.authority?.name ??
-        item?.authority_name ??
-        item?.authorityName ??
-        item?.planning_authority_name ??
-        item?.planningAuthorityName ??
-        item?.name;
+        item?.authority?.authority_name ;
+        // item?.authority?.name ??
+        // item?.authority_name ??
+        // item?.authorityName ??
+        // item?.planning_authority_name ??
+        // item?.planningAuthorityName ??
+        // item?.name;
 
       // Match ID
       const idMatch =
